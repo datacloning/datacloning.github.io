@@ -47,7 +47,7 @@ emdash: ---
 
 ellipsis: ...
 
-inline equation: $A = \pi*r^{2}$
+inline equation: $$A = \pi*r^{2}$$
 
 $$A = \pi*r^{2}$$
 
@@ -84,7 +84,7 @@ paste("Hello", "World!")
 
 Place code inline with a single back ticks. The
 first back tick must be followed by an R, like
-this `r paste("Hello", "World!")`.
+this `paste("Hello", "World!")`.
 
 Add chunk options within braces. For example,
 `echo=FALSE` will prevent source code from being
