@@ -7,10 +7,12 @@ layout: default
 # Start with a header
 
 This `Rmd` file demonstrates how we intend to host text/code
-on the website. We have 2 aims:
+on the website. We have 3 aims:
 
 1. Folks can read the text/code on the web and
   copy/paste for themselves
+2. The file opens up in Rstudio, and can be turned into some
+  other format
 2. We can delop text/code/math without polluting our workspace
   with ugly html stuff.
 
