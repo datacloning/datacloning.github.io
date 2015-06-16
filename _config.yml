@@ -1,0 +1,18 @@
+title: Data Cloning
+description: Hierarchical model made easy
+url:  http://localhost:4000
+#url: http://datacloning.github.io
+#permalink:   /:categories/:title.html
+#category: news
+
+include: [".htaccess"]
+exclude: ["README.md","LICENSE.md"]
+timezone:    America/Edmonton
+
+highlighter: pygments
+markdown: kramdown
+kramdown:
+  input: GFM
+
+encoding:     "utf-8"
+markdown_ext: "markdown,mkdown,mkdn,mkd,md,Rmd"
