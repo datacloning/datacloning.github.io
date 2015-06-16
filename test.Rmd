@@ -3,11 +3,11 @@ title: Testing the features
 output: 
   md_document:
     variant: markdown_github
-    toc: false
-    toc_depth: 2
     preserve_yaml: true
 layout: default
 ---
+
+# Start with a header
 
 Plain text
 
