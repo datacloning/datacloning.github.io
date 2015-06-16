@@ -4,32 +4,55 @@ output: html_document
 layout: default
 ---
 
-# Start with a header
+# Always start with a header
 
-This `Rmd` file demonstrates how we intend to host text/code
+This `Rmd` file demonstrates how we intend to host text/math/code
 on the website. We have 3 aims:
 
-1. Folks can read the text/code on the web and
-  copy/paste for themselves
-2. The file opens up in Rstudio, and can be turned into some
-  other format
+1. Folks can read the text/code/math on the web and
+  copy/paste for themselves.
+  The web design is taken care of GitHub and jekyll pages
+  (including Markdown formatting, liquid templating,
+  syntax highlight and MathJax notation).
+2. The file opens up in [Rstudio](http://rstudio.com), 
+  code runs natively in R
+  and can be turned into some other format (like `pdf`, `html`, slides, etc.),
+  while still properly displaying text formatting, code (with
+  syntax highlight), and math (using local MathJax client side rendering).
 2. We can delop text/code/math without polluting our workspace
   with ugly html stuff.
 
-This is plain text
+# Workflow
 
-End a line with two spaces
-to start a new paragraph.  
+1. Create a new `Rmd` ([R Markdown](http://rmarkdown.rstudio.com))file.
+2. Use the source of this file (`test.Rmd`) as template,
+  espacially as concerns the yaml header. That is the lines between
+  the `---` triple dashes. It tells the website how to display
+  the content, while it gives directions to the `knitr` R package
+  about how to turn the code into html. For different output,
+  the `output` tag value can be edited. The only important
+  thing really is the `layout`.
+ 3. Following the syntax rules below.
+ 4. Save and commit to the `datacloning.github.io` project 
+  (or create a pull request). Make sure to push to the
+  master branch. Of course, we need to figure out
+  placement in the directory tree -- this is under construction.
+ 5. This way the source code can be edited online as well
+  through GitHub. Any changes should be visible on the website
+  almost instantly (might have to refresh the browser).
 
-*italics* and _italics_
+# Showcase
 
-**bold** and __bold__
+This is plain text.
 
-superscript^2^
+This text is *italics* and _italics_, while this is
+**bold** and __bold__.
 
-~~strikethrough~~
+For superscript$$^2$$, use inline math, such as these: $$A = \pi*r^{2}$$.
 
-[link](http://peter.solymos.org)
+$$ a = \sqrt{b^2 + c^2} $$
+
+This [link](http://peter.solymos.org) takes you to a site.
 
 # Header 1
 
@@ -49,17 +72,16 @@ emdash: ---
 
 ellipsis: ...
 
-inline equation: $$A = \pi*r^{2}$$
-
-$$A = \pi*r^{2}$$
-
 image: ![](favicon.ico)
 
 horizontal rule (or slide break):
 
 ***
 
-> block quote
+> block quote:
+> Someone once said this
+
+## Lists
 
 * unordered list
 * item 2
@@ -71,87 +93,23 @@ horizontal rule (or slide break):
  + sub-item 1
  + sub-item 2
 
+## Table formatting
+
 Table Header | Second Header
 ------------- | -------------
 Table Cell | Cell 2
 Cell 3 | Cell 4 
 
+## Code blocks
+
 Make a code chunk with three back ticks followed
-by an r in braces. End the chunk with three back
-ticks: 
+by R (this helps figuring out highlight rules). 
+End the chunk with three back ticks: 
 
 ```R
 paste("Hello", "World!")
 ``` 
 
-Place code inline with a single back ticks. The
-first back tick must be followed by an R, like
+Place code inline with a single back ticks, like
 this `paste("Hello", "World!")`.
 
-Add chunk options within braces. For example,
-`echo=FALSE` will prevent source code from being
-displayed:
-
-```R
-paste("Hello", "World!")
-``` 
-
-
-# Data cloning
-
-## Here is a website
-
-Paragraph text.
-
-Some MathJax: inline eq $$ x_{i}=exp(\lambda^2_{i}) $$ like this.
-
-Or:
-
-$$ a = \sqrt{b^2 + c^2} $$
-
-
-Some MathJax: \\(x_{i}=exp(\lambda^2_{i}))\\
-
-Or:
-
-\\[ a = \sqrt{b^2 + c^2} ]\\
-
-This is inline `code` and this is code block:
-
-```R
-## with some notes
-a <- 1 + 2 # here
-(b <- a * 2)
-```
-
-Well.
-
-Lists:
-
-1. One,
-2. Two.
-
-And:
-
-* item
-* item
-  and beyond
-
-finally GFM checkbox:
-
-- [ ] todo 1
-- [x] done,
-- [ ] not.
-
-> We're living the future so
-> the present is our past.
-
-
-First Header | Second Header
------------- | -------------
-Content from cell 1 | Content from cell 2
-Content in the first column | Content in the second column
-
-An ~~this is strikeout~~ text.
-
-Is it?
