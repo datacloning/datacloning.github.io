@@ -1,15 +1,20 @@
 ---
 title: Testing the features
-output: 
-  md_document:
-    variant: markdown_github
-    preserve_yaml: true
+output: html_document
 layout: default
 ---
 
 # Start with a header
 
-Plain text
+This `Rmd` file demonstrates how we intend to host text/code
+on the website. We have 2 aims:
+
+1. Folks can read the text/code on the web and
+  copy/paste for themselves
+2. We can delop text/code/math without polluting our workspace
+  with ugly html stuff.
+
+This is plain text
 
 End a line with two spaces
 to start a new paragraph.  
@@ -73,7 +78,7 @@ Make a code chunk with three back ticks followed
 by an r in braces. End the chunk with three back
 ticks: 
 
-```{r}
+```R
 paste("Hello", "World!")
 ``` 
 
@@ -85,7 +90,7 @@ Add chunk options within braces. For example,
 `echo=FALSE` will prevent source code from being
 displayed:
 
-```{r eval=TRUE, echo=FALSE}
+```R
 paste("Hello", "World!")
 ``` 
 
