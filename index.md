@@ -13,6 +13,11 @@ Or:
 
 $$ a = \sqrt{b^2 + c^2} $$
 
+{% highlight R %}
+## with some notes
+a <- 1 + 2 # here
+(b <- a * 2)
+{% endhighlight %}
 
 
 This is inline `code` and this is code block:
