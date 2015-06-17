@@ -52,6 +52,7 @@ For superscript$$^2$$, use inline math, such as these: $$A = \pi*r^{2}$$.
 
 $$ a = \sqrt{b^2 + c^2} $$
 
+Test if single cash works: $a^2 = \sum{z}$.
 This [link](http://peter.solymos.org) takes you to a site.
 
 # Header 1
