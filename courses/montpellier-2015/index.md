@@ -7,7 +7,9 @@ layout: default
 
 #### Training Course at ICCB/ECCB, Aug 1 2015, Montpellier, France
 
-Tutors: Dr. Peter Solymos and Dr. Subhash R. Lele
+<strong>This training course is aimed towards the conservation professionals who need to understand and feel comfortable with modern statistical and computational tools used to address pressing conservation issues. By presenting both Bayesian and Likelihood based approaches, the participants will be able to go beyond the rhetorics of philosophy of statistics and use the tools with full understanding of their assumptions and implications.</strong>
+
+-------------
 
 ### Goal and justification
 
@@ -21,16 +23,36 @@ Active learning is the best way to learn statistical analysis and we will be pro
 
 In this course, we will not only demystify the statistical thinking but also, and more importantly from the practical point of view, we will teach the use of a freely available statistical package ‘dclone’. It is a freely available software package based on R, JAGS and BUGS. The expected outcome of the course is a solid foundation for further professional development via increased confidence in using hierarchical models in a conservation context.
 
-### Organisational structure
+---------------
+
+### Organizational structure
 
 * Format: The introduction and overview is in seminar format (1-1.5 hours), the rest of the course is in workshop format with two breaks, the third part after the second break is possibly centered around participant’s own projects.
 * Duration: 6-8 hours of instruction time with 2 x 30 minutes breaks (9:00-12:00, 12:30-15:30, 16:00-18:00)
 * Expected number of participants: minimum 12, maximum 25.
 * Equipment necessary: Participants should bring their own laptops. Organizers should arrange for projector, electric outlets and power cords for plugging in computers. Open source and free software, and electronic course material will be provided by tutors. Internet access is necessary but tutors will provide software/code/course material on DVD or USB sticks in case of offline format.
 
+-------------------
 
 ### Lessons
 
-* Lesson 0: [software needs and installation guide](./lesson-00.html)
-* Lesson 1: [intro](./lesson-01.html)
+* Lecture 0: [software needs and installation guide](./lecture-00.html)
+* Lecture 1: [intro](./lecture-01.html)
+
+
+
+## Organisers
+
+* [Péter Sólymos](http://peter.solymos.org)
+* [Subhash R. Lele](http://www.stat.ualberta.ca/~slele/)
+
+## How to prepare to make the most of the course
+
+Set up your laptop: give here how and test cases
+
+## Suggested reading
+
+Put here links to sites, documents, references.
+Create a bibtex file with refs.
+
 
