@@ -6,7 +6,9 @@ layout: default
 ## Hierarchical models for conservation biologists made easy
 
 #### Pre congress training course
+
 #### ICCB/ECCB, Montpellier, France
+
 #### Aug 1 2015
 
 -------------
