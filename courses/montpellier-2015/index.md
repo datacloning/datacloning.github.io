@@ -23,15 +23,14 @@ In this course, we will not only demystify the statistical thinking but also, an
 
 ### Organisational structure
 
-* Format: The introduction and overview is in seminar format (1-1.5 hours), the rest of the course 
-  is in workshop format with two breaks, the third part after the second break is possibly centered 
-  around participant’s own projects.
-* Duration: 6-8 hours of instruction time with 2 x 30 minutes breaks 
-  (9:00-12:00, 12:30-15:30, 16:00-18:00)
+* Format: The introduction and overview is in seminar format (1-1.5 hours), the rest of the course is in workshop format with two breaks, the third part after the second break is possibly centered around participant’s own projects.
+* Duration: 6-8 hours of instruction time with 2 x 30 minutes breaks (9:00-12:00, 12:30-15:30, 16:00-18:00)
 * Expected number of participants: minimum 12, maximum 25.
-* Equipment necessary: Participants should bring their own laptops. 
-  Organizers should arrange for projector, electric outlets and power cords for plugging in computers. 
-  Open source and free software, and electronic course material will be provided by tutors. 
-  Internet access is necessary but tutors will provide software/code/course material on DVD or 
-  USB sticks in case of offline format.
+* Equipment necessary: Participants should bring their own laptops. Organizers should arrange for projector, electric outlets and power cords for plugging in computers. Open source and free software, and electronic course material will be provided by tutors. Internet access is necessary but tutors will provide software/code/course material on DVD or USB sticks in case of offline format.
+
+
+### Lessons
+
+* Lesson 0: [software needs and installation guide](./lesson-00.html)
+* Lesson 1: [intro](./lesson-01.html)
 
