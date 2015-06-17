@@ -5,7 +5,11 @@ layout: default
 
 ## Hierarchical models for conservation biologists made easy
 
-#### Training Course at ICCB/ECCB, Aug 1 2015, Montpellier, France
+#### Pre congress training course
+#### ICCB/ECCB, Montpellier, France
+#### Aug 1 2015
+
+-------------
 
 <strong>This training course is aimed towards the conservation professionals who need to understand and feel comfortable with modern statistical and computational tools used to address pressing conservation issues. By presenting both Bayesian and Likelihood based approaches, the participants will be able to go beyond the rhetorics of philosophy of statistics and use the tools with full understanding of their assumptions and implications.</strong>
 
