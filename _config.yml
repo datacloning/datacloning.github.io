@@ -10,7 +10,7 @@ exclude: ["README.md","LICENSE.md"]
 timezone:    America/Edmonton
 
 #highlighter: pygments
-#markdown: kramdown
+markdown: kramdown
 #kramdown:
 #  input: GFM
 
