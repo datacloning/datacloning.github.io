@@ -48,7 +48,7 @@ This is plain text.
 This text is *italics* and _italics_, while this is
 **bold** and __bold__.
 
-For superscript$^2$, use inline math, such as these: $A = \pi*r^{2}$ 
+For superscript$^2$, use inline math, such as these: $A = \pi*r^{2}$
 (written as `$A = \pi*r^{2}$`).
 
 $$ a = \sqrt{b^2 + c^2} $$
