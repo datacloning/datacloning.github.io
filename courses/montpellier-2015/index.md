@@ -36,23 +36,22 @@ In this course, we will not only demystify the statistical thinking but also, an
 
 ### Lessons
 
-* Lecture 0: [software needs and installation guide](./lecture-00.html)
-* Lecture 1: [intro](./lecture-01.html)
+* [Lecture 0](./lecture-00.html): How to prepare to make the most of the course.
+* [Lecture 1](./lecture-01.html): Intro.
 
 
+--------------------
 
-## Organisers
+
+### Contact the organizers
 
 * [Péter Sólymos](http://peter.solymos.org)
 * [Subhash R. Lele](http://www.stat.ualberta.ca/~slele/)
 
-## How to prepare to make the most of the course
+--------------------
 
-Set up your laptop: give here how and test cases
-
-## Suggested reading
+### Suggested reading
 
 Put here links to sites, documents, references.
 Create a bibtex file with refs.
-
 
