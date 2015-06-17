@@ -10,9 +10,9 @@ exclude: ["README.md","LICENSE.md"]
 timezone:    America/Edmonton
 
 #highlighter: pygments
-markdown: kramdown
-kramdown:
-  input: GFM
+markdown: redcarpet
+#kramdown:
+#  input: GFM
 
 encoding:     "utf-8"
 markdown_ext: "markdown,mkdown,mkdn,mkd,md,Rmd"
