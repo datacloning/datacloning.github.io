@@ -211,19 +211,15 @@ superscript^2^
 
 <var>y</var> = <var>m</var><var>x</var> + <var>b</var>
 
-<button type="button" class="btn btn-default"><a href="peter.solymos.org">Default button</a></button>
+<button type="button" class="btn btn-default"><a href="peter.solymos.org">Button with link</a></button>
 
-<button type="button" class="btn btn-primary btn-lg btn-block">primary</button>
-<button type="button" class="btn btn-success btn-lg btn-block"><i class="fa fa-check"></i> success</button>
-<button type="button" class="btn btn-info btn-lg btn-block"><i class="fa fa-info-circle"></i> info</button>
-<button type="button" class="btn btn-warning btn-lg btn-block"><i class="fa fa-bolt"></i> warning</button>
-<button type="button" class="btn btn-danger btn-lg btn-block"><i class="fa fa-camera-retro"></i> danger</button>
+<button type="button" class="btn btn-primary btn-lg btn-block">Block wide button</button>
 
 <p class="bg-primary">primary</p>
 <p class="bg-success">&nbsp;<i class="fa fa-check"></i>success</p>
 <p class="bg-info">&nbsp;<i class="fa fa-info-circle"></i> info</p>
-<p class="bg-warning">&nbsp;<i class="fa fa-bolt"></i> warning</p>
-<p class="bg-danger">&nbsp;<i class="fa fa-camera-retro"></i> danger</p>
+<p class="bg-warning">&nbsp;<i class="fa fa-warning"></i> warning</p>
+<p class="bg-danger">&nbsp;<i class="fa fa-bolt"></i> danger</p>
 
 > ### Why use Make if it is almost 40 years old?
 >
