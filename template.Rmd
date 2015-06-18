@@ -4,7 +4,7 @@ output: html_document
 layout: default
 ---
 
-# Always start with a header
+## Always start with a header
 
 This `Rmd` file demonstrates how we intend to host text/math/code
 on the website. We have 3 aims:
@@ -22,7 +22,7 @@ on the website. We have 3 aims:
 2. We can delop text/code/math without polluting our workspace
   with ugly html stuff.
 
-# Workflow
+## Workflow
 
 1. Create a new `Rmd` ([R Markdown](http://rmarkdown.rstudio.com))file.
 2. Use the source of this file (`test.Rmd`) as template,
@@ -41,7 +41,7 @@ on the website. We have 3 aims:
   through GitHub. Any changes should be visible on the website
   almost instantly (might have to refresh the browser).
 
-# Showcase
+## Showcase
 
 This is plain text.
 
@@ -186,8 +186,58 @@ superscript^2^
 
 ~~~strikeout~~~
 
+
 * [X] done
 * [ ] to do.
 
 - [X] done
 - [ ] to do.
+
+## Bootstrap tags
+
+<del>This line of text is meant to be treated as deleted text.</del>
+
+<s>This line of text is meant to be treated as no longer accurate.</s>
+
+<ins>This line of text is meant to be treated as an addition to the document.</ins>
+
+<u>This line of text will render as underlined</u>
+
+<abbr title="attribute">attr</abbr>
+
+<p class="text-lowercase">Lowercased text.</p>
+<p class="text-uppercase">Uppercased text.</p>
+<p class="text-capitalize">Capitalized text.</p>
+
+<var>y</var> = <var>m</var><var>x</var> + <var>b</var>
+
+<button type="button" class="btn btn-primary">Default button</button>
+
+<p class="bg-primary">...</p>
+<p class="bg-success">...</p>
+<p class="bg-info">...</p>
+<p class="bg-warning">...</p>
+<p class="bg-danger">...</p>
+
+## Experiment with SC-like blocks
+
+~~~ {.output}
+the 3822 6.7371760973
+of 2460 4.33632998414
+and 1723 3.03719372466
+to 1479 2.60708619778
+a 1308 2.30565838181
+~~~
+
+> ## Why use Make if it is almost 40 years old? {.callout}
+>
+> Today, researchers working with legacy codes in C or FORTRAN, which
+> are very common in high-performance computing, will, very likely
+> encounter Make. 
+>
+> Researchers are also finding Make of use in implementing
+> reproducible research workflows, automating data analysis and
+> visualisation (using Python or R) and combining tables and plots
+> with text to produce reports and papers for publication.
+>
+> Make's fundamental concepts are common across build tools.
