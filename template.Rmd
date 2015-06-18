@@ -53,7 +53,9 @@ For superscript$^2$, use inline math, such as these: $A = \pi*r^{2}$
 
 $$ a = \sqrt{b^2 + c^2} $$
 
-Test if single cash works: $a^2 = \sum{z}$.
+Test if single dollar sign works: $a^2 = \sum{z}$.\\
+Forced new line.
+
 This [link](http://peter.solymos.org) takes you to a site.
 
 # Header 1
@@ -114,4 +116,41 @@ paste("Hello", "World!")
 
 Place code inline with a single back ticks, like
 this `paste("Hello", "World!")`.
+
+Few more code blocks:
+
+```
+lapply <-
+function (X, FUN, ...) 
+{
+    FUN <- match.fun(FUN)
+    if (!is.vector(X) || is.object(X)) 
+        X <- as.list(X)
+    .Internal(lapply(X, FUN))
+}
+``` 
+and
+
+```R
+lapply <-
+function (X, FUN, ...) 
+{
+    FUN <- match.fun(FUN)
+    if (!is.vector(X) || is.object(X)) 
+        X <- as.list(X)
+    .Internal(lapply(X, FUN))
+}
+``` 
+and
+
+```{r}
+lapply <-
+function (X, FUN, ...) 
+{
+    FUN <- match.fun(FUN)
+    if (!is.vector(X) || is.object(X)) 
+        X <- as.list(X)
+    .Internal(lapply(X, FUN))
+}
+``` 
 
