@@ -7,7 +7,7 @@ layout: default
 
 ### Upcoming courses
 
-* [Aug 1 2015, Montpellier, France](./montpellier-2015/)
+* [Aug 1 2015, Montpellier, France](./2015/montpellier/)
 
 ### Past courses
 
