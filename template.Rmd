@@ -211,10 +211,6 @@ superscript^2^
 
 <var>y</var> = <var>m</var><var>x</var> + <var>b</var>
 
-<button type="button" class="btn btn-default"><a href="peter.solymos.org">Button with link</a></button>
-
-<button type="button" class="btn btn-primary btn-lg btn-block">Block wide button</button>
-
 <p class="bg-primary">primary</p>
 <p class="bg-success">&nbsp;<i class="fa fa-check"></i>success</p>
 <p class="bg-info">&nbsp;<i class="fa fa-info-circle"></i> info</p>
@@ -233,3 +229,10 @@ superscript^2^
 > with text to produce reports and papers for publication.
 >
 > Make's fundamental concepts are common across build tools.
+
+<p class="bg-warning">
+> ### Does this work?
+>
+> We will see.
+</p>
+
