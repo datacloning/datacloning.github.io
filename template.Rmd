@@ -180,7 +180,7 @@ function (X, FUN, ...)
 }
 {% endhighlight %}
 
-GFM options:
+### GFM options (that don't work, but left here for testing anyway):
 
 superscript^2^
 
@@ -224,4 +224,13 @@ These backgrounds can be used to highlight topics
 > Why not! 
 >
 > That is the whole point!
+
+## Experiments with FTP access & links
+
+This is a a map
+
+![](ftp://web|anonymous:anonymous@ftp.public.abmi.ca/species.abmi.ca/climate/map/MAT.png)
+
+And this is a link to dowload the [raster file](ftp://web|anonymous:anonymous@ftp.public.abmi.ca/species.abmi.ca/climate/raster/MAT.png).
+
 
