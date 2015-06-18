@@ -3,8 +3,6 @@ title: "Training courses"
 layout: default
 ---
 
-## Training courses
-
 ### Upcoming courses
 
 * [Aug 1 2015, Montpellier, France](./2015/montpellier/)

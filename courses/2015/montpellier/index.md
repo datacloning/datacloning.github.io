@@ -3,8 +3,6 @@ title: 'Hierarchical models for conservation biologists made easy'
 layout: default
 ---
 
-## Hierarchical models for conservation biologists made easy
-
 #### Pre congress training course
 
 #### ICCB/ECCB, Montpellier, France
@@ -40,7 +38,7 @@ In this course, we will not only demystify the statistical thinking but also, an
 
 -------------------
 
-### Lessons
+### Lectures
 
 * [Lecture 0](./lecture-00.html): How to prepare to make the most of the course.
 * [Lecture 1](./lecture-01.html): Intro.

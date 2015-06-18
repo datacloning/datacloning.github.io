@@ -1,12 +1,11 @@
 ---
-title: "Hierarchical Models Made Easy -- Lecture 1"
+title: "Hierarchical Models Made Easy"
+subtitle: "Introduction"
 date: "August 1, 2015 -- Montpellier, France"
 author: "Peter Solymos & Subhash Lele"
 output: html_document
 layout: default
 ---
-
-# Introduction
 
 Science, as we envision it, is an interplay between inductive and deductive processes. Francis Bacon, the father of what is known as the scientific method, emphasizes the roles of observations, alternative explanations and tests to choose among various explanations. Bacon saw science as inductive process, moving from the particular to the general (Susser, 1986). Popper (1959) proposed the doctrine of falsification, which defines what is acceptable as a scientific hypothesis: if a statement cannot be falsified, then it is not a scientific hypothesis. This is intrinsically a deductive process. What is common to these different views is that theories need to be probed to assess their correctness. Observations play an important role in such probing. 
 
