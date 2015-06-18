@@ -10,12 +10,16 @@ exclude: ["README.md","LICENSE.md"]
 timezone:    America/Edmonton
 
 highlighter: pygments
+#highlighter: null
 #highlighter: rouge
-markdown: kramdown
-kramdown:
-  input:          GFM
-  hard_wrap:      false
+
+#markdown: kramdown
+#kramdown:
+#  input:          GFM
+#  hard_wrap:      false
 
 markdown_ext: "markdown,mkdown,mkdn,mkd,md,Rmd"
 
-
+markdown: redcarpet2
+redcarpet:
+  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
