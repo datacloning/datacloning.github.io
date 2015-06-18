@@ -195,21 +195,22 @@ superscript^2^
 
 ## Bootstrap tags
 
-<del>This line of text is meant to be treated as deleted text.</del>
+These tags can be used to track changes in cods:
 
-<s>This line of text is meant to be treated as no longer accurate.</s>
+* <del>This line of text is meant to be treated as deleted text.</del>
+* <s>This line of text is meant to be treated as no longer accurate.</s>
+* <ins>This line of text is meant to be treated as an addition to the document.</ins>
+* <u>This line of text will render as underlined</u>
 
-<ins>This line of text is meant to be treated as an addition to the document.</ins>
+Other cool features
 
-<u>This line of text will render as underlined</u>
+* <abbr title="attribute">attr</abbr>
+* <p class="text-lowercase">Lowercased text.</p>
+* <p class="text-uppercase">Uppercased text.</p>
+* <p class="text-capitalize">Capitalized text.</p>
+* <var>y</var> = <var>m</var><var>x</var> + <var>b</var>
 
-<abbr title="attribute">attr</abbr>
-
-<p class="text-lowercase">Lowercased text.</p>
-<p class="text-uppercase">Uppercased text.</p>
-<p class="text-capitalize">Capitalized text.</p>
-
-<var>y</var> = <var>m</var><var>x</var> + <var>b</var>
+These backgrounds can be used to highlight topics either on their own:
 
 <p class="bg-primary">primary</p>
 <p class="bg-success">&nbsp;<i class="fa fa-check"></i>success</p>
@@ -217,22 +218,17 @@ superscript^2^
 <p class="bg-warning">&nbsp;<i class="fa fa-warning"></i> warning</p>
 <p class="bg-danger">&nbsp;<i class="fa fa-bolt"></i> danger</p>
 
-> ### Why use Make if it is almost 40 years old?
->
-> Today, researchers working with legacy codes in C or FORTRAN, which
-> are very common in high-performance computing, will, very likely
-> encounter Make. 
->
-> Researchers are also finding Make of use in implementing
-> reproducible research workflows, automating data analysis and
-> visualisation (using Python or R) and combining tables and plots
-> with text to produce reports and papers for publication.
->
-> Make's fundamental concepts are common across build tools.
+Or as a text block:
 
-<p class="bg-warning">
-> ### Does this work?
->
-> We will see.
+<p class="bg-danger">
+### &nbsp;<i class="fa fa-bolt"></i> really bad idea
+
+to do something like this.
 </p>
+
+> ### Use headings in quote block?
+>
+> Why not! 
+>
+> That is the whole point!
 
