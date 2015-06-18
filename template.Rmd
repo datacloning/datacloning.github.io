@@ -231,6 +231,6 @@ This is a a map
 
 <img src="ftp://web|anonymous:anonymous@ftp.public.abmi.ca/species.abmi.ca/climate/map/MAT.png">
 
-<p>And this is a link to dowload the <a href="ftp://web|anonymous:anonymous@ftp.public.abmi.ca/species.abmi.ca/climate/raster/MAT.asc">raster file</a>.</p>
+<p>And this is a link to dowload the <a href="ftp://web|anonymous:anonymous@ftp.public.abmi.ca/species.abmi.ca/climate/raster/MAT.zip">zipped raster file</a>.</p>
 
 
