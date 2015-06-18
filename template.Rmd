@@ -213,23 +213,13 @@ superscript^2^
 
 <button type="button" class="btn btn-primary">Default button</button>
 
-<p class="bg-primary">...</p>
-<p class="bg-success">...</p>
-<p class="bg-info">...</p>
-<p class="bg-warning">...</p>
-<p class="bg-danger">...</p>
+<p class="bg-primary">primary</p>
+<p class="bg-success"><i class="fa fa-check"></i> success</p>
+<p class="bg-info"><i class="fa fa-info-circle"></i> info</p>
+<p class="bg-warning"><i class="fa fa-bolt"></i> warning</p>
+<p class="bg-danger"><i class="fa fa-camera-retro"></i> danger</p>
 
-## Experiment with SC-like blocks
-
-~~~ {.output}
-the 3822 6.7371760973
-of 2460 4.33632998414
-and 1723 3.03719372466
-to 1479 2.60708619778
-a 1308 2.30565838181
-~~~
-
-> ## Why use Make if it is almost 40 years old? {.callout}
+> ### Why use Make if it is almost 40 years old?
 >
 > Today, researchers working with legacy codes in C or FORTRAN, which
 > are very common in high-performance computing, will, very likely
