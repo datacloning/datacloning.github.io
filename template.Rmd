@@ -143,6 +143,19 @@ function (X, FUN, ...)
 ``` 
 and
 
+``` R
+lapply <-
+function (X, FUN, ...) 
+{
+    FUN <- match.fun(FUN)
+    if (!is.vector(X) || is.object(X)) 
+        X <- as.list(X)
+    .Internal(lapply(X, FUN))
+}
+``` 
+
+and
+
 ```{r}
 lapply <-
 function (X, FUN, ...) 
@@ -167,3 +180,14 @@ function (X, FUN, ...)
 }
 {% endhighlight %}
 
+GFM options:
+
+superscript^2^
+
+~~~strikeout~~~
+
+* [X] done
+* [ ] to do.
+
+- [X] done
+- [ ] to do.
