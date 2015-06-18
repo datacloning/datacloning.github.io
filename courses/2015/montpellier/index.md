@@ -40,8 +40,8 @@ In this course, we will not only demystify the statistical thinking but also, an
 
 ### Lectures
 
-* [Lecture 0](./lecture-00.html): How to prepare to make the most of the course.
-* [Lecture 1](./lecture-01.html): Intro.
+* [Lecture 0](./00-lecture.html): How to prepare to make the most of the course.
+* [Lecture 1](./01-intro.html): Intro.
 
 
 --------------------
