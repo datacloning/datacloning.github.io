@@ -154,3 +154,16 @@ function (X, FUN, ...)
 }
 ``` 
 
+and
+
+{% highlight R startinline %}
+lapply <-
+function (X, FUN, ...) 
+{
+    FUN <- match.fun(FUN)
+    if (!is.vector(X) || is.object(X)) 
+        X <- as.list(X)
+    .Internal(lapply(X, FUN))
+}
+{% endhighlight %}
+
