@@ -210,7 +210,7 @@ Other cool features
 * <p class="text-capitalize">Capitalized text.</p>
 * <var>y</var> = <var>m</var><var>x</var> + <var>b</var>
 
-These backgrounds can be used to highlight topics either on their own:
+These backgrounds can be used to highlight topics
 
 <p class="bg-primary">primary</p>
 <p class="bg-success">&nbsp;<i class="fa fa-check"></i>success</p>
@@ -218,13 +218,6 @@ These backgrounds can be used to highlight topics either on their own:
 <p class="bg-warning">&nbsp;<i class="fa fa-warning"></i> warning</p>
 <p class="bg-danger">&nbsp;<i class="fa fa-bolt"></i> danger</p>
 
-Or as a text block:
-
-<p class="bg-danger">
-### &nbsp;<i class="fa fa-bolt"></i> really bad idea
-
-to do something like this.
-</p>
 
 > ### Use headings in quote block?
 >
