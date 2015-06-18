@@ -229,8 +229,8 @@ These backgrounds can be used to highlight topics
 
 This is a a map
 
-![](ftp://web|anonymous:anonymous@ftp.public.abmi.ca/species.abmi.ca/climate/map/MAT.png)
+<img src="ftp://web|anonymous:anonymous@ftp.public.abmi.ca/species.abmi.ca/climate/map/MAT.png">
 
-And this is a link to dowload the [raster file](ftp://web|anonymous:anonymous@ftp.public.abmi.ca/species.abmi.ca/climate/raster/MAT.png).
+<p>And this is a link to dowload the <a href="ftp://web|anonymous:anonymous@ftp.public.abmi.ca/species.abmi.ca/climate/raster/MAT.png">raster file</a>.</p>
 
 
