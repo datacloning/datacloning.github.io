@@ -1,11 +1,9 @@
 ---
+title: "Search"
 layout: default
 ---
 
-# Search
-
 Use Google custom search to look for results within our subdomain:
-
 
 <script>
 (function() {
@@ -20,4 +18,3 @@ s.parentNode.insertBefore(gcse, s);
 })();
 </script>
 <gcse:search></gcse:search>
-
