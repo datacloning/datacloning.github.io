@@ -9,10 +9,13 @@ include: [".htaccess"]
 exclude: ["README.md","LICENSE.md"]
 timezone:    America/Edmonton
 
-#highlighter: pygments
-markdown: redcarpet
-#kramdown:
-#  input: GFM
+highlighter: pygments
+#highlighter: rouge
+markdown: kramdown
+kramdown:
+  input:          GFM
+  hard_wrap:      false
 
-encoding:     "utf-8"
 markdown_ext: "markdown,mkdown,mkdn,mkd,md,Rmd"
+
+
