@@ -278,3 +278,46 @@ This is a a map
 
 <a id="footnote-1">1.</a> Footnote 1.
 
+## Bootswatch
+
+<ul class="pager">
+  <li><a href="#">Previous</a></li>
+  <li><a href="#">Next</a></li>
+</ul>
+
+<ul class="pagination">
+  <li class="disabled"><a href="#">«</a></li>
+  <li class="active"><a href="#">1</a></li>
+  <li><a href="#">2</a></li>
+  <li><a href="#">3</a></li>
+  <li><a href="#">4</a></li>
+  <li><a href="#">5</a></li>
+  <li><a href="#">>></a></li>
+</ul>
+
+<div class="alert alert-dismissible alert-warning">
+<button type="button" class="close" data-dismiss="alert"><i class="fa fa-close"></i></button>
+#### Warning!
+
+Best check yo self, you're not looking too good. Nulla vitae elit libero, a pharetra augue. 
+</div>
+
+<div class="jumbotron">
+# Jumbotron
+
+This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.
+<p><a class="btn btn-primary btn-lg">Learn more</a></p>
+</div>
+
+<div class="panel panel-success">
+<div class="panel-heading">
+### &nbsp;<i class="fa fa-check-square-o"></i> Panel primary
+</div>
+<div class="panel-body">
+Panel content
+</div>
+</div>
+
+<div class="well">
+  Look, I'm in a well!
+</div>
