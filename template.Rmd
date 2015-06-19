@@ -49,7 +49,8 @@ on the website. We have 3 aims:
 
 ## Showcase
 
-This is plain text. This is footnote<sup><a href="#footnote-1"></a>1</sup>
+This is plain text. This is footnote<sup><a href="#footnote-1">1</a></sup> and
+this is reference <a href="#Smith2000">Smith 2000</a>.
 
 This text is *italics* and _italics_, while this is
 **bold** and __bold__.
@@ -258,5 +259,10 @@ This is a a map
 <img src="ftp://web|anonymous:anonymous@ftp.public.abmi.ca/species.abmi.ca/climate/map/MAT.png">
 
 <p>And this is a link to dowload the <a href="ftp://web|anonymous:anonymous@ftp.public.abmi.ca/species.abmi.ca/climate/raster/MAT.zip">zipped raster file</a>.</p>
+
+
+## References
+
+<a id="Smith2000"></a>Smith 2000. The best paper ever. *Journal*, 1-2.
 
 <a id="footnote-1">1.</a> Footnote 1.
