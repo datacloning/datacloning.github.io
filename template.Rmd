@@ -212,8 +212,8 @@ Other cool features
 
 These backgrounds can be used to highlight topics
 
-<p class="bg-primary">primary</p>
-<p class="bg-success">&nbsp;<i class="fa fa-check"></i>success</p>
+<p class="bg-primary">&nbsp;<i class="fa fa-pencil"></i> primary</p>
+<p class="bg-success">&nbsp;<i class="fa fa-check-square-o"></i> success</p>
 <p class="bg-info">&nbsp;<i class="fa fa-info-circle"></i> info</p>
 <p class="bg-warning">&nbsp;<i class="fa fa-warning"></i> warning</p>
 <p class="bg-danger">&nbsp;<i class="fa fa-bolt"></i> danger</p>
