@@ -52,7 +52,7 @@ on the website. We have 3 aims:
 This is plain text. This is footnote<sup><a href="#footnote-1">1</a></sup> and
 this is reference <a href="#Smith2000">Smith 2000</a>. References can be
 treated as abbreviations, but that is not too $\LaTeX$ friendly, like
-<abbr title="Smith 2000. The best paper ever. *Journal*, 1-2.">Smith 2000</abbr>
+<abbr title="Smith 2000. The best paper ever. Journal, 1-2.">Smith 2000</abbr>
 
 This text is *italics* and _italics_, while this is
 **bold** and __bold__.
