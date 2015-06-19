@@ -8,6 +8,7 @@ include: [".htaccess"]
 exclude: ["README.md","LICENSE.md"]
 timezone:    America/Edmonton
 
+encoding: UTF-8
 markdown: kramdown
 kramdown:
   input:          GFM
