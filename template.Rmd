@@ -286,13 +286,13 @@ This is a a map
 </ul>
 
 <ul class="pagination">
-  <li class="disabled"><a href="#">«</a></li>
+  <li class="disabled"><a href="#"><i class="fa fa-backward"></i></a></li>
   <li class="active"><a href="#">1</a></li>
   <li><a href="#">2</a></li>
   <li><a href="#">3</a></li>
   <li><a href="#">4</a></li>
   <li><a href="#">5</a></li>
-  <li><a href="#">>></a></li>
+  <li><a href="#"><i class="fa fa-forward"></i></a></li>
 </ul>
 
 <div class="alert alert-dismissible alert-warning">
