@@ -4,7 +4,13 @@ output: html_document
 layout: default
 ---
 
-## Always start with a header
+## Table of Contents
+
+* [Chapter 1](#chapter-1)
+* [Chapter 2](#chapter-2)
+* [Chapter 3](#chapter-3)
+
+## Always start with a header <a id="chapter-1"></a>
 
 This `Rmd` file demonstrates how we intend to host text/math/code
 on the website. We have 3 aims:
@@ -22,7 +28,7 @@ on the website. We have 3 aims:
 2. We can delop text/code/math without polluting our workspace
   with ugly html stuff.
 
-## Workflow
+## Workflow <a id="chapter-2"></a>
 
 1. Create a new `Rmd` ([R Markdown](http://rmarkdown.rstudio.com))file.
 2. Use the source of this file (`test.Rmd`) as template,
@@ -41,7 +47,7 @@ on the website. We have 3 aims:
   through GitHub. Any changes should be visible on the website
   almost instantly (might have to refresh the browser).
 
-## Showcase
+## Showcase <a id="chapter-3"></a>
 
 This is plain text.
 
@@ -76,7 +82,7 @@ emdash: ---
 
 ellipsis: ...
 
-image: ![](favicon.ico)
+image: ![Alt text](favicon.ico)
 
 horizontal rule (or slide break):
 
@@ -84,6 +90,8 @@ horizontal rule (or slide break):
 
 > block quote:
 > Someone once said this
+>> Nested block
+>>> Nested even more.
 
 ## Lists
 
@@ -103,6 +111,15 @@ Table Header | Second Header
 ------------- | -------------
 Table Cell | Cell 2
 Cell 3 | Cell 4 
+
+
+Another table:
+
+| Option | Description |
+| ------:| -----------:|
+| data   | path to data files to supply the data that will be passed into templates. |
+| engine | engine to be used for processing templates. Handlebars is the default. |
+| ext    | extension to be used for dest files. |
 
 ## Code blocks
 
@@ -211,6 +228,8 @@ Other cool features
 * <var>y</var> = <var>m</var><var>x</var> + <var>b</var>
 
 These backgrounds can be used to highlight topics
+
+<p class="bg-primary">&nbsp;<i class="fa fa-pencil"></i> primary</p>
 
 <p class="bg-primary">&nbsp;<i class="fa fa-pencil"></i> primary</p>
 <p class="bg-success">&nbsp;<i class="fa fa-check-square-o"></i> success</p>
