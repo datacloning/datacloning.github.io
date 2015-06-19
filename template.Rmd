@@ -6,11 +6,11 @@ layout: default
 
 ## Table of Contents
 
-* [Chapter 1](#chapter-1)
-* [Chapter 2](#chapter-2)
-* [Chapter 3](#chapter-3)
+* [Always start with a header](#always-start-with-a-header)
+* [Workflow](#workflow)
+* [Showcase](#showcase)
 
-## Always start with a header <a id="chapter-1"></a>
+## Always start with a header
 
 This `Rmd` file demonstrates how we intend to host text/math/code
 on the website. We have 3 aims:
@@ -28,7 +28,7 @@ on the website. We have 3 aims:
 2. We can delop text/code/math without polluting our workspace
   with ugly html stuff.
 
-## Workflow <a id="chapter-2"></a>
+## Workflow
 
 1. Create a new `Rmd` ([R Markdown](http://rmarkdown.rstudio.com))file.
 2. Use the source of this file (`test.Rmd`) as template,
@@ -47,7 +47,7 @@ on the website. We have 3 aims:
   through GitHub. Any changes should be visible on the website
   almost instantly (might have to refresh the browser).
 
-## Showcase <a id="chapter-3"></a>
+## Showcase
 
 This is plain text.
 
