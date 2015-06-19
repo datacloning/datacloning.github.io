@@ -12,16 +12,16 @@ template: inverse
 ## How does it work, then?
 ---
 layout: false
-# Enyime
+# 1st slide
+
+> Blockquote
+> works nicely.
 
 ---
 
 # Agenda
 
 1. Introduction
-
-> Blockquote
-> he-he.
 
 --
 2. Deep-dive
@@ -31,7 +31,7 @@ layout: false
 .left-column[
   ## What is it?
   ## Why use it?
-  ## Mikor???
+  ## When???
 ]
 .right-column[
 If your ideal slideshow creation workflow contains any of the following steps:
@@ -62,9 +62,9 @@ f <- a
 <p>$$x_i = \pi r_{i}^{\Lambda}$$</p>
 <p>\[x_i = \pi r_{i}^{\Lambda}\]</p>
 
-Inline math is \(x_i = \sqrt{\frac{a}{c}} \), or eq:
-$$x_i = \pi r_{i}^{\Lambda}$$
-\[x_i = \pi r_{i}^{\Lambda}\]
+Inline math is `$x_i = \sqrt{\frac{a}{c}} $`, or eq:
+`$$x_i = \pi r_{i}^{\Lambda}$$`
+`$$x_i = \pi r_{i}^{\Lambda}$$`
 
 .footnote[.red.bold[*] Important footnote]
 ---
