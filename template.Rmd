@@ -4,11 +4,11 @@ output: pdf_document
 layout: default
 ---
 
-## Table of Contents
-
-* [Always start with a header](#always-start-with-a-header)
-* [Workflow](#workflow)
-* [Showcase](#showcase)
+>## Table of Contents
+>
+>* [Always start with a header](#always-start-with-a-header)
+>* [Workflow](#workflow)
+>* [Showcase](#showcase)
 
 ## Always start with a header
 
