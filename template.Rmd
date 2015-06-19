@@ -244,6 +244,13 @@ These backgrounds can be used to highlight topics
 >
 > That is the whole point!
 
+Also: 
+
+> #### &nbsp;<i class="fa fa-warning"></i> Warning
+>
+> This is a warning.
+
+
 ## Experiments with FTP access & links
 
 This is a a map
