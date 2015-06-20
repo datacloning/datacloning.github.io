@@ -228,10 +228,44 @@ superscript^2^
 - [X] done
 - [ ] to do.
 
-> block quote:
-> Someone once said this
-> > Nested block
-> > > Nested even more.
+> This is a paragraph.
+>
+> > A nested blockquote.
+>
+> ## Headers work
+>
+> * lists too
+>
+> and all other block-level elements
+
+
+$$
+\begin{align*}
+  & \phi(x,y) = \phi \left(\sum_{i=1}^n x_ie_i, \sum_{j=1}^n y_je_j \right)
+  = \sum_{i=1}^n \sum_{j=1}^n x_i y_j \phi(e_i, e_j) = \\
+  & (x_1, \ldots, x_n) \left( \begin{array}{ccc}
+      \phi(e_1, e_1) & \cdots & \phi(e_1, e_n) \\
+      \vdots & \ddots & \vdots \\
+      \phi(e_n, e_1) & \cdots & \phi(e_n, e_n)
+    \end{array} \right)
+  \left( \begin{array}{c}
+      y_1 \\
+      \vdots \\
+      y_n
+    \end{array} \right)
+\end{align*}
+$$
+
+This is a ***text with light and strong emphasis***.
+This **is _emphasized_ as well**.
+This *does _not_ work*.
+This **does __not__ work either**.
+
+This is a R code fragment `x = 1 + c(a, 2)`{:.language-R}
+
+This *is*{:.underline} some `code`{:#id}{:.class}.
+A [link](test.html){:rel='something'} and some **tools**{:.tools}.
+
 
 ## Bootstrap tags
 
@@ -326,6 +360,17 @@ Best check yo self, you're not looking too good. Nulla vitae elit libero, a phar
 
 This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.
 <p><a class="btn btn-primary btn-lg">Learn more</a></p>
+</div>
+
+<div class="panel panel-success">
+<div class="panel-heading">
+<i class="fa fa-check-square-o"></i> Panel primary
+</div>
+<div class="panel-body">
+Panel content
+<pre><code class="language-R">paste("Hello", "World!")
+</code></pre>
+</div>
 </div>
 
 <div class="panel panel-success">
