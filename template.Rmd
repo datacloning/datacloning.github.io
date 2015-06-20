@@ -311,10 +311,13 @@ This is a simple hero unit, a simple jumbotron-style component for calling extra
 
 <div class="panel panel-success">
 <div class="panel-heading">
-### &nbsp;<i class="fa fa-check-square-o"></i> Panel primary
+<i class="fa fa-check-square-o"></i> Panel primary
 </div>
 <div class="panel-body">
 Panel content
+```
+# code I guess not
+```
 </div>
 </div>
 
