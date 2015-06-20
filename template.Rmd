@@ -215,6 +215,13 @@ function (X, FUN, ...)
 }
 {% endhighlight %}
 
+<pre style=""><code class="source r">#for the dataset
+data('mtcars')
+mcor <-cor(mtcars)
+# Print mcor and round to 2 digits
+round(mcor,digits=2)
+</code></pre>
+
 ### GFM options (that don't work, but left here for testing anyway):
 
 superscript^2^
