@@ -315,11 +315,8 @@ This is a simple hero unit, a simple jumbotron-style component for calling extra
 </div>
 <div class="panel-body">
 Panel content
-```
-<pre><code class="language-R">
-paste("Hello", "World!")
+<pre><code class="language-R">paste("Hello", "World!")
 </code></pre>
-```
 </div>
 </div>
 
