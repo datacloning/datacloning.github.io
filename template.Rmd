@@ -276,6 +276,7 @@ These tags can be used to track changes in code:
 * <ins>This line of text is meant to be treated as an addition to the document.</ins>
 * <u>This line of text will render as underlined</u>
 
+
 Other cool features
 
 * <abbr title="attribute">attr</abbr>
@@ -330,6 +331,8 @@ This is a a map
 <a id="Smith2000"></a>Smith 2000. The best paper ever. *Journal*, 1-2.
 
 <a id="footnote-1">1.</a> Footnote 1.
+
+Kramdown syntax guide: http://kramdown.gettalong.org/syntax.html
 
 ## Bootswatch
 
