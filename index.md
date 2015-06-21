@@ -60,18 +60,25 @@ Markov-chain Monte Carlo (MCMC) methods.</p>
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
+
 <h2 title="news">News</h2>
 
         </div>
-        <div class="col-md-8 col-md-offset-1"> 
+        <div class="col-md-10 col-md-offset-1">
 
-{% for post in site.posts limit:5 %}
-<blockquote>
-<h3><a href="{{ site.url }}{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a></h3>
-<p><small>{{ post.date | date: "%Y-%m-%d" }}</small></p>
-<p>{{ post.content | strip_html | strip_newlines | truncate: 360 }}</p>
-</blockquote>
-{% endfor %}
+<div class="well">
+<h3><a href="url_jon_ide" title="title_jon_ide">News title</a></h3>
+<p><small>2015&ndash;06&ndash;20</small></p>
+<p>News contant comes here.</p>
+<p><a class="btn btn-primary">Learn more</a></p>
+</div>
+
+<div class="well">
+<h3><a href="url_jon_ide" title="title_jon_ide">News title</a></h3>
+<p><small>2015&ndash;06&ndash;20</small></p>
+<p>News contant comes here.</p>
+<p><a class="btn btn-primary">Learn more</a></p>
+</div>
 
         </div>
     </div>
