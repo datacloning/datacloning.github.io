@@ -15,5 +15,9 @@ kramdown:
   hard_wrap:      false
 markdown_ext: "markdown,mkdown,mkdn,mkd,md,Rmd"
 
+# Bootswatch theme
 theme: flatly
+# fancy fonts on/off
 fancy: true
+# navbar style: inverse, transparent
+navbar: inverse

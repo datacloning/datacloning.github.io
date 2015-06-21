@@ -4,6 +4,7 @@ output: html_document
 layout: default
 fancy: false
 theme: paper
+navbar: transparent
 ---
 
 >## Table of Contents
