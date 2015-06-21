@@ -154,6 +154,8 @@ this `paste("Hello", "World!")`.
 
 Few more code blocks:
 
+ver 1
+
 ```
 lapply <-
 function (X, FUN, ...) 
@@ -163,8 +165,11 @@ function (X, FUN, ...)
         X <- as.list(X)
     .Internal(lapply(X, FUN))
 }
+a <- c(1,2,3) # x y z
+b <- c(TRUE, FALSE)
+## k c z
 ``` 
-and
+ver 2
 
 ```R
 lapply <-
@@ -175,8 +180,11 @@ function (X, FUN, ...)
         X <- as.list(X)
     .Internal(lapply(X, FUN))
 }
+a <- c(1,2,3) # x y z
+b <- c(TRUE, FALSE)
+## k c z
 ``` 
-and
+ver 3
 
 ``` R
 lapply <-
@@ -187,9 +195,12 @@ function (X, FUN, ...)
         X <- as.list(X)
     .Internal(lapply(X, FUN))
 }
+a <- c(1,2,3) # x y z
+b <- c(TRUE, FALSE)
+## k c z
 ``` 
 
-and
+ver 4
 
 ```{r}
 lapply <-
@@ -200,9 +211,12 @@ function (X, FUN, ...)
         X <- as.list(X)
     .Internal(lapply(X, FUN))
 }
+a <- c(1,2,3) # x y z
+b <- c(TRUE, FALSE)
+## k c z
 ``` 
 
-and
+ver 5
 
 {% highlight R startinline %}
 lapply <-
@@ -213,7 +227,12 @@ function (X, FUN, ...)
         X <- as.list(X)
     .Internal(lapply(X, FUN))
 }
+a <- c(1,2,3) # x y z
+b <- c(TRUE, FALSE)
+## k c z
 {% endhighlight %}
+
+ver 6
 
 <pre style=""><code class="source r">#for the dataset
 data('mtcars')
@@ -221,6 +240,8 @@ mcor <-cor(mtcars)
 # Print mcor and round to 2 digits
 round(mcor,digits=2)
 </code></pre>
+
+ver 7
 
 <pre style=""><code class="source r">lapply <-
 function (X, FUN, ...) 
@@ -230,6 +251,9 @@ function (X, FUN, ...)
         X <- as.list(X)
     .Internal(lapply(X, FUN))
 }
+a <- c(1,2,3) # x y z
+b <- c(TRUE, FALSE)
+## k c z
 </code></pre> 
 
 ### GFM options (that don't work, but left here for testing anyway):
