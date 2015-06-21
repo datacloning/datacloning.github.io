@@ -14,3 +14,6 @@ kramdown:
   input:          GFM
   hard_wrap:      false
 markdown_ext: "markdown,mkdown,mkdn,mkd,md,Rmd"
+
+theme: flatly
+fancy: true
