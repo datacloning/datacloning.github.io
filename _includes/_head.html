@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <title>{% if page.title %}{{ page.title | strip_html }} &#8211; {% endif %}{{ site.title }}</title>
-{% capture fancy %}{% if page.fancy %}{{ page.fancy }}{% else %}{{ site.title }}{% endif %}{% endcapture %}
+{% capture fancy %}{% if page.fancy %}{{ page.fancy }}{% else %}{{ site.fancy }}{% endif %}{% endcapture %}
 {% capture theme %}{% if page.theme %}{{ page.theme }}{% else %}{{ site.theme }}{% endif %}{% endcapture %}
 <meta name="description" content="{{ page.description }}">
 <meta name="keywords" content="{{ page.tags | join: ', ' }}">

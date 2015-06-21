@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>{% if page.title %}{{ page.title | strip_html }} &#8211; {% endif %}{{ site.title }}</title>
-{% capture fancy %}{% if page.fancy %}{{ page.fancy }}{% else %}{{ site.title }}{% endif %}{% endcapture %}
+{% capture fancy %}{% if page.fancy %}{{ page.fancy }}{% else %}{{ site.fancy }}{% endif %}{% endcapture %}
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <link rel="stylesheet" href="{{ site.baseurl }}/assets/remark.css" media="screen">
 <style type="text/css">

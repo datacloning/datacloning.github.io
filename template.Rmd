@@ -3,6 +3,7 @@ title: "Testing the features"
 output: html_document
 layout: default
 fancy: false
+theme: paper
 ---
 
 >## Table of Contents
