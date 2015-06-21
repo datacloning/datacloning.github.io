@@ -205,7 +205,7 @@ k <- c("a", "b")
 
 ver 4
 
-```{r}
+```r
 lapply <-
 function (X, FUN, ...) 
 {
