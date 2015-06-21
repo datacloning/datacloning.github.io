@@ -16,4 +16,4 @@ kramdown:
 markdown_ext: "markdown,mkdown,mkdn,mkd,md,Rmd"
 
 theme: flatly
-fancy: true
+fancy: false
