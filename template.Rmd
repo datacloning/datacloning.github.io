@@ -152,9 +152,9 @@ paste("Hello", "World!")
 Place code inline with a single back ticks, like
 this `paste("Hello", "World!")`.
 
-#### Few more code blocks
+### Few more code blocks
 
-##### using ````highlight`
+Using `highlight`:
 
 ```nohighlight
 lapply <-
@@ -171,7 +171,7 @@ b <- c(TRUE, FALSE)
 k <- c("a", "b")
 ``` 
 
-##### using blank`````
+Using blank:
 
 ```
 lapply <-
@@ -187,7 +187,8 @@ b <- c(TRUE, FALSE)
 ## k c z
 k <- c("a", "b")
 ``` 
-##### using ````r`
+
+Using `r`:
 
 ```r
 lapply <-
