@@ -50,3 +50,11 @@ Markov-chain Monte Carlo (MCMC) methods.</p>
         </div>
     </div>
 </div>
+
+*****************
+
+{% for post in site.posts limit:5 %}
+<h2><a href="{{ site.url }}{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a></h2>
+<p><small>{{ post.date | date: "%Y-%m-%d" }}</small></p>
+<p>{{ post.content | strip_html | strip_newlines | truncate: 360 }}</p>
+{% endfor %}
