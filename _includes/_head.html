@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <title>{% if page.title %}{{ page.title | strip_html }} &#8211; {% endif %}{{ site.title }}</title>
-{% capture fancy %}{% if page.fancy %}{{ page.fancy }}{% else %}{{ site.fancy }}{% endif %}{% endcapture %}
+{% capture fancyfonts %}{% if page.fancyfonts %}{{ page.fancyfonts }}{% else %}{{ site.fancyfonts }}{% endif %}{% endcapture %}
 {% capture theme %}{% if page.theme %}{{ page.theme }}{% else %}{{ site.theme }}{% endif %}{% endcapture %}
 <meta name="description" content="{{ page.description }}">
 <meta name="keywords" content="{{ page.tags | join: ', ' }}">
@@ -28,7 +28,7 @@
     });
     </script>
 <style type="text/css">
-{% if fancy %}
+{% if fancyfonts %}
     /* different font family */
     @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
     @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
@@ -37,7 +37,7 @@
     body {
         padding-top: 70px;
         padding-bottom: 40px;
-{% if fancy %}
+{% if fancyfonts %}
         font-family: 'Droid Serif';
 {% endif %}
     }
@@ -48,7 +48,7 @@
     /* same color as inline code */
     h1, h2, h3, h4, h5, h6 {
         color: #c7254e;
-{% if fancy %}
+{% if fancyfonts %}
         font-family: 'Yanone Kaffeesatz';
 {% endif %}
     }
