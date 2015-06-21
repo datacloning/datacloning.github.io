@@ -1,6 +1,6 @@
 ---
 title: "Testing the features"
-output: pdf_document
+output: html_document
 layout: default
 ---
 
@@ -154,7 +154,7 @@ this `paste("Hello", "World!")`.
 
 ### Few more code blocks
 
-Using `highlight`:
+Using `nohighlight`:
 
 ```nohighlight
 lapply <-
