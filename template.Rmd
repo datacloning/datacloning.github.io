@@ -371,15 +371,6 @@ Also:
 > This is a warning.
 
 
-## Experiments with FTP access & links
-
-This is a a map
-
-<img src="ftp://web|anonymous:anonymous@ftp.public.abmi.ca/species.abmi.ca/climate/map/MAT.png">
-
-<p>And this is a link to dowload the <a href="ftp://web|anonymous:anonymous@ftp.public.abmi.ca/species.abmi.ca/climate/raster/MAT.zip">zipped raster file</a>.</p>
-
-
 ## References
 
 <a id="Smith2000"></a>Smith 2000. The best paper ever. *Journal*, 1-2.
