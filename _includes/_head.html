@@ -27,14 +27,14 @@
     });
     </script>
 <style type="text/css">
-    {% if page.fancyfonts == true or site.fancyfonts == true %}/* different font family */
+    {% if site.fancyfonts == true %}/* different font family */
     @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
     @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);{% endif %}
     /* padding for bootstrap navbar */
     body {
-        padding-top: 70px;
+        padding-top: 40px;
         padding-bottom: 40px;
-        {% if page.fancyfonts == true or site.fancyfonts == true %}font-family: 'Droid Serif';{% endif %}
+        {% if site.fancyfonts == true %}font-family: 'Droid Serif';{% endif %}
     }
     /* Google custom search look and feel */
     .gsc-results-wrapper-overlay, .gsc-results-wrapper-visible, .gsc-search-button, .gsc-search-button-v2 {
@@ -43,7 +43,7 @@
     /* same color as inline code */
     h1, h2, h3, h4, h5, h6 {
         color: #c7254e;
-        {% if page.fancyfonts == true or site.fancyfonts == true %}font-family: 'Yanone Kaffeesatz';{% endif %}
+        {% if site.fancyfonts == true %}font-family: 'Yanone Kaffeesatz';{% endif %}
     }
     /* override defaults to get info block */
     blockquote {
