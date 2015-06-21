@@ -15,5 +15,5 @@ kramdown:
   hard_wrap:      false
 markdown_ext: "markdown,mkdown,mkdn,mkd,md,Rmd"
 
-theme: flatly
+theme: cyborg
 fancy: false
