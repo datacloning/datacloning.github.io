@@ -145,48 +145,16 @@ Make a code chunk with three back ticks followed
 by R (this helps figuring out highlight rules). 
 End the chunk with three back ticks: 
 
-```R
+```r
 paste("Hello", "World!")
 ``` 
 
 Place code inline with a single back ticks, like
 this `paste("Hello", "World!")`.
 
-Few more code blocks:
+#### Few more code blocks
 
-ver 1
-
-```
-lapply <-
-function (X, FUN, ...) 
-{
-    FUN <- match.fun(FUN)
-    if (!is.vector(X) || is.object(X)) 
-        X <- as.list(X)
-    .Internal(lapply(X, FUN))
-}
-a <- c(1,2,3) # x y z
-b <- c(TRUE, FALSE)
-## k c z
-k <- c("a", "b")
-``` 
-ver 2
-
-```R
-lapply <-
-function (X, FUN, ...) 
-{
-    FUN <- match.fun(FUN)
-    if (!is.vector(X) || is.object(X)) 
-        X <- as.list(X)
-    .Internal(lapply(X, FUN))
-}
-a <- c(1,2,3) # x y z
-b <- c(TRUE, FALSE)
-## k c z
-k <- c("a", "b")
-``` 
-ver 3
+##### using ````highlight`
 
 ```nohighlight
 lapply <-
@@ -203,7 +171,23 @@ b <- c(TRUE, FALSE)
 k <- c("a", "b")
 ``` 
 
-ver 4
+##### using blank`````
+
+```
+lapply <-
+function (X, FUN, ...) 
+{
+    FUN <- match.fun(FUN)
+    if (!is.vector(X) || is.object(X)) 
+        X <- as.list(X)
+    .Internal(lapply(X, FUN))
+}
+a <- c(1,2,3) # x y z
+b <- c(TRUE, FALSE)
+## k c z
+k <- c("a", "b")
+``` 
+##### using ````r`
 
 ```r
 lapply <-
@@ -219,55 +203,6 @@ b <- c(TRUE, FALSE)
 ## k c z
 k <- c("a", "b")
 ``` 
-
-ver 5
-
-{% highlight R startinline %}
-lapply <-
-function (X, FUN, ...) 
-{
-    FUN <- match.fun(FUN)
-    if (!is.vector(X) || is.object(X)) 
-        X <- as.list(X)
-    .Internal(lapply(X, FUN))
-}
-a <- c(1,2,3) # x y z
-b <- c(TRUE, FALSE)
-## k c z
-k <- c("a", "b")
-{% endhighlight %}
-
-ver 6
-
-<pre><code class="source r">lapply <-
-function (X, FUN, ...) 
-{
-    FUN <- match.fun(FUN)
-    if (!is.vector(X) || is.object(X)) 
-        X <- as.list(X)
-    .Internal(lapply(X, FUN))
-}
-a <- c(1,2,3) # x y z
-b <- c(TRUE, FALSE)
-## k c z
-k <- c("a", "b")
-</code></pre>
-
-ver 7
-
-<pre style=""><code class="source r">lapply <-
-function (X, FUN, ...) 
-{
-    FUN <- match.fun(FUN)
-    if (!is.vector(X) || is.object(X)) 
-        X <- as.list(X)
-    .Internal(lapply(X, FUN))
-}
-a <- c(1,2,3) # x y z
-b <- c(TRUE, FALSE)
-## k c z
-k <- c("a", "b")
-</code></pre> 
 
 ### GFM options (that don't work, but left here for testing anyway):
 
