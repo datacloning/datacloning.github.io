@@ -60,7 +60,7 @@ We take product because observations are assumed to be independent of each other
 * Likelihood is a function of the parameter. Data are fixed. 
 * It is _not_ a probability of the parameter taking a specific value. It represents the following quantity: If the parameter is $$p=p^\ast$$, then the probability of observing the data at hand is $$L(\tilde{p}; y_{1}, y_{2}, \ldots, y_{n}) = \prod_{i=1}^{n} \tilde{p}^{y_{i}} (1-\tilde{p})^{1-y_{i}}$$. We can vary the parameter value and get a function as represented below:
 
-```R
+```r
 op <- par(las=1)
 set.seed(1234)
 (y <- rbinom(n = 100, size = 1, p = 0.5))
@@ -118,7 +118,7 @@ abline(v = 0.5, lwd = 2, col = 2)
 
 Which parameter value has the largest support in the data? 
 
-```R
+```r
 ## Using numerical optimization 
 ## to get the maximum of the likelihood function
 sim_fun <- function(n, p) {
@@ -149,7 +149,7 @@ R commands:
 * The sampling distribution of the estimates
 * Confidence interval
 
-```R
+```r
 B <- 1000
 res <- numeric(B)
 for (i in 1:B) {
@@ -185,7 +185,7 @@ Estimated confidence intervals:
 
 We have the MLE. The MLE is kind of close to the true parameter value. So suppose we pretend as if the MLE is the true parameter value, we can get the sampling distribution and the confidence interval. This is the idea behind the parametric bootstrap confidence intervals. 
 
-```R
+```r
 ## parametric bootstrap comes here
 B <- 1000
 y <- sim_fun(n, p)
@@ -198,7 +198,7 @@ for (i in 1:B) {
 quantile(bres, a)
 ```
 
-```R
+```r
 ## non-parametric bootstrap -- move this around as needed
 B <- 1000
 y <- sim_fun(n, p)
@@ -215,7 +215,7 @@ R commands:
 
 Simulation based CI and its comparison to the true CI (Based on the true parameter value)
 
-```R
+```r
 ci <- matrix(NA, B, 2)
 for (i in 1:B) {
     y <- sim_fun(n, p)
@@ -236,7 +236,7 @@ The implicit logic is that if the procedure is reliable, we could rely on the in
 This is similar to relying more on the blood pressure results from a machine that has small measurement error than the one with large measurement error. 
 
 
-```R
+```r
 ## Bayesian posterior calculations
 y0 <- sim_fun(100, p)
 y <- y0[1:10]
