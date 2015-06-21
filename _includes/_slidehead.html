@@ -2,20 +2,15 @@
 <html>
 <head>
 <title>{% if page.title %}{{ page.title | strip_html }} &#8211; {% endif %}{{ site.title }}</title>
-{% capture fancy %}{% if page.fancy %}{{ page.fancy }}{% else %}{{ site.fancy }}{% endif %}{% endcapture %}
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <link rel="stylesheet" href="{{ site.baseurl }}/assets/remark.css" media="screen">
 <style type="text/css">
-{% if fancy %}
-    /* different font family */
+    {% if page.fancyfonts or site.fancyfonts %}/* different font family */
     @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
     @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
-    body { font-family: 'Droid Serif'; }
-    {% endif %}
+    body { font-family: 'Droid Serif'; }{% endif %}
     h1, h2, h3, h4, h5, h6 {
-{% if fancy %}
-        font-family: 'Yanone Kaffeesatz';
-{% endif %}
+        {% if page.fancyfonts or site.fancyfonts %}font-family: 'Yanone Kaffeesatz';{% endif %}
         font-weight: normal;
         color: #c7254e;
     }
