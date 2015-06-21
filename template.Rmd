@@ -2,7 +2,7 @@
 title: "Testing the features"
 output: html_document
 layout: default
-fancy: false
+fancyfonts: false
 theme: paper
 navbar: transparent
 ---
