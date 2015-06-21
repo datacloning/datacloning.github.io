@@ -222,6 +222,16 @@ mcor <-cor(mtcars)
 round(mcor,digits=2)
 </code></pre>
 
+<pre style=""><code class="source r">lapply <-
+function (X, FUN, ...) 
+{
+    FUN <- match.fun(FUN)
+    if (!is.vector(X) || is.object(X)) 
+        X <- as.list(X)
+    .Internal(lapply(X, FUN))
+}
+</code></pre> 
+
 ### GFM options (that don't work, but left here for testing anyway):
 
 superscript^2^
