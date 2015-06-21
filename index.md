@@ -8,6 +8,10 @@ layout: plain
             <div class="col-lg-12">
 
 <h1 class="title">Data Cloning</h1>
+
+            </div>
+            <div class="col-md-10 col-md-offset-1">
+
 <p>is a numerical optimization algorithm used to find
 maximum likelihood estimates (MLEs) using 
 Markov-chain Monte Carlo (MCMC) methods.</p>
