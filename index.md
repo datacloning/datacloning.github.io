@@ -60,10 +60,8 @@ Markov-chain Monte Carlo (MCMC) methods.</p>
 <div class="well">
 <h3><a href="url_jon_ide" title="title_jon_ide">Hierarchical models for conservation biologists made easy</a></h3>
 <p><small>2015&ndash;06&ndash;20</small></p>
-<p><strong>One-day teaching workshop at ICCB/ECCB congress in Monpellier on August 1st:</strong> this training course is aimed towards the conservation professionals who need to understand and feel comfortable with modern statistical and computational tools used to address pressing conservation issues. By presenting both Bayesian and Likelihood based approaches, the participants will be able to go beyond the rhetorics of philosophy of statistics and use the tools with full understanding of their assumptions and implications.</p>
-<div class="btn-group"><a href="http://www.iccb-eccb2015.org/content/pre-congress-training-workshops" class="btn btn-primary">ICCB website <i class="fa fa-caret-right"></i></a></div>
-<div class="btn-group"><a href="{{ site.url }}/courses/2015/montpellier/" class="btn btn-primary">Course website <i class="fa fa-caret-right"></i></a></div>
-</div>
+<p><strong>One-day teaching workshop at <a href="http://www.iccb-eccb2015.org/content/pre-congress-training-workshops">ICCB/ECCB congress</a> in Monpellier on August 1st</strong></p>
+<p>This training course is aimed towards the conservation professionals who need to understand and feel comfortable with modern statistical and computational tools used to address pressing conservation issues. By presenting both Bayesian and Likelihood based approaches, the participants will be able to go beyond the rhetorics of philosophy of statistics and use the tools with full understanding of their assumptions and implications.</p>
 
         </div>
     </div>
