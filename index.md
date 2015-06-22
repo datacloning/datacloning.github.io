@@ -5,13 +5,9 @@ layout: plain
 <div class="jumbotron">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
-
-<h1 class="title">Data Cloning</h1>
-
-            </div>
             <div class="col-md-10 col-md-offset-1">
 
+<h1 class="title">Data Cloning</h1>
 <p>is a numerical optimization algorithm used to find
 maximum likelihood estimates (MLEs) using 
 Markov-chain Monte Carlo (MCMC) methods.</p>
@@ -59,12 +55,9 @@ Markov-chain Monte Carlo (MCMC) methods.</p>
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-10 col-md-offset-1">
 
 <h2 title="news">News</h2>
-
-        </div>
-        <div class="col-md-10 col-md-offset-1">
 
 <div class="well">
 <h3><a href="url_jon_ide" title="title_jon_ide">News title</a></h3>
