@@ -11,7 +11,7 @@ layout: plain
 <p>is a numerical optimization algorithm for
 frequentist statistical inference using
 Markov-chain Monte Carlo (MCMC) methods.</p>
-<p><a class="btn btn-primary">Learn more</a></p>
+<!-- <p><a class="btn btn-primary">Learn more</a></p> -->
             
             </div>
         </div>
@@ -71,3 +71,7 @@ Markov-chain Monte Carlo (MCMC) methods.</p>
         </div>
     </div>
 </div>
+
+{% comment %}
+<!-- Move old entries here. -->
+{% endcomment %}
