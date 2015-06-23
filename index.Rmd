@@ -75,4 +75,24 @@ work with all major MCMC engines: <a href="http://mcmc-jags.sourceforge.net/">JA
 
 {% comment %}
 <!-- Move old entries here. -->
+
+Navbar organization
+
+Software:
+* Introduction
+* Installation
+* R packages
+  - dclone
+  - dcmle
+  - dcextras
+* Issues
+
+Resources:
+* Documentation
+* Tutorials
+* Courses
+* Talks
+
+Search
+
 {% endcomment %}
