@@ -1,0 +1,27 @@
+---
+title: "Installing the software"
+output: html_document
+layout: default
+theme: flatly
+navbar: transparent
+---
+
+## Installing R
+
+## Installing dclone
+
+## Intalling the MCMC engine
+
+### JAGS
+
+### WinBUGS
+
+platform dependence
+
+### OpenBUGS
+
+### Stan
+
+need extras extras
+
+checking the setup using example(run_dontrun)

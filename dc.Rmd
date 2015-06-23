@@ -1,0 +1,11 @@
+---
+title: "Data cloning explained"
+output: html_document
+layout: default
+theme: flatly
+navbar: transparent
+---
+
+General description
+
+reference
