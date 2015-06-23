@@ -1,9 +1,6 @@
 ---
 title: "Talks"
-output: html_document
 layout: default
-theme: flatly
-navbar: transparent
 ---
 
 ## Budapest Users of R Network

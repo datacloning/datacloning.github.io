@@ -2,7 +2,5 @@
 title: "High performance computing"
 output: html_document
 layout: default
-theme: flatly
-navbar: transparent
 ---
 
