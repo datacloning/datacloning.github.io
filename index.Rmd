@@ -8,7 +8,7 @@ layout: plain
             <div class="col-md-10 col-md-offset-1">
 
 <h1 class="title">Data Cloning</h1>
-<p>is a numerical optimization algorithm for
+<p>A numerical optimization algorithm for
 frequentist statistical inference using
 Markov-chain Monte Carlo (MCMC) methods.</p>
 <!-- <p><a class="btn btn-primary">Learn more</a></p> -->
@@ -24,32 +24,33 @@ Markov-chain Monte Carlo (MCMC) methods.</p>
 
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-laptop"></i> Easy to Install</h3>
-<p>Pick an MCMC engine of your choice (<a href="">JAGS</a>, <a href="">WinBUGS</a>, <a href="">OpenBUGS</a>, <a href="">Stan</a>) and install the <a href="">dclone</a> R package.</p>
+<p>The <a href="{{ site.baseurl }}/dclone">dclone</a> R package and its extensions
+work with all major MCMC engines: <a href="http://mcmc-jags.sourceforge.net/">JAGS</a>, <a href="http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/">WinBUGS</a>, <a href="http://www.openbugs.net/">OpenBUGS</a>, <a href="http://mc-stan.org/">Stan</a>.</p>
 </div>
 
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-code"></i> Open Source</h3>
-<p>The <a href="">dclone</a> package is released under the GPL License, stable version at <a href="">CRAN</a>, development on <a href="">GitHub</a>.</p>
+<p>The <a href="{{ site.baseurl }}/dclone">dclone</a> package is released under the GPL License, stable version on <a href="http://cran.r-project.org/package=dclone">CRAN</a>, development on <a href="https://github.com/datacloning/dclone">GitHub</a>.</p>
 </div>
 
 <div class="col-lg-4 col-sm-6">
-<h3><i class="fa fa-cogs"></i> High Performance</h3>
-<p>Functions built with support for parallel computations using multicore/cluster/grid architectures and forking.</p>
+<h3><i class="fa fa-flash"></i> High Performance</h3>
+<p>Built with support for <a href="{{ site.baseurl }}/hpc.html">parallel computations</a> using multicore/cluster/grid architectures and forking.</p>
 </div>
 
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-file-text-o"></i> Learn through Examples</h3>
-<p>Find documentation, tutorials, examples, and other teaching materials.</p>
+<p>Find documentation, tutorials, examples, and other teaching materials: busy working on it...</p>
 </div>
 
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-cloud"></i> Contribute</h3>
-<p>Send your own dclone-ified models!</p>
+<p>Send your own dclone-ified models: under construction...</p>
 </div>
 
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-bullhorn"></i> Stay Updated</h3>
-<p>Mailing list etc.</p>
+<p>Mailing list etc: more to come...</p>
 </div>
 
         </div>
