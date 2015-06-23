@@ -21,32 +21,37 @@ Markov-chain Monte Carlo (MCMC) methods.</p>
 <div class="section-tout">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4 col-sm-6">
 
-<h3><i class="fa fa-file-o"></i> Easy to Install</h3>
-<p>Simply download a CSS file and replace the one in Bootstrap. No messing around with hex values.</p>
-</div>
 <div class="col-lg-4 col-sm-6">
-<h3><i class="fa fa-github"></i> Open Source</h3>
-<p>Bootstrap themes are released under the MIT License and maintained by the community on <a target="_blank" href="https://github.com/thomaspark/bootswatch">GitHub</a>.</p>
+<h3><i class="fa fa-laptop"></i> Easy to Install</h3>
+<p>Pick an MCMC engine of your choice (<a href="">JAGS</a>, <a href="">WinBUGS</a>, <a href="">OpenBUGS</a>, <a href="">Stan</a>) and install the <a href="">dclone</a> R package.</p>
 </div>
+
 <div class="col-lg-4 col-sm-6">
-<h3><i class="fa fa-wrench"></i> Tuned for 3.3.5</h3>
-<p>Themes are built for the latest version of Bootstrap. <a href="2/">Version 2</a> and <a target="_blank" href="https://github.com/thomaspark/bootswatch/tags">others</a> are also available to download.</p>
+<h3><i class="fa fa-code"></i> Open Source</h3>
+<p>The <a href="">dclone</a> package is released under the GPL License, stable version at <a href="">CRAN</a>, development on <a href="">GitHub</a>.</p>
 </div>
+
 <div class="col-lg-4 col-sm-6">
-<h3><i class="fa fa-cogs"></i> Modular</h3>
-<p>Changes are contained in just two LESS or SASS files, enabling modification and ensuring forward compatibility.</p>
+<h3><i class="fa fa-cogs"></i> High Performance</h3>
+<p>Functions built with support for parallel computations using multicore/cluster/grid architectures and forking.</p>
 </div>
+
 <div class="col-lg-4 col-sm-6">
-<h3><i class="fa fa-cloud"></i> Get Plugged In</h3>
-<p>An <a href="./help/#api">API</a> is available for integrating with your platform. In use by <a href="https://nodebb.org/" target="_blank">NodeBB</a>, <a href="http://yabdab.com/stacks/bootsnap" target="_blank">BootSnap</a>, and others.</p>
+<h3><i class="fa fa-file-text-o"></i> Learn through Examples</h3>
+<p>Find documentation, tutorials, examples, and other teaching materials.</p>
 </div>
+
+<div class="col-lg-4 col-sm-6">
+<h3><i class="fa fa-cloud"></i> Contribute</h3>
+<p>Send your own dclone-ified models!</p>
+</div>
+
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-bullhorn"></i> Stay Updated</h3>
-<p>Be notified about updates by subscribing via <a href="http://feeds.feedburner.com/bootswatch">RSS feed</a>, <a href="http://feedburner.google.com/fb/a/mailverify?uri=bootswatch&amp;loc=en_US">email</a>, or <a href="http://news.bootswatch.com" onclick="pageTracker._link(this.href); return false;">Tumblr</a>.</p>
+<p>Mailing list etc.</p>
+</div>
 
-            </div>
         </div>
     </div>
 </div>
