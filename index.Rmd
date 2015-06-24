@@ -24,13 +24,13 @@ Markov-chain Monte Carlo (MCMC) methods.</p>
 
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-laptop"></i> Easy to Install</h3>
-<p>The <a href="{{ site.baseurl }}/dclone">dclone</a> R package and its extensions
+<p>The <a href="{{ site.baseurl }}/dclone">dclone</a> <a href="http://www.r-project.org">R</a> package and its extensions
 work with all major MCMC engines: <a href="http://mcmc-jags.sourceforge.net/">JAGS</a>, <a href="http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/">WinBUGS</a>, <a href="http://www.openbugs.net/">OpenBUGS</a>, <a href="http://mc-stan.org/">Stan</a>.</p>
 </div>
 
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-code"></i> Open Source</h3>
-<p>The <a href="{{ site.baseurl }}/dclone">dclone</a> package is released under the GPL License, stable version on <a href="http://cran.r-project.org/package=dclone">CRAN</a>, development on <a href="https://github.com/datacloning/dclone">GitHub</a>.</p>
+<p>The <a href="{{ site.baseurl }}/dclone">dclone</a> package is released under the <a href="http://www.gnu.org/licenses/licenses.en.html">GNU General Public License</a>, stable version on <a href="http://cran.r-project.org/package=dclone">CRAN</a>, development on <a href="https://github.com/datacloning/dclone">GitHub</a>.</p>
 </div>
 
 <div class="col-lg-4 col-sm-6">
