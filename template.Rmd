@@ -3,7 +3,7 @@ title: "Testing the features"
 output: html_document
 layout: default
 theme: flatly
-navbar: transparent
+navbar: inverse
 ---
 
 >## Table of Contents
