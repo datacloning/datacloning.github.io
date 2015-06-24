@@ -2,7 +2,7 @@
 title: "Testing the features"
 output: html_document
 layout: default
-theme: united
+theme: flatly
 navbar: transparent
 ---
 
@@ -373,3 +373,11 @@ Panel content
 <div class="well">
   Look, I'm in a well!
 </div>
+
+
+```r
+## defining a website compatible palette
+dc_pal <- list(green=
+    red=
+    palered=)
+```
