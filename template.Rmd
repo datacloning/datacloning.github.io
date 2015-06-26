@@ -397,4 +397,12 @@ barplot(1:length(dc_pal_flatly),
 ```
 ![]({{ site.url }}/images/dc_pal_flatly.png)
 
+> ## Learning Objectives
+>
+> * Learning objective 1
+> * Learning objective 2
+{: .objectives}
+
+
+
 
