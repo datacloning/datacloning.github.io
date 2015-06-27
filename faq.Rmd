@@ -4,23 +4,33 @@ output: html_document
 layout: default
 ---
 
-<div class="panel panel-success">
+<div class="panel panel-info">
 <div class="panel-heading">
 <i class="fa fa-question-circle"></i>
-Question
+What is data cloning?
 </div>
 <div class="panel-body">
-Answer
+A numerical optimization algorithm for frequentist statistical inference using Markov-chain Monte Carlo (MCMC) methods.
+Read more [here]({{ site.baseurl }}/dc.html).
 </div>
 </div>
 
-<div class="panel panel-success">
+<div class="panel panel-info">
 <div class="panel-heading">
 <i class="fa fa-question-circle"></i>
-Question
+What software can I use?
 </div>
 <div class="panel-body">
-Answer
+See the [installation]({{ site.baseurl }}/install.html) and [usage]({{ site.baseurl }}/usage.html) sections for more information.
 </div>
 </div>
 
+<div class="panel panel-info">
+<div class="panel-heading">
+<i class="fa fa-question-circle"></i>
+Where can I get help?
+</div>
+<div class="panel-body">
+See the [issues]({{ site.baseurl }}/issues.html) section for more information.
+</div>
+</div>

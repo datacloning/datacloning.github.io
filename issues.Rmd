@@ -22,6 +22,10 @@ Subscribe to the [dclone-users mailing list](https://groups.google.com/forum/?fr
 
 Submit an issue on GitHub:
 
-* [dclone R package](https://github.com/datacloning/dclone/issues),
-* [dcmle R package](https://github.com/datacloning/dcmle/issues),
-* [dcextras R package](https://github.com/datacloning/dcextras/issues).
+* dclone R package: submit an [issue](https://github.com/datacloning/dclone/issues), or a [pull request](https://github.com/datacloning/dclone/pulls).
+* dcmle R package: submit an [issue](https://github.com/datacloning/dcmle/issues), or a [pull request](https://github.com/datacloning/dcmle/pulls).
+* dcextras R package: submit an [issue](https://github.com/datacloning/dcextras/issues), or a [pull request](https://github.com/datacloning/dcextras/pulls).
+
+## Issues with the website
+
+Please submit an [issue](https://github.com/datacloning/datacloning.github.io/issues) or create a [pull request](https://github.com/datacloning/datacloning.github.io/pulls) on GitHub.
