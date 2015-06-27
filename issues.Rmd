@@ -6,7 +6,7 @@ layout: default
 
 <div class="panel panel-warning">
 <div class="panel-heading">
-i class="fa fa-warning"></i> Before posting questions or submitting an issue
+<i class="fa fa-warning"></i> Before posting questions or submitting an issue
 </div>
 <div class="panel-body">
 Please read
