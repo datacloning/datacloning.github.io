@@ -4,19 +4,19 @@ output: html_document
 layout: default
 ---
 
-> ## <i class="fa fa-question-circle"></i> What is data cloning?
+> ### <i class="fa fa-question-circle"></i> What is data cloning?
 >
 > A numerical optimization algorithm for frequentist statistical 
 > inference using Markov-chain Monte Carlo (MCMC) methods.
 > Read more [here]({{ site.baseurl }}/dc.html).
 
-> ## <i class="fa fa-question-circle"></i> What software can I use?
->
+### <i class="fa fa-question-circle"></i> What software can I use?
+
 > See the [installation]({{ site.baseurl }}/install.html) 
 > and [usage]({{ site.baseurl }}/usage.html) sections for 
 > more information.
 
-> ## <i class="fa fa-question-circle"></i>Where can I get help?
+> <i class="fa fa-question-circle"></i> <strong>Where can I get help?</strong>
 >
 > See the [issues]({{ site.baseurl }}/issues.html) 
 > section for more information.
