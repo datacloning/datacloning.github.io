@@ -4,4 +4,19 @@ output: html_document
 layout: default
 ---
 
+## R code from S&oacute;lymos 2010
+
+<p><a class="btn btn-primary" href="{{ site.baseurl }}/toturials/">Take me there</a></p>
+
+## Implementing GLM with data cloning
+
+<p><a class="btn btn-primary" href="{{ site.baseurl }}/toturials/">Take me there</a></p>
+
+## Parallel MCMC with data cloning
+
+<p><a class="btn btn-primary" href="{{ site.baseurl }}/toturials/">Take me there</a></p>
+
+## A short data cloning tutorial
+
+<p><a class="btn btn-primary" href="{{ site.baseurl }}/toturials/">Take me there</a></p>
 
