@@ -11,7 +11,7 @@ layout: plain
 <p>A numerical optimization algorithm for
 frequentist statistical inference using
 Markov-chain Monte Carlo (MCMC) methods.</p>
-<!-- <p><a class="btn btn-primary">Learn more</a></p> -->
+<!-- <p><a class="btn btn-primary" href="{{ site.baseurl }}/dc.html">Learn more</a></p> -->
             
             </div>
         </div>
@@ -25,7 +25,7 @@ Markov-chain Monte Carlo (MCMC) methods.</p>
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-laptop"></i> Easy to Install</h3>
 <p>The <a href="{{ site.baseurl }}/dclone">dclone</a> <a href="http://www.r-project.org">R</a> package and its extensions
-work with all major MCMC engines: <a href="http://mcmc-jags.sourceforge.net/">JAGS</a>, <a href="http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/">WinBUGS</a>, <a href="http://www.openbugs.net/">OpenBUGS</a>, <a href="http://mc-stan.org/">Stan</a>.</p>
+work with all major MCMC engines: <a href="http://mcmc-jags.sourceforge.net/">JAGS</a>, <a href="http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/">WinBUGS</a>, <a href="http://www.openbugs.net/">OpenBUGS</a>, <a href="http://mc-stan.org/">Stan</a>. See the <a href="{{ site.baseurl }}/install.html">installation guide</a>.</p>
 </div>
 
 <div class="col-lg-4 col-sm-6">
@@ -35,22 +35,22 @@ work with all major MCMC engines: <a href="http://mcmc-jags.sourceforge.net/">JA
 
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-flash"></i> High Performance</h3>
-<p>Built with support for <a href="{{ site.baseurl }}/hpc.html">parallel computations</a> using multicore/cluster/grid architectures and forking.</p>
+<p>Built with support for <a href="{{ site.baseurl }}/usage.html#high-performance-computing">parallel computations</a> using multicore/cluster/grid architectures and forking.</p>
 </div>
 
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-file-text-o"></i> Learn through Examples</h3>
-<p>Find documentation, tutorials, examples, and other teaching materials: busy working on it...</p>
+<p>Find <a href="">documentation</a>, t<a href="">utorials</a>, <a href="">examples</a>, and other teaching materials: busy working on it...</p>
 </div>
 
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-cloud"></i> Contribute</h3>
-<p>Send your own dclone-ified models: under construction...</p>
+<p>Share your own dclone-ified models here</a>.</p>
 </div>
 
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-bullhorn"></i> Stay Updated</h3>
-<p>Mailing list etc: more to come...</p>
+<p>Subscribe to the <a href="https://groups.google.com/forum/?fromgroups#!forum/dclone-users">dclone users mailing list</a> for general modeling discussions.</p>
 </div>
 
         </div>

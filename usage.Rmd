@@ -4,6 +4,10 @@ output: html_document
 layout: default
 ---
 
+## Basic usage
+
 Describe usage
 
-HPC
+## High performance computing
+
+HPC comes here
