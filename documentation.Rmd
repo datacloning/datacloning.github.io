@@ -1,25 +1,8 @@
 ---
-title: "Installing the software"
+title: "Documentation"
 output: html_document
 layout: default
 ---
 
-## Installing R
-
-## Installing dclone
-
-## Intalling the MCMC engine
-
-### JAGS
-
-### WinBUGS
-
-platform dependence
-
-### OpenBUGS
-
-### Stan
-
-need extras extras
-
-checking the setup using example(run_dontrun)
+* dclone R package: [reference manual PDF from CRAN](http://cran.r-project.org/web/packages/dclone/dclone.pdf)
+* dcmle R package: [reference manual PDF from CRAN](http://cran.r-project.org/web/packages/dcmle/dcmle.pdf)
