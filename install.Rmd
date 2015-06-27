@@ -23,3 +23,10 @@ platform dependence
 need extras extras
 
 checking the setup using example(run_dontrun)
+
+### Nimble
+
+### INLA
+
+### MCMCglmm
+
