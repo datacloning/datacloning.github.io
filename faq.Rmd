@@ -10,13 +10,13 @@ layout: default
 > inference using Markov-chain Monte Carlo (MCMC) methods.
 > Read more [here]({{ site.baseurl }}/dc.html).
 
-### <i class="fa fa-question-circle"></i> What software can I use?
-
+> #### <i class="fa fa-question-circle"></i> What software can I use?
+>
 > See the [installation]({{ site.baseurl }}/install.html) 
 > and [usage]({{ site.baseurl }}/usage.html) sections for 
 > more information.
 
-> <i class="fa fa-question-circle"></i> <strong>Where can I get help?</strong>
+> ##### Where can I get help?
 >
 > See the [issues]({{ site.baseurl }}/issues.html) 
 > section for more information.
