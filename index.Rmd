@@ -38,9 +38,6 @@ work with all major MCMC engines: <a href="http://mcmc-jags.sourceforge.net/">JA
 <p>Built with support for <a href="{{ site.baseurl }}/usage.html#high-performance-computing">parallel computations</a> using multicore/cluster/grid architectures and forking.</p>
 </div>
 
-        </div>
-        <div class="row">
-
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-file-text-o"></i> Learn through Examples</h3>
 <p>Find <a href="">documentation</a>, t<a href="">utorials</a>, <a href="">examples</a>, and other teaching materials: busy working on it...</p>

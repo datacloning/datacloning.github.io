@@ -10,7 +10,7 @@ layout: default
 </div>
 <div class="panel-body">
 Please read
-the [documentation]({{ site.baseurl}}/documentation.html) and the [FAQ]({{ site.baseurl}}/faq.html).
+the <a href="{{ site.baseurl}}/documentation.html">documentation</a> and the <a href="{{ site.baseurl}}/faq.html">FAQ</a>.
 </div>
 </div>
 
