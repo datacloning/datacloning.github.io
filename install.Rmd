@@ -4,6 +4,16 @@ output: html_document
 layout: default
 ---
 
+MCMC engine | Data cloning support | Parallel support
+------------- | ------------------ | -------------
+JAGS | `dclone::jags.fit` | `dclone::jags.parfit`
+WinBUGS | `dclone::bugs.fit` | `dclone::bugs.parfit`
+OpenBUGS | `dclone::bugs.fit` | `dclone::bugs.parfit`
+Stan | `dcextras::stan.fit` | `dcextras::stan.parfit`
+Nimble | N/A | N/A
+INLA | dclone | N/A
+MCMCglmm | dclone | N/A
+
 ## Installing R
 
 ## Installing dclone
