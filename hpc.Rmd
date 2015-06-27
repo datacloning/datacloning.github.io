@@ -1,6 +1,0 @@
----
-title: "High performance computing"
-output: html_document
-layout: default
----
-

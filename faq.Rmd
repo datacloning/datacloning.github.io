@@ -1,0 +1,26 @@
+---
+title: "Frequently asked questions"
+output: html_document
+layout: default
+---
+
+<div class="panel panel-success">
+<div class="panel-heading">
+<i class="fa fa-question-circle"></i>
+Question
+</div>
+<div class="panel-body">
+Answer
+</div>
+</div>
+
+<div class="panel panel-success">
+<div class="panel-heading">
+<i class="fa fa-question-circle"></i>
+Question
+</div>
+<div class="panel-body">
+Answer
+</div>
+</div>
+

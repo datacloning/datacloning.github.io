@@ -1,0 +1,9 @@
+---
+title: "Issues"
+output: html_document
+layout: default
+---
+
+Issues with software: GitHub
+
+General help: mailing list
