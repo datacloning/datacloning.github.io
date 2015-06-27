@@ -8,7 +8,9 @@ layout: default
 
 Lele, S.R., B. Dennis and F. Lutscher, 2007. Data cloning: easy maximum likelihood estimation for complex ecological models using Bayesian Markov chain Monte Carlo methods. *Ecology Letters* **10**, 551&ndash;563. <i class="fa fa-file-pdf-o"></i>&nbsp;[PDF](http://www.math.ualberta.ca/~slele/publications/Lele%20Dennis%20Lutscher%20data%20cloning%20Ecology%20Letters%2020071.pdf) &mdash; <i class="fa fa-external-link"></i>&nbsp;[citing articles](https://scholar.google.ca/scholar?cites=10254594770183679179&as_sdt=2005&sciodt=0,5&hl=en)
 
-Lele, S. R., K. Nadeem and B. Schmuland, 2010. Estimability and likelihood inference for generalized linear mixed models using data cloning. *Journal of the American Statistical Association* **105**, 1617&ndash;1625. <i class="fa fa-file-pdf-o"></i>&nbsp;[PDF](http://www.math.ualberta.ca/~slele/publications/Lele%20et%20al%20GLMM%202010.pdf) &mdash; <i class="fa fa-external-link"></i>&nbsp;[citing articles](https://scholar.google.ca/scholar?cites=7376405901792313149&as_sdt=2005&sciodt=0,5&hl=en)
+Ponciano, K. M., Taper, M. L., Dennis, B., and Lele, S. R., 2009. Hierarchical models in ecology: confidence intervals, hypothesis testing, and model selection using data cloning. *Ecology* **90**, 356&ndash;362. <i class="fa fa-file-pdf-o"></i>&nbsp;[PDF](http://www.math.ualberta.ca/~slele/Publications/Ponciano%20et%20al%2009.pdf) &mdash; <i class="fa fa-external-link"></i>&nbsp;[citing articles](https://scholar.google.ca/scholar?cites=827146394509693116&as_sdt=2005&sciodt=0,5&hl=en)
+
+Lele, S. R., Nadeem, K., and Schmuland, B., 2010. Estimability and likelihood inference for generalized linear mixed models using data cloning. *Journal of the American Statistical Association* **105**, 1617&ndash;1625. <i class="fa fa-file-pdf-o"></i>&nbsp;[PDF](http://www.math.ualberta.ca/~slele/publications/Lele%20et%20al%20GLMM%202010.pdf) &mdash; <i class="fa fa-external-link"></i>&nbsp;[citing articles](https://scholar.google.ca/scholar?cites=7376405901792313149&as_sdt=2005&sciodt=0,5&hl=en)
 
 
 ## Software
