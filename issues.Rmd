@@ -1,0 +1,27 @@
+---
+title: "Issues"
+output: html_document
+layout: default
+---
+
+<div class="panel panel-warning">
+<div class="panel-heading">
+i class="fa fa-warning"></i> Before posting questions or submitting an issue
+</div>
+<div class="panel-body">
+Please read
+the [documentation]({{ site.baseurl}}/documentation.html) and the [FAQ]({{ site.baseurl}}/faq.html).
+</div>
+</div>
+
+## General help with data cloning related modeling questions
+
+Subscribe to the [dclone-users mailing list](https://groups.google.com/forum/?fromgroups#!forum/dclone-users).
+
+## Issues with software
+
+Submit an issue on GitHub:
+
+* [dclone R package](https://github.com/datacloning/dclone/issues),
+* [dcmle R package](https://github.com/datacloning/dcmle/issues),
+* [dcextras R package](https://github.com/datacloning/dcextras/issues).
