@@ -56,11 +56,13 @@ this is reference <a href="#Smith2000">Smith 2000</a>. References can be
 treated as abbreviations, but that is not too $\LaTeX$ friendly, like
 <abbr title="Smith 2000. The best paper ever. Journal, 1-2.">Smith 2000</abbr>
 
-This is [an example][id] reference-style link.
-[id]: http://example.com/  "Optional Title Here"
+### Footnotes
 
-This is some text.[^1]. Other text.[^footnote].
-This is some text.[^other-note]. Other text.[^codeblock-note].
+This is [an example][^id] reference-style link.
+[^id]: http://example.com/  "Optional Title Here"
+
+This is some text[^1]. Other text[^footnote].
+This is some text[^other-note]. Other text[^codeblock-note].
 
 [^1]: Some *crazy* footnote definition.
 
@@ -76,8 +78,12 @@ This is some text.[^other-note]. Other text.[^codeblock-note].
 [^codeblock-note]:
         this is now a code block (8 spaces indentation)
 
+### Formatting
+
 This text is *italics* and _italics_, while this is
 **bold** and __bold__.
+
+### Mathematics
 
 For superscript$^2$, use inline math, such as these: $A = \pi*r^{2}$
 (written as `$A = \pi*r^{2}$`).
