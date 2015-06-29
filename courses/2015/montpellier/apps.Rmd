@@ -10,5 +10,7 @@ subtitle: 'Apps'
 <iframe id="frame" name="app" src="https://psolymos.shinyapps.io/app01"></iframe>
 </div>
 
+Share source file to run in RStudio.
+
 ### Simple Bayesian model
 
