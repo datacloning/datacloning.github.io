@@ -4,6 +4,8 @@ layout: default
 subtitle: 'How to prepare'
 ---
 
+Please follow these steps and install necessary software onto your computer that you are going to use at the course. This way we can spend more time on talking about modeling.
+
 ### Install R
 
 Follow the instructions at the [R website](http://cran.r-project.org) to download and install
