@@ -1,6 +1,9 @@
 ## gedit temp files
 *~
 
+## temp dir for temp files
+/tempdir/*
+
 ## R script output
 *.out
 

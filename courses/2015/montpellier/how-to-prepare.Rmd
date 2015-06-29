@@ -1,0 +1,7 @@
+---
+title: 'Hierarchical models for conservation biologists made easy'
+layout: default
+subtitle: 'How to prepare'
+---
+
+stuff here

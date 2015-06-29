@@ -1,19 +1,8 @@
 ---
 title: 'Hierarchical models for conservation biologists made easy'
 layout: default
+subtitle: 'About the course'
 ---
-
-#### Pre congress training course
-
-#### ICCB/ECCB, Montpellier, France
-
-#### Aug 1 2015
-
--------------
-
-<strong>This training course is aimed towards the conservation professionals who need to understand and feel comfortable with modern statistical and computational tools used to address pressing conservation issues. By presenting both Bayesian and Likelihood based approaches, the participants will be able to go beyond the rhetorics of philosophy of statistics and use the tools with full understanding of their assumptions and implications.</strong>
-
--------------
 
 ### Goal and justification
 
@@ -27,8 +16,6 @@ Active learning is the best way to learn statistical analysis and we will be pro
 
 In this course, we will not only demystify the statistical thinking but also, and more importantly from the practical point of view, we will teach the use of a freely available statistical package ‘dclone’. It is a freely available software package based on R, JAGS and BUGS. The expected outcome of the course is a solid foundation for further professional development via increased confidence in using hierarchical models in a conservation context.
 
----------------
-
 ### Organizational structure
 
 * Format: The introduction and overview is in seminar format (1-1.5 hours), the rest of the course is in workshop format with two breaks, the third part after the second break is possibly centered around participant’s own projects.
@@ -36,26 +23,8 @@ In this course, we will not only demystify the statistical thinking but also, an
 * Expected number of participants: minimum 12, maximum 25.
 * Equipment necessary: Participants should bring their own laptops. Organizers should arrange for projector, electric outlets and power cords for plugging in computers. Open source and free software, and electronic course material will be provided by tutors. Internet access is necessary but tutors will provide software/code/course material on DVD or USB sticks in case of offline format.
 
--------------------
-
-### Lectures
-
-* [Lecture 0](./00-lecture.html): How to prepare to make the most of the course.
-* [Lecture 1](./01-intro.html): Intro.
-
-
---------------------
-
-
 ### Contact the organizers
 
 * [Péter Sólymos](http://peter.solymos.org)
 * [Subhash R. Lele](http://www.stat.ualberta.ca/~slele/)
-
---------------------
-
-### Suggested reading
-
-Put here links to sites, documents, references.
-Create a bibtex file with refs.
 
