@@ -24,7 +24,7 @@ We will use JAGS during the course because it is robust, easy to install, and cr
 Once R/RStudio and JAGS is installed, run the following commands in R/RStudio to install the necessary R packages:
 
 ```r
-install.packages(c("rjags","dclone","snow","rlecuyer"))
+install.packages(c("rjags","dclone","coda","snow","rlecuyer"))
 ```
 
 ### Check that everything works as expected
