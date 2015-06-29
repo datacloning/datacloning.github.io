@@ -1,14 +1,13 @@
 ---
 title: "Hierarchical Models Made Easy"
-subtitle: "Introduction"
-date: "August 1, 2015 -- Montpellier, France"
-author: "Peter Solymos & Subhash Lele"
+author: "Peter Solymos and Subhash Lele"
+date: "August 1, 2015 -- Montpellier, France -- ICCB/ECCB Congress"
+output: pdf_document
+subtitle: Introduction to Maximum Likelihood Estimation
 layout: default
-output: 
-  html_document: 
-    toc: true
-    toc_depth: 2
 ---
+
+### Introduction
 
 Science, as we envision it, is an interplay between inductive and deductive processes. Francis Bacon, the father of what is known as the scientific method, emphasizes the roles of observations, alternative explanations and tests to choose among various explanations. Bacon saw science as inductive process, moving from the particular to the general (Susser, 1986). Popper (1959) proposed the doctrine of falsification, which defines what is acceptable as a scientific hypothesis: if a statement cannot be falsified, then it is not a scientific hypothesis. This is intrinsically a deductive process. What is common to these different views is that theories need to be probed to assess their correctness. Observations play an important role in such probing. 
 
@@ -24,30 +23,34 @@ We will discuss the differences in the two approaches to quantify uncertainty in
 
 We also do not intend to give a detailed tutorial on the basics of statistical inference. There are many standard reference books for such introduction. For a mathematical and theoretical introduction see Casella and Berger and for more elementary but useful introduction, see e.g. Bolker (?). (We need to refer to an elementary book for ecologists and scientists.) 
 
-# A simple example
+### A simple example
 
 Let us start with a simple occupancy model. We will use this model to introduce various important concepts that will be used throughout the book. We will use it also to introduce some basic commands for analyzing data using the package `dclone`. 
 
 In conservation biology, one of the first things we want to do is monitor the current status of the population. This can be done in terms of simple presence-absence data answering the question: what is the proportion of occupied sites? If this proportion is high, it may imply that we should not worry too much about the species (if it is something we want to maintain) or may be we want to do some biological control (if it is an invasive species). A simple monitoring procedure would consist of 
 
-1. Divide the study area into quadrats of equal area. Suppose there are $$N$$ such quadrats. 
-2. Take a simple random sample of size $$n$$ from these. 
+1. Divide the study area into quadrats of equal area. Suppose there are $N$ such quadrats. 
+2. Take a simple random sample of size $n$ from these. 
 3. Visit these sites and find out if it is occupied by the species or not. 
 
-Assumptions: It is critical that we state the assumptions underlying the statistical model. In practice, however, we may or may not be able to know whether all the assumptions are fulfilled or not. 
-
-1. Quadrats are identical to each other. 
-2. Occupancy status of one quadrat does not depend on the status of other quadrats.
+> #### Assumptions
+>
+> It is critical that we state the assumptions underlying the statistical model. 
+> In practice, however, we may or may not be able to know whether all the 
+> assumptions are fulfilled or not. 
+>
+> 1. Quadrats are identical to each other. 
+> 2. Occupancy status of one quadrat does not depend on the status of other quadrats.
 
 Mathematically we write this as follows:
 
-$$Y_{i} \sim Binomial(1, p)$$  (this is also known as the Bernoulli distribution) are independent, identically distributed (i.i.d.) random variables. 
+$Y_{i} \sim Binomial(1, p)$  (this is also known as the Bernoulli distribution) are independent, identically distributed (i.i.d.) random variables. 
 
-* Observed data: $$Y_{1}, Y_{2}, \ldots, Y_{n}$$
-* Unobserved data: $$Y_{n+1}, Y_{n+2}, \ldots, Y_{N}$$
+* Observed data: $Y_{1}, Y_{2}, \ldots, Y_{n}$
+* Unobserved data: $Y_{n+1}, Y_{n+2}, \ldots, Y_{N}$
 
-The probability mass function of the Bernoulli random variable is written as: $$P(Y=y) = p^y (1-p)^{1-y}$$, where $$p \in (0,1)$$ and 
-$$y=0,1$$.
+The probability mass function of the Bernoulli random variable is written as: 
+$P(Y=y) = p^y (1-p)^{1-y}$, where $p \in (0,1)$ and $y=0,1$.
 
 We can now write down the likelihood function. This is proportional to the probability of observing the data at hand. 
 
@@ -55,58 +58,82 @@ $$L(p; y_{1}, y_{2}, \ldots, y_{n}) = \prod_{i=1}^{n} p^{y_{i}} (1-p)^{1-y_{i}}$
 
 We take product because observations are assumed to be independent of each other. 
 
-# Important properties of likelihood
+### Important properties of likelihood
 
 * Likelihood is a function of the parameter. Data are fixed. 
-* It is _not_ a probability of the parameter taking a specific value. It represents the following quantity: If the parameter is $$p=p^\ast$$, then the probability of observing the data at hand is $$L(\tilde{p}; y_{1}, y_{2}, \ldots, y_{n}) = \prod_{i=1}^{n} \tilde{p}^{y_{i}} (1-\tilde{p})^{1-y_{i}}$$. We can vary the parameter value and get a function as represented below:
+* It is _not_ a probability of the parameter taking a specific value. It represents the following quantity: If the parameter is $p=p^\ast$, then the probability of observing the data at hand is $L(\tilde{p}; y_{1}, y_{2}, \ldots, y_{n}) = \prod_{i=1}^{n} \tilde{p}^{y_{i}} (1-\tilde{p})^{1-y_{i}}$. We can vary the parameter value and get a function as represented below:
 
 ```r
-op <- par(las=1)
-set.seed(1234)
+op <- par(las=1) # always horizontal axis, store old settings in op
+set.seed(1234) # set random seed for reproducibility
+## random numbers from Binomial distribution
+## Binomial with size=1 is a Bernoulli distribution
+## p value set as 0.5
 (y <- rbinom(n = 100, size = 1, p = 0.5))
-y1 <- y[1:10]
+y1 <- y[1:10] # take only the 1st 10 eloements of y
 
+## pt is our p value that we want the Likelihood to be calculated for
 pt <- 0.4
+## the Likelihood is based on the formula from above
 (L <- prod(pt^y1 * (1 - pt)^(1-y1)))
+## the following statement is equivalent to typing in the formula
+## take advantage of bilt-in density functions
 prod(dbinom(y1, size = 1, prob = pt))
 
+## now pt is a vector between 0 and 1
 pt <- seq(0, 1, by = 0.01)
+## use the sapply function to calculate the likelihood
+## using one element of the vector at a time (argument z becomes prob=z)
+## by fixing the data y1
 L <- sapply(pt, function(z) prod(dbinom(y1, size = 1, prob = z)))
 
+## now we plot the Likelihood function
 plot(pt, L, type = "l", main = paste("n =", length(y1)))
-abline(v = 0.5, lwd = 2, col = 2)
+abline(v = 0.5, lwd = 2, col = 2) # true value
+abline(v = pt[which.max(L)], lwd = 2, col = 4) # ML extimate
+```
 
-## As we change the data, the likelihood function changes
+### As we change the data, the likelihood function changes
 
+```r
+## This function has a single argument, n, that is sample size
 f <- function(n) {
     y <- rbinom(n = n, size = 1, p = 0.5)
     L <- sapply(pt, function(z) prod(dbinom(y, size = 1, prob = z)))
     L / max(L)
 }
-
+## create a blank plot
 plot(0, type = "n", main = "n constant, y changes",
      ylim = c(0, 1), xlim = c(0, 1))
+## we simulate an n=25 data set 100 times and 
+## plot the scaled likelihood function [L / max(L)]
 tmp <- replicate(100, 
     lines(pt, f(25), col = rgb(0,0,0, alpha=0.1)))
 abline(v = 0.5, lwd = 2, col = 2)
+```
 
-## As we increase the sample size, the likelihood 
-## becomes concentrated around the true value. 
 
-Lm <- sapply(seq(10, length(y), by = round(length(y)/10)), 
+### As we increase the sample size, the likelihood becomes concentrated around the true value. 
+
+```r
+## try different sample sizes, data is fixed
+## so samples can be nested
+nvals <- seq(10, length(y), by = round(length(y)/10))
+## scaled likelihood function using different sample sizes
+Lm <- sapply(nvals, 
     function(n) {
         L <- sapply(pt, function(z) 
             prod(dbinom(y[1:n], size = 1, prob = z)))
         L / max(L)
     })
-
+## plot the results
 matplot(pt, Lm, type = "l", 
     lty = 1, ylab = "L / max(L)", main = "n increases",
     col=rev(terrain.colors(ncol(Lm))))
 abline(v = 0.5, lwd = 2, col = 2)
 ```
 
-* Likelihood value represents the support in the data for a particular parameter value. This is intrinsically a relative concept. How much more support do we have for this parameter value vs that parameter value. 
+* Likelihood value represents the support in the data for a particular parameter value. This is intrinsically a relative concept. How much more support do we have for this parameter value vs. another parameter value. 
 * Likelihood ratio is a more fundamental concept than the likelihood function itself. Law of the likelihood (Hacking, Royall): 
     + Goals of statistical inference:
         1. Given these data, what is the strength of evidence for one hypothesis over the other hypothesis?
@@ -114,7 +141,7 @@ abline(v = 0.5, lwd = 2, col = 2)
         3. Given these data, what decision do we make?
 
 
-# Maximum likelihood estimator
+### Maximum likelihood estimator
 
 Which parameter value has the largest support in the data? 
 
@@ -266,4 +293,3 @@ plot(pval, Lik*Pri/sum(Lik*Pri), type="l")
 ## ckeck if product in Lik and prior is OK as separate
 ```
 
-The end. See [Lecture 2](./lecture-02.html).
