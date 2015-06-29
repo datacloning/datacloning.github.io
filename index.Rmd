@@ -40,12 +40,12 @@ works with all major MCMC engines. See the <a href="{{ site.baseurl }}/install.h
 
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-file-text-o"></i> Learn through Examples</h3>
-<p>Find <a href="">documentation</a>, t<a href="">utorials</a>, <a href="">examples</a>, and other teaching materials: busy working on it...</p>
+<p>Find <a href="{{ site.baseurl }}/documentation.html">documentation</a>, <a href="{{ site.baseurl }}/tutorials/">tutorials</a>, and other <a href="{{ site.baseurl }}/courses/">teaching materials</a>.</p>
 </div>
 
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-cloud"></i> Contribute</h3>
-<p>Share your own dclone-ified models here</a>.</p>
+<p>Share your own dclone-ified models <a href="https://github.com/datacloning/dcexamples">here</a>.</p>
 </div>
 
 <div class="col-lg-4 col-sm-6">
