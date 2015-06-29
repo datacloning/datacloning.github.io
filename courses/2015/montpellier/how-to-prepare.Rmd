@@ -4,4 +4,70 @@ layout: default
 subtitle: 'How to prepare'
 ---
 
-stuff here
+### Install R
+
+Follow the instructions at the [R website](http://cran.r-project.org) to download and install
+the most up-to-date base R version suitable for your operating system (the latest R version at the time of writing these instructions is 3.2.1).
+
+### Install RStudio
+
+Having RStudio is not absolutely necessary, but our course material
+will follow a syntax that is close to RStudio's R markdown
+notation, so having RStudio will make our life easier. RStudio is also available for different operating systems. Pick the open source descktop edition from [here](http://www.rstudio.com/products/rstudio/download/) (the latest RStudio Desktop version at the time of writing these instructions is 0.99.447).
+
+### Install JAGS
+
+We will use JAGS during the course because it is robust, easy to install, and cross-paltform available. Download the latest version from [here](http://sourceforge.net/projects/mcmc-jags/files/JAGS/3.x/) (the latest JAGS version at the time of writing these instructions is 3.4.0).
+
+### Install R packages
+
+Once R/RStudio and JAGS is installed, run the following commands in R/RStudio to install the necessary R packages:
+
+```r
+install.packages(c("rjags","dclone","snow","rlecuyer"))
+```
+
+### Check that everything works as expected
+
+```r
+check_if_you_are_ready <-
+function()
+{
+    if (getRversion() < "2.15.1")
+        stop("R >= 2.15.1 required")
+    cat("--- R version is", 
+        as.character(getRversion()), "--- OK\n")
+
+    if (!require(dclone))
+        stop("dclone package not installed")
+    if (packageVersion("dclone") < "2.0.0")
+        stop("dclone >= 2.0.0 required")
+    cat("--- dclone package version is", 
+        as.character(packageVersion("dclone")), "--- OK\n")
+
+    if (!require(rjags))
+        stop("rjags package not installed")
+    if (packageVersion("rjags") < "3.15")
+        stop("rjags >= 3.15 required")
+    cat("--- rjags package version is", 
+        as.character(packageVersion("dclone")), "--- OK\n")
+
+    if (!require(snow))
+        stop("snow package not installed")
+    cat("--- snow package version is", 
+        as.character(packageVersion("snow")), "--- OK\n")
+
+    if (!require(rlecuyer))
+        stop("rlecuyer package not installed")
+    cat("--- rlecuyer version is", 
+        as.character(packageVersion("rlecuyer")), "--- OK\n")
+
+    cat("\n--- YOU ARE GOOD TO GO!\n\n")
+    invisible(NULL)
+}
+check_if_you_are_ready()
+```
+Congratulations! Now your computer is ready for the course.
+
+If you still have problems, contact [Péter Sólymos](http://peter.solymos.org#about).
+
