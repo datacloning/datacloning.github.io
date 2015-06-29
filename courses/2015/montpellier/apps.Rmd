@@ -6,7 +6,7 @@ subtitle: 'Apps'
 
 ### Simple MLE example
 
-<div class="embed-responsive embed-responsive-iframe">
+<div class="embed-responsive embed-responsive-16by9">
 <iframe id="frame" name="app" src="https://psolymos.shinyapps.io/app01"></iframe>
 </div>
 
