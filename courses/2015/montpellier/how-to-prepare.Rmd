@@ -17,7 +17,7 @@ notation, so having RStudio will make our life easier. RStudio is also available
 
 ### Install JAGS
 
-We will use JAGS during the course because it is robust, easy to install, and cross-paltform available. Download the latest version from [here](http://sourceforge.net/projects/mcmc-jags/files/JAGS/3.x/) (the latest JAGS version at the time of writing these instructions is 3.4.0).
+We will use JAGS during the course because it is robust, easy to install, and cross-paltform available. Download the latest version suitable for your operating system from [here](http://sourceforge.net/projects/mcmc-jags/files/JAGS/3.x/) (the latest JAGS version at the time of writing these instructions is 3.4.0).
 
 ### Install R packages
 
