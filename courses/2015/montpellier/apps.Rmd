@@ -1,0 +1,12 @@
+---
+title: 'Hierarchical models for conservation biologists made easy'
+layout: default
+subtitle: 'Apps'
+---
+
+### Simple MLE example
+
+<iframe id="frame" name="app" src="https://psolymos.shinyapps.io/app01"></iframe>
+
+### Simple Bayesian model
+
