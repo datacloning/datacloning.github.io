@@ -4,7 +4,7 @@ layout: default
 ---
 
 
-### One-day teaching workshop at [ICCB/ECCB congress](http://www.iccb-eccb2015.org/content/pre-congress-training-workshops) in Monpellier, France, on August 1st
+### One-day teaching workshop at [ICCB/ECCB congress](http://www.iccb-eccb2015.org/content/pre-congress-training-workshops) in Montpellier, France, on August 1st
 
 ![Montpellier course image](http://peter.solymos.org/img/thumbnails/dc-montpellier-2015.png)
 
