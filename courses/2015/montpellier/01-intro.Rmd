@@ -342,6 +342,7 @@ for (i in 1:B) {
 ```
 
 Let us compare the true CI with the estimated CIs:
+
 ```r
 cbind(true=ci0, asy=ci1,
     pb=ci2, npb=ci3)
