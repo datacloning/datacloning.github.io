@@ -357,3 +357,129 @@ The implicit logic is that if the procedure is reliable, we could rely on the in
 This is similar to relying more on the blood pressure results from a machine that has small measurement error instead of one with large measurement error. 
 
 
+### Bayesian analysis 
+
+One major criticism of the Frequetist approach is that we do not repeat the experiment. What we want to know is: What do the data at hand tell us? 
+Bayesian approach does not quite answer that question but answers a different question: Given these data, how do I change my beliefs? 
+
+Our goal is to infer about the true parameter value (the true occupancy proportion). 
+Prior distribution: This quantifies in probabilistic terms our personal beliefs about the true occupancy rate. 
+
+We may believe that it is most likely to be 0.7. Then we consider distribution with mode at 0.7. We cannot determine the entire distribution from such information. But that is what a Bayesian inference demands. It is a very difficult task but is a necessary task if you want to use the Bayesian approach. 
+
+Posterior distribution: This quantifies the beliefs as modified by the data. The mathematical formulation is as follows:
+
+> MATH COMES HERE ---------- check
+
+R commands: 
+ Illustrate the following features:
+Different priors, same data lead to different posteriors.
+Same prior, different data lead to different posteriors. 
+As the sample size increases, the posterior is invariant to the prior. (eventually degenerate at the true value).
+
+We can have a figure for these with Beta family of priors. We should also have a bimodal prior distribution and show what kind of posterior it leads to. 
+
+
+
+
+```r
+## Bayesian posterior calculations
+y0 <- sim_fun(100, p)
+y <- y0[1:10]
+fLik <- function(p, y) {
+    exp(sum(dbinom(y, size = 1, prob = p, log = TRUE)))
+}
+## beta(0.5,0.5) is the Jeffrey's prior
+fPri <- function(p, type=c("uniform"), shape1=0.5, shape2=0.5) {
+    switch(type,
+        "uniform" = dunif(p, min = 0, max = 1),
+        "beta" = dbeta(p, shape1, shape2))
+}
+fPos <- function(p, y, ...) {
+    fLik(0, y) * fPri(p, ...)
+}
+pval <- seq(0.01, 0.99, 0.01)
+
+Lik <- sapply(pval, fLik, y=y)
+Pri <- sapply(pval, fPri, type="beta", 1, 0.5)
+Pos <- sapply(pval, fPos, y=y, type="beta", 1, 0.5)
+
+par(mfrow=c(1,3))
+plot(pval, Lik/sum(Lik), type="l")
+plot(pval, Pri/sum(Pri), type="l")
+plot(pval, Lik*Pri/sum(Lik*Pri), type="l")
+
+```
+
+
+### Non-informative priors (Objective Bayesian analysis)
+
+It is clear that priors have an effect on the Bayesian inference. And, they should have an effect. However, this subjectivity is bothersome to many scientists. There is an approach that is euphemistically called an objective Bayesian approach. In this approach, we try to come up with priors that have least influence on the inference (e.g. Bernardo, 1980). There is no unique definition of what we mean by non-informative priors. Various priors have been suggested in the literature. The most commonly used non-informative priors are: Uniform priors and the large variance priors. Other priors are nearly impossible to specify for the complex models that ecologists are faced with. 
+
+Do these priors affect the inference? 
+
+The answer is that ''they most certainly do''. There is nothing wrong with the priors affecting the inference as long as the researchers can justify their priors. 
+
+> Uniform prior and its effect:
+>
+> Log-normal prior and its effect:
+>
+> Jeffrey's prior and its effect:
+
+Fundamentally there is no such thing as 'objective' Bayesian inference. Those who want to use Bayesian inference should simply accept that the inferences are affected by the choice of the priors. 
+
+### Data cloning: How to trick Bayesians into giving Frequentist answers?
+
+> Difference between Frequentist and Bayesian inferential statements:
+>
+> Summarize the philosophical differences between the inferential statements made 
+> by a Frequentist and a Bayesian in the context of occupancy model. 
+
+### Continuous observations
+
+> Peter: 
+> Can you come up with an ecological situation where the response is continuous? 
+> And, we want to do prediction of the unobserved data? 
+
+Let us look at the likelihood function and all the other things we did so far when the observations are continuous. We will have exactly the same programs but with Normal distribution substituted for the Bernoulli distribution. 
+
+Prediction of the unobserved data:
+
+This is where there is substantial difference between the frequentist method and Bayesian method.
+
+> #### R commands:
+> True predictive distribution: This will be under the true parameter values. 
+
+Can we get a reasonable approximation of this distribution? 
+
+1. Estimated predictive distribution: This will change from one sample to the other. 
+2. Frequentist predictive distribution: 
+3. Bayesian predictive distribution: 
+
+What do we mean by: Is the prediction interval correct? 
+
+Coverage probability: 
+Estimated predictive distribution has smaller than nominal coverage.
+Frequentist and Bayesian predictive distributions are wider and hence tend to have better coverage. 
+Obviously, the Bayesian predictive coverage depends on the prior distribution. For some priors, one gets really good coverage and some can have really bad coverage. 
+Frequentist predictive coverage is also not guaranteed to have good coverage. 
+As the sample size increases, both Bayesian and Frequentist predictive distributions converge to the true predictive distribution. 
+
+### Data cloning for Frequentist predictive distribution:
+
+MORAL: If the sample size is large, the numerical differences between the Frequentist and Bayesian answers vanish. However, their interpretation is different. 
+
+### What have we learnt?
+
+* Data generation
+* Likelihood (Analytical, Graphical and also in JAGS)
+* Frequentist inference 
+* Bayesian inference 
+* Data cloning to get MLE and confidence intervals 
+
+> (This will illustrate how to extend the standard model file to accommodate data 
+> cloning dclone with dcdim command as well as init values). We also remind them 
+> to check the results with different priors to make sure the MCMC is not stuck.
+
+
+
