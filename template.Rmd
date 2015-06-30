@@ -411,5 +411,12 @@ barplot(1:length(dc_pal_flatly),
 {: .objectives}
 
 
+```r
+a <- list("a", 1, FALSE, function(x) x+1) # no
+## yes
+```
 
-
+```{r}
+a <- list("a", 1, FALSE, function(x) x+1) # no
+## yes
+```
