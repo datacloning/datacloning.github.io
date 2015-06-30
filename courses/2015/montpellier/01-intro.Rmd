@@ -3,48 +3,52 @@ title: "Hierarchical Models Made Easy"
 author: "Peter Solymos and Subhash Lele"
 date: "August 1, 2015 -- Montpellier, France -- ICCB/ECCB Congress"
 output: pdf_document
-subtitle: Introduction to Maximum Likelihood Estimation
+subtitle: Maximum Likelihood Estimation
 layout: default
 ---
 
 ### Introduction
 
-Science, as we envision it, is an interplay between inductive and deductive processes. Francis Bacon, the father of what is known as the scientific method, emphasizes the roles of observations, alternative explanations and tests to choose among various explanations. Bacon saw science as inductive process, moving from the particular to the general (Susser, 1986). Popper (1959) proposed the doctrine of falsification, which defines what is acceptable as a scientific hypothesis: if a statement cannot be falsified, then it is not a scientific hypothesis. This is intrinsically a deductive process. What is common to these different views is that theories need to be probed to assess their correctness. Observations play an important role in such probing. 
+Science, as we envision it, is an interplay between inductive and deductive processes. Francis Bacon, the father of what is known as the scientific method, emphasizes the roles of observations, alternative explanations and tests to choose among various explanations. Bacon saw science as inductive process, moving from the particular to the general (Susser, 1986). 
 
-In most scientific situations, we are interested in understanding the natural processes that have given rise to the observations. Such understanding generally leads to prediction and possibly control of the processes. Traditionally, we formulate our understanding of the processes in terms of mathematical models. These mathematical models may be deterministic or may be stochastic. It is widely accepted, at least by the statisticians, that stochastic models represent nature more effectively than pure deterministic models. Aside from the natural stochasticity in the system, the observations themselves might have measurement error making it necessary to consider stochastic models to model observations. 
+Popper (1959) proposed the doctrine of falsification, which defines what is acceptable as a scientific hypothesis: if a statement cannot be falsified, then it is *not* a scientific hypothesis. This is intrinsically a deductive process. What is common to these different views is that theories need to be probed to assess their correctness. Observations play an important role in such probing. 
 
-One of the consequences of stochastic models is that Popper's theory of falsification does not strictly apply. No data are strictly inconsistent with a stochastic model, except in artificial situations or trivially improper models. Thus, one can only say that the observed data are more likely under one model than the other; or that strength of evidence for one hypothesis is larger than an alternative. We cannot outright accept or reject a hypothesis. 
+In most scientific situations, we are interested in understanding the natural processes that have given rise to the observations. Such understanding generally leads to prediction and possibly control of the processes. Traditionally, we formulate our understanding of the processes in terms of mathematical models. These mathematical models may be deterministic or may be stochastic.
 
-Given a set of stochastic models (or, equivalently a set of alternative descriptions of the underlying process), the goal of statistical inference is to choose that model that is best supported by the data. Thus, statistical inference is both deductive (it makes some predictions) and inductive (data determines which model is best supported). An important feature that we demand from all our statistical inference procedures is that with infinite amount of information, the probability of choosing the correct model converges to one (Royall, 2000). 
+It is widely accepted, at least by the statisticians, that stochastic models represent nature more effectively than pure deterministic models. Aside from the natural stochasticity in the system, the observations themselves might have measurement error making it necessary to consider stochastic models to model observations. 
+
+One of the consequences of stochastic models is that Popper's theory of falsification does not strictly apply. No data are strictly inconsistent with a stochastic model, except in artificial situations or trivially improper models. Thus, one can only say that the observed data are more likely under one model than the other; or that the strength of evidence for one hypothesis is larger than for an alternative. We cannot outright accept or reject a hypothesis. 
+
+Given a set of stochastic models (or, equivalently a set of alternative descriptions of the underlying process), the goal of statistical inference is to choose the model that is best supported by the data. Thus, statistical inference is both deductive (it makes some predictions) and inductive (data determines which model is best supported). An important feature that we demand from all our statistical inference procedures is that with infinite amount of information, the probability of choosing the correct model converges to one (Royall, 2000). 
 
 Another important feature of statistical inference is that it is uncertain. We want to know whether or not our inferential statement, namely the choice of the model, is trustworthy. Quantifying the uncertainty in the inferential statements is a critical issue and has led to different statistical philosophies of inference (e.g. Barnett, Royall, Taper and Lele), in particular the frequentist philosophy and the Bayesian philosophy. Just as numbers without understanding the units are meaningless, statistical inferential statements without proper understanding of the uncertainty are meaningless. 
 
 We will discuss the differences in the two approaches to quantify uncertainty in the statistical inference in detail in the context of a simple example later. For the interested researcher, there are several resources available that discuss these issues in depth. We particularly recommend the books by Richard Royall (Royall, 1997), Vic Barnett (Barnett, 2002?) and an edited volume by Mark Taper and Subhash Lele (Taper and Lele, 2004). 
 
-We also do not intend to give a detailed tutorial on the basics of statistical inference. There are many standard reference books for such introduction. For a mathematical and theoretical introduction see Casella and Berger and for more elementary but useful introduction, see e.g. Bolker (?). (We need to refer to an elementary book for ecologists and scientists.) 
+We also do not intend to give a detailed tutorial on the basics of statistical inference. There are many standard reference books for such introduction. For a mathematical and theoretical introduction see Casella and Berger and for more elementary but useful introduction, see e.g. Bolker (2000?).
 
 ### A simple example
 
-Let us start with a simple occupancy model. We will use this model to introduce various important concepts that will be used throughout the book. We will use it also to introduce some basic commands for analyzing data using the package `dclone`. 
+Let us start with a simple occupancy model. We will use this model to introduce various important concepts that will be used throughout the course. We will use it also to introduce some basic commands for analyzing data using the R package dclone. 
 
-In conservation biology, one of the first things we want to do is monitor the current status of the population. This can be done in terms of simple presence-absence data answering the question: what is the proportion of occupied sites? If this proportion is high, it may imply that we should not worry too much about the species (if it is something we want to maintain) or may be we want to do some biological control (if it is an invasive species). A simple monitoring procedure would consist of 
+In conservation biology, one of the first things we want to do is monitor the current status of the population. This can be done in terms of simple presence-absence data answering the question: what is the proportion of occupied sites? If this proportion is high, it may imply that we should not worry too much about the species (if it is something we want to maintain) or may be we want to do some biological control (if it is an invasive species). A simple monitoring procedure would consist of the following steps:
 
 1. Divide the study area into quadrats of equal area. Suppose there are $N$ such quadrats. 
 2. Take a simple random sample of size $n$ from these. 
 3. Visit these sites and find out if it is occupied by the species or not. 
 
-> #### Assumptions
->
-> It is critical that we state the assumptions underlying the statistical model. 
-> In practice, however, we may or may not be able to know whether all the 
-> assumptions are fulfilled or not. 
->
-> 1. Quadrats are identical to each other. 
-> 2. Occupancy status of one quadrat does not depend on the status of other quadrats.
+### Assumptions
+
+It is critical that we state the assumptions underlying the statistical model. 
+In practice, however, we may or may not be able to know whether all the 
+assumptions are fulfilled or not. 
+
+1. Quadrats are identical to each other. 
+2. Occupancy status of one quadrat does not depend on the status of other quadrats.
 
 Mathematically we write this as follows:
 
-$Y_{i} \sim Binomial(1, p)$  (this is also known as the Bernoulli distribution) are independent, identically distributed (i.i.d.) random variables. 
+$Y_{i} \sim Binomial(1, p)$  (this is also known as the Bernoulli distribution) are independent, identically distributed (*i.i.d.*) random variables. 
 
 * Observed data: $Y_{1}, Y_{2}, \ldots, Y_{n}$
 * Unobserved data: $Y_{n+1}, Y_{n+2}, \ldots, Y_{N}$
@@ -52,7 +56,7 @@ $Y_{i} \sim Binomial(1, p)$  (this is also known as the Bernoulli distribution) 
 The probability mass function of the Bernoulli random variable is written as: 
 $P(Y=y) = p^y (1-p)^{1-y}$, where $p \in (0,1)$ and $y=0,1$.
 
-We can now write down the likelihood function. This is proportional to the probability of observing the data at hand. 
+We can now write down the likelihood function. This is proportional to the probability of observing the data at hand: 
 
 $$L(p; y_{1}, y_{2}, \ldots, y_{n}) = \prod_{i=1}^{n} p^{y_{i}} (1-p)^{1-y_{i}}$$
 
@@ -60,15 +64,15 @@ We take product because observations are assumed to be independent of each other
 
 ### Important properties of likelihood
 
-* Likelihood is a function of the parameter. Data are fixed. 
-* It is _not_ a probability of the parameter taking a specific value. It represents the following quantity: If the parameter is $p=p^\ast$, then the probability of observing the data at hand is $L(\tilde{p}; y_{1}, y_{2}, \ldots, y_{n}) = \prod_{i=1}^{n} \tilde{p}^{y_{i}} (1-\tilde{p})^{1-y_{i}}$. We can vary the parameter value and get a function as represented below:
+* Likelihood is a function of the parameter. 
+* Data are fixed. 
+* Likelihood is _not_ a probability of the parameter taking a specific value. It represents the following quantity: If the parameter is $p=p^\ast$, then the probability of observing the data at hand is $L(\tilde{p}; y_{1}, y_{2}, \ldots, y_{n}) = \prod_{i=1}^{n} \tilde{p}^{y_{i}} (1-\tilde{p})^{1-y_{i}}$. We can vary the parameter value and get a function as represented below:
 
 ```r
-op <- par(las=1) # always horizontal axis, store old settings in op
-set.seed(1234) # set random seed for reproducibility
 ## random numbers from Binomial distribution
 ## Binomial with size=1 is a Bernoulli distribution
 ## p value set as 0.5
+set.seed(1234) # set random seed for reproducibility
 (y <- rbinom(n = 100, size = 1, p = 0.5))
 y1 <- y[1:10] # take only the 1st 10 eloements of y
 
@@ -86,17 +90,35 @@ pt <- seq(0, 1, by = 0.01)
 ## using one element of the vector at a time (argument z becomes prob=z)
 ## by fixing the data y1
 L <- sapply(pt, function(z) prod(dbinom(y1, size = 1, prob = z)))
+```
 
+```r
+op <- par(las=1) # always horizontal axis, store old settings in op
+## color palettes for nice figures
+flatly <- list(
+    "red"="#c7254e",
+    "palered"="#f9f2f4",
+    "primary"="#2c3e50",
+    "success"="#18bc9c",
+    "info"="#3498db",
+    "warning"="#f39c12",
+    "danger"="#e74c3c",
+    "pre_col"="#7b8a8b",
+    "pre_bg"="#ecf0f1",
+    "pre_border"= "#cccccc")
+dcpal_reds <- colorRampPalette(c("#f9f2f4", "#c7254e"))
+dcpal_grbu <- colorRampPalette(c("#18bc9c", "#3498db"))
 ## now we plot the Likelihood function
-plot(pt, L, type = "l", main = paste("n =", length(y1)))
-abline(v = 0.5, lwd = 2, col = 2) # true value
-abline(v = pt[which.max(L)], lwd = 2, col = 4) # ML extimate
+plot(pt, L, type = "l", col = flatly$info,
+    main = paste("n =", length(y1)))
+abline(v = 0.5, lwd = 2, col = flatly$red) # true value
+abline(v = pt[which.max(L)], lwd = 2, col = flatly$success) # ML extimate
 ```
 
 ### As we change the data, the likelihood function changes
 
 ```r
-## This function has a single argument, n, that is sample size
+## function f has a single argument, n: sample size
 f <- function(n) {
     y <- rbinom(n = n, size = 1, p = 0.5)
     L <- sapply(pt, function(z) prod(dbinom(y, size = 1, prob = z)))
@@ -104,14 +126,15 @@ f <- function(n) {
 }
 ## create a blank plot
 plot(0, type = "n", main = "n constant, y changes",
-     ylim = c(0, 1), xlim = c(0, 1))
+     ylim = c(0, 1), xlim = c(0, 1),
+     xlab = "pt", ylab = "L / max(L)")
 ## we simulate an n=25 data set 100 times and 
 ## plot the scaled likelihood function [L / max(L)]
 tmp <- replicate(100, 
-    lines(pt, f(25), col = rgb(0,0,0, alpha=0.1)))
-abline(v = 0.5, lwd = 2, col = 2)
+    lines(pt+runif(1,-0.01,0.01), f(25), 
+    col = flatly$info))
+abline(v = 0.5, lwd = 2, col = flatly$red)
 ```
-
 
 ### As we increase the sample size, the likelihood becomes concentrated around the true value. 
 
@@ -129,52 +152,78 @@ Lm <- sapply(nvals,
 ## plot the results
 matplot(pt, Lm, type = "l", 
     lty = 1, ylab = "L / max(L)", main = "n increases",
-    col=rev(terrain.colors(ncol(Lm))))
-abline(v = 0.5, lwd = 2, col = 2)
+    col=dcpal_grbu(length(nvals)))
+abline(v = 0.5, lwd = 2, col = flatly$red)
 ```
 
 * Likelihood value represents the support in the data for a particular parameter value. This is intrinsically a relative concept. How much more support do we have for this parameter value vs. another parameter value. 
 * Likelihood ratio is a more fundamental concept than the likelihood function itself. Law of the likelihood (Hacking, Royall): 
-    + Goals of statistical inference:
-        1. Given these data, what is the strength of evidence for one hypothesis over the other hypothesis?
-        2. Given these data, how do we change our beliefs?
-        3. Given these data, what decision do we make?
+
+We can now summarize the goals of statistical inference:
+
+1. Given these data, what is the strength of evidence for one hypothesis over the other hypothesis?
+2. Given these data, how do we change our beliefs?
+3. Given these data, what decision do we make?
 
 
-### Maximum likelihood estimator
+### The maximum likelihood estimator
 
 Which parameter value has the largest support in the data? 
 
+We can use numerical optimization to get the value of a parameter
+where the likelihood function is maximal.
+Such a parameter value is called an (point) estimate,
+while the function we are using to do the estimation (in this case th
+likelihood function, but there might be other functions, too) is
+called an estimator.
+
+In numerical optimization, we often find the minimum of the
+negative of a function, instead of finding the maximum.
+Also, we use the log likelihood, because the product
+becomes a sum on the log scale. This is much easier to compute.
+That is why we ofteh find that programs define the negative
+log likelihood function as we do below.
+
 ```r
-## Using numerical optimization 
-## to get the maximum of the likelihood function
+## this functions simulates observations
 sim_fun <- function(n, p) {
     rbinom(n = n, size = 1, p = p)
 }
-
+## this function returns the negative log likelihood value
 nll_fun <- function(p, y) {
     -sum(dbinom(y, size = 1, prob = p, log = TRUE))
 }
+```
 
+We use $n=100$ and $p=0.5$ for simulating the observation vector $y$.
+Then use the one dimensional optimization function, `optimize`.
+(For multivariate optimization problems, see the `optim` function.)
+
+What is different between using optimization vs. manually setting up a set of values is that optimization starts with a sparse grid first to see
+what region of the parameter space is of interest. In this region then 
+the search for the minimum (or maximum) is continued with more intensity,
+i.e. until the difference in subsequent candidate estimates reaches a pre defines
+tolerance threshold (`tol` argument in `optimize`).
+
+```r
 n <- 100
 p <- 0.5
 y <- sim_fun(n, p)
 optimize(nll_fun, interval = c(0, 1), y = y)
-## explain why minimize, what is nll, what is optimize (1D)
-## explain why -sum(log())
-## explain the process: set values, simulate, estimate, repeat
 ```
 
+Once we can write down the likelihood, we can in principle
+write a program to calculate the value of the (negative log) likelihood
+function given some parameter value and the data.
 
-Illustrate: 
-1. Using numerical optimization to get the MLE (once you can write the likelihood)
-2. Different data sets lead to different parameter estimates. 
+### The sampling distribution of the estimates
 
-Different samples lead to different value of MLE. A natural question to ask would be: How much would the answers vary if we have different samples? 
+Let us revisit now what happened when we kept the sample size fixed but changed
+the data. In this case, we get different parameter estimates (MLEs) for different
+data sets. A natural question to ask would be: How much would the answers vary if we have different samples? 
 
-R commands: 
-* The sampling distribution of the estimates
-* Confidence interval
+In the following program we pre-allocate a vector of length $B$, we simulate
+the data $B$ times and store the corresponding MLEs in the object `res`:
 
 ```r
 B <- 1000
@@ -183,113 +232,127 @@ for (i in 1:B) {
     y <- sim_fun(n, p)
     res[i] <- optimize(nll_fun, interval = c(0, 1), y = y)$minimum
 }
+```
 
-mean(res)
-## bias
-mean(res) - p
+Some summary statistics reveal interesting things: the $B$ estimates now
+have a *sampling distribution* that can be characterized by its
+mean and various percentiles:
 
-## coverage
+```r
+summary(res)
+quantile(res, c(0.025, 0.975))
+```
+
+### Bias and consistency
+
+The bias is defined as the deviation between the
+estimate and the true parameter values.
+When the bias converges to 0 whith increasing sample size,
+we say that an estimator is consistent:
+
+```r
+mean(res - p)
+```
+
+Precision is the corresponding feature of an estimate.
+
+### Confidence interval and efficiency
+
+The 2.5% and 97.5% percentiles of the sampling distribution correspond to the
+95% analytical confidence intervals around the true parameter value.
+
+```r
 level <- 0.95
 a <- (1 - level) / 2
 a <- c(a, 1 - a)
 quantile(res, a)
-qbinom(a, size = n, prob = p) / n
-
-hist(res, col = "linen", xlim = c(0, 1))
-## true value
-abline(v = p, lwd = 2, col = 2)
-abline(v = qbinom(a, size = n, prob = p) / n, 
-    lwd = 2, col = 2, lty = 2)
-## estimates
-abline(v = mean(res), lwd = 2, col = 4)
-abline(v = quantile(res, a), lwd = 2, col = 4, lty = 2)
-rug(res, col = rgb(0, 0, 0, alpha = 0.1), lwd = 2)
+(ci0 <- qbinom(a, size = n, prob = p) / n)
 ```
+
+An estimator is called efficient when the variation in the sampling
+distribution and the confidence interval gets smaller with increasing
+sample size. Accuracy is the corresponding feature of an estimate.
+When the percentiles of the sampling distribution 
+are close to the corresponding analytical confidence intervals, we
+say that the estimator has nomila coverage.
+
+The following plot shows tha sampling distribution of the
+estimates, the true parameter value, the mean of the estimates,
+the analytical confidence intervals and the quantiles of the
+sampling distribution. The values overlap perfectly, that is why the red
+lines are not visible:
+
+```r
+hist(res, col = flatly$palered, border = flatly$pre_border,
+    xlim = c(0, 1))
+rug(res+runif(B, -0.01, 0.01), col = flatly$info, lwd = 2)
+## true value and analyticsl confidence intervals
+abline(v = p, lwd = 2, col = flatly$red)
+abline(v = qbinom(a, size = n, prob = p) / n, 
+    lwd = 2, col = flatly$red, lty = 2)
+## sampling distribution based sumarry statistics
+abline(v = mean(res), lwd = 2, col = flatly$success)
+abline(v = quantile(res, c(0.025, 0.975)), 
+    lwd = 2, col = flatly$success, lty = 2)
+```
+
+### Estimated confidence intervals
 
 Of course, in real life, we do not have the luxury of conducting such repeated experiments. So what good are these ideas? 
 
-Estimated confidence intervals:
+One vay to quentify the uncertainty in the estimate is to use
+asymptotic conficence intervals as we saw above. We called it analytical
+because for this particular model we could calculate it analytically.
+This, however, mignt not be the case in all situation. One can estimate
+the asymptotic standard error and conficence interval of an estimate:
+
+```r
+## our data
+y <- sim_fun(n, p)
+## MLE
+est <- optimize(nll_fun, interval = c(0, 1), y = y)$minimum
+(ci1 <- qbinom(a, size = n, prob = est) / n)
+```
 
 We have the MLE. The MLE is kind of close to the true parameter value. So suppose we pretend as if the MLE is the true parameter value, we can get the sampling distribution and the confidence interval. This is the idea behind the parametric bootstrap confidence intervals. 
 
 ```r
-## parametric bootstrap comes here
 B <- 1000
-y <- sim_fun(n, p)
-bres <- numeric(B)
-est <- optimize(nll_fun, interval = c(0, 1), y = y)$minimum
+pbres <- numeric(B)
 for (i in 1:B) {
-    yb <- sim_fun(n, est)
-    bres[i] <- optimize(nll_fun, interval = c(0, 1), y = yb)$minimum
+    yb <- sim_fun(n, est) # treat est as 'true' value and estimate
+    pbres[i] <- optimize(nll_fun, interval = c(0, 1), y = yb)$minimum
 }
-quantile(bres, a)
+(ci2 <- quantile(pbres, a))
 ```
 
+The non-parametric bootstrap is based on a similar principle,
+but instead of simulating data sets under our initial estimate,
+we mimic the experiment by resampling the original data set
+with replacement $B$ times:
+
 ```r
-## non-parametric bootstrap -- move this around as needed
-B <- 1000
-y <- sim_fun(n, p)
-bres2 <- numeric(B)
-est <- optimize(nll_fun, interval = c(0, 1), y = y)$minimum
+## we use the same settings and data as for non-parametric bootstrap
+npbres <- numeric(B)
 for (i in 1:B) {
     yb <- sample(y, replace = TRUE)
-    bres2[i] <- optimize(nll_fun, interval = c(0, 1), y = yb)$minimum
+    npbres[i] <- optimize(nll_fun, interval = c(0, 1), y = yb)$minimum
 }
-quantile(bres, a)
+(ci3 <- quantile(npbres, a))
 ```
 
-R commands: 
-
-Simulation based CI and its comparison to the true CI (Based on the true parameter value)
-
+Let us compare the true CI with the estimated CIs:
 ```r
-ci <- matrix(NA, B, 2)
-for (i in 1:B) {
-    y <- sim_fun(n, p)
-    est <- optimize(nll_fun, interval = c(0, 1), y = y)$minimum
-    ci[i,] <- qbinom(a, size = n, prob = est) / n
-}
-
-table(rowSums(sign(ci - p)) == 0) / B
-## explain why divide by n and B
-## how ci matrix is constructed
-## interval calculations using signed diff
+cbind(true=ci0, asy=ci1,
+    pb=ci2, npb=ci3)
 ```
+
+### Summary
 
 This kind of analysis is called the frequentist analysis. We are studying the properties of the inferential statement under the hypothetical replication of the experiment. This analysis tells us about the reliability of the procedure. 
 
-The implicit logic is that if the procedure is reliable, we could rely on the inferential statements obtained from only one data. We choose a procedure that is most reliable. 
+The implicit logic is that if the procedure is reliable, we could rely on the inferential statements obtained from only one data set. We choose a procedure that is most reliable. 
 
-This is similar to relying more on the blood pressure results from a machine that has small measurement error than the one with large measurement error. 
+This is similar to relying more on the blood pressure results from a machine that has small measurement error instead of one with large measurement error. 
 
-
-```r
-## Bayesian posterior calculations
-y0 <- sim_fun(100, p)
-y <- y0[1:10]
-fLik <- function(p, y) {
-    exp(sum(dbinom(y, size = 1, prob = p, log = TRUE)))
-}
-## beta(0.5,0.5) is the Jeffrey's prior
-fPri <- function(p, type=c("uniform"), shape1=0.5, shape2=0.5) {
-    switch(type,
-        "uniform" = dunif(p, min = 0, max = 1),
-        "beta" = dbeta(p, shape1, shape2))
-}
-fPos <- function(p, y, ...) {
-    fLik(0, y) * fPri(p, ...)
-}
-pval <- seq(0.01, 0.99, 0.01)
-
-Lik <- sapply(pval, fLik, y=y)
-Pri <- sapply(pval, fPri, type="beta", 1, 0.5)
-Pos <- sapply(pval, fPos, y=y, type="beta", 1, 0.5)
-
-par(mfrow=c(1,3))
-plot(pval, Lik/sum(Lik), type="l")
-plot(pval, Pri/sum(Pri), type="l")
-plot(pval, Lik*Pri/sum(Lik*Pri), type="l")
-
-## ckeck if product in Lik and prior is OK as separate
-```
 
