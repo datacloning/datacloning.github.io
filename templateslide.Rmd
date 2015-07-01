@@ -32,7 +32,8 @@ layout: false
 
 ![](favicon.ico =50x)
 
-<img source="favicon.ico", style="height: 50px;"/>
+![:scale 10%](favicon.ico)
+
 ---
 .left-column[
   ## What is it?
