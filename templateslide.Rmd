@@ -30,9 +30,6 @@ layout: false
 ---
 ![](favicon.ico)
 
-![](favicon.ico =50x)
-
-
 ---
 .left-column[
   ## What is it?
