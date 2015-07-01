@@ -28,6 +28,8 @@ layout: false
 3. ...
 
 ---
+![](favicon.ico)
+---
 .left-column[
   ## What is it?
   ## Why use it?
@@ -52,7 +54,7 @@ Then remark might be perfect for your next.red[*] slideshow!
 
 # Introduction
 
-```R
+```r
 a <- 10
 *b = a
 f <- a
