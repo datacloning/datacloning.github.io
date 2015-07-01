@@ -32,7 +32,6 @@ layout: false
 
 ![](favicon.ico =50x)
 
-![:scale 10%](favicon.ico)
 
 ---
 .left-column[
