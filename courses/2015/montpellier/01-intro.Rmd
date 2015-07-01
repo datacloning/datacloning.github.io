@@ -73,7 +73,7 @@ We take product because observations are assumed to be independent of each other
 ## Binomial with size=1 is a Bernoulli distribution
 ## p value set as 0.5
 set.seed(1234) # set random seed for reproducibility
-(y <- rbinom(n = 100, size = 1, p = 0.5))
+(y <- rbinom(n = 1000, size = 1, p = 0.5))
 y1 <- y[1:10] # take only the 1st 10 eloements of y
 
 ## pt is our p value that we want the Likelihood to be calculated for
@@ -141,7 +141,7 @@ abline(v = 0.5, lwd = 2, col = flatly$red)
 ```r
 ## try different sample sizes, data is fixed
 ## so samples can be nested
-nvals <- seq(10, length(y), by = round(length(y)/10))
+nvals <- seq(100, length(y), by = round(length(y)/10))
 ## scaled likelihood function using different sample sizes
 Lm <- sapply(nvals, 
     function(n) {
@@ -265,8 +265,7 @@ The 2.5% and 97.5% percentiles of the sampling distribution correspond to the
 level <- 0.95
 a <- (1 - level) / 2
 a <- c(a, 1 - a)
-quantile(res, a)
-(ci0 <- qbinom(a, size = n, prob = p) / n)
+(ci0 <- quantile(res, a))
 ```
 
 An estimator is called efficient when the variation in the sampling
@@ -310,8 +309,9 @@ the asymptotic standard error and conficence interval of an estimate:
 ## our data
 y <- sim_fun(n, p)
 ## MLE
-est <- optimize(nll_fun, interval = c(0, 1), y = y)$minimum
-(ci1 <- qbinom(a, size = n, prob = est) / n)
+(est <- optimize(nll_fun, interval = c(0, 1), y = y)$minimum)
+(ci1 <- qnorm(a, mean = est,
+    sd = sqrt(est * (1-est) / n)))
 ```
 
 We have the MLE. The MLE is kind of close to the true parameter value. So suppose we pretend as if the MLE is the true parameter value, we can get the sampling distribution and the confidence interval. This is the idea behind the parametric bootstrap confidence intervals. 
@@ -387,7 +387,7 @@ We can have a figure for these with Beta family of priors. We should also have a
 y0 <- sim_fun(100, p)
 y <- y0[1:10]
 fLik <- function(p, y) {
-    exp(sum(dbinom(y, size = 1, prob = p, log = TRUE)))
+    prod(dbinom(y, size = 1, prob = p))
 }
 ## beta(0.5,0.5) is the Jeffrey's prior
 fPri <- function(p, type=c("uniform"), shape1=0.5, shape2=0.5) {
@@ -401,12 +401,12 @@ fPos <- function(p, y, ...) {
 pval <- seq(0.01, 0.99, 0.01)
 
 Lik <- sapply(pval, fLik, y=y)
-Pri <- sapply(pval, fPri, type="beta", 1, 0.5)
-Pos <- sapply(pval, fPos, y=y, type="beta", 1, 0.5)
+Pri <- sapply(pval, fPri, type="beta", 0.5, 0.5)
+Pos <- sapply(pval, fPos, y=y, type="beta", 0.5, 0.5)
 
 par(mfrow=c(1,3))
-plot(pval, Lik/sum(Lik), type="l")
 plot(pval, Pri/sum(Pri), type="l")
+plot(pval, Lik/sum(Lik), type="l")
 plot(pval, Lik*Pri/sum(Lik*Pri), type="l")
 
 ```
@@ -420,13 +420,17 @@ Do these priors affect the inference?
 
 The answer is that ''they most certainly do''. There is nothing wrong with the priors affecting the inference as long as the researchers can justify their priors. 
 
-> Uniform prior and its effect:
+> Uniform prior and its effect: prob scale
 >
-> Log-normal prior and its effect:
+> Log-normal prior and its effect: normal prior on logit scale
 >
-> Jeffrey's prior and its effect:
+> Jeffrey's prior and its effect: not affected
+>
+> for same data you get different answers
 
 Fundamentally there is no such thing as 'objective' Bayesian inference. Those who want to use Bayesian inference should simply accept that the inferences are affected by the choice of the priors. 
+
+
 
 ### Data cloning: How to trick Bayesians into giving Frequentist answers?
 
@@ -434,6 +438,10 @@ Fundamentally there is no such thing as 'objective' Bayesian inference. Those wh
 >
 > Summarize the philosophical differences between the inferential statements made 
 > by a Frequentist and a Bayesian in the context of occupancy model. 
+
+Add here: not increasing n but copy the data, see what happens (should be the same as more n)
+--> another app for DC (show MLE as well)
+
 
 ### Continuous observations
 
@@ -481,5 +489,50 @@ MORAL: If the sample size is large, the numerical differences between the Freque
 > cloning dclone with dcdim command as well as init values). We also remind them 
 > to check the results with different priors to make sure the MCMC is not stuck.
 
+
+library(diagram)
+
+## Bernoulli
+par(mar = c(1, 1, 1, 1))
+openplotmat(main = "Bernoulli")
+pos <- coordinates(3)
+straightarrow(from = pos[2, ], to = pos[1, ])
+straightarrow(from = pos[3, ], to = pos[2, ])
+textrect(pos[1,], 0.05, 0.05, lab="Y", shadow.size=0, box.col="#ecf0f1")
+textellipse(pos[2,], 0.05, 0.05, lab="p", shadow.size=0)
+textdiamond(pos[3,], 0.05, 0.05, lab=expression(pi[p]), shadow.size=0)
+
+## Bernoulli-Bernoulli
+par(mar = c(1, 1, 1, 1))
+openplotmat(main = "Bernoulli-Bernoulli")
+pos <- coordinates(c(3,3))
+straightarrow(from = pos[2, ], to = pos[1, ])
+straightarrow(from = pos[3, ], to = pos[2, ])
+straightarrow(from = pos[1, ], to = pos[4, ])
+straightarrow(from = pos[6, ], to = pos[5, ])
+straightarrow(from = pos[5, ], to = pos[4, ])
+textellipse(pos[1,], 0.05, 0.05, lab="Y", shadow.size=0)
+textellipse(pos[2,], 0.05, 0.05, lab=expression(phi), shadow.size=0)
+textdiamond(pos[3,], 0.05, 0.05, lab=expression(pi[phi]), shadow.size=0)
+textrect(pos[4,], 0.05, 0.05, lab="W", shadow.size=0, box.col="#ecf0f1")
+textellipse(pos[5,], 0.05, 0.05, lab="p", shadow.size=0)
+textdiamond(pos[6,], 0.05, 0.05, lab=expression(pi[p]), shadow.size=0)
+
+
+## Binomial-Poisson
+par(mar = c(1, 1, 1, 1))
+openplotmat(main = "Binomial-Poisson")
+pos <- coordinates(c(3,3))
+straightarrow(from = pos[2, ], to = pos[1, ])
+straightarrow(from = pos[3, ], to = pos[2, ])
+straightarrow(from = pos[1, ], to = pos[4, ])
+straightarrow(from = pos[6, ], to = pos[5, ])
+straightarrow(from = pos[5, ], to = pos[4, ])
+textellipse(pos[1,], 0.05, 0.05, lab="N", shadow.size=0)
+textellipse(pos[2,], 0.05, 0.05, lab=expression(lambda), shadow.size=0)
+textdiamond(pos[3,], 0.05, 0.05, lab=expression(pi[lambda]), shadow.size=0)
+textrect(pos[4,], 0.05, 0.05, lab="Y", shadow.size=0, box.col="#ecf0f1")
+textellipse(pos[5,], 0.05, 0.05, lab="p", shadow.size=0)
+textdiamond(pos[6,], 0.05, 0.05, lab=expression(pi[p]), shadow.size=0)
 
 
