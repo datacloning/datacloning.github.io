@@ -2,6 +2,7 @@
 title: "Bernoulli model, data cloning"
 runtime: shiny
 output: html_document
+layout: default
 ---
 
 ```{r, echo=FALSE}

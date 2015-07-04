@@ -2,6 +2,7 @@
 title: "Frequentist inference, Bernoulli model"
 runtime: shiny
 output: html_document
+layout: default
 ---
 
 ```{r, echo=FALSE}
