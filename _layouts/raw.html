@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 {% include _head.html %}
+{% include _highlight.html %}
 </head>
 <body>
 {% include _navigation.html %}
@@ -16,7 +17,7 @@
                     <h1 class="title">{{ page.title }}</h1>
                 {% endif %}
             {% endif %}
-<pre><code>{{ content }}</code></pre>
+<pre><code class="language-nohighlight">{{ content }}</code></pre>
         </div>
     </div>
 </div>
