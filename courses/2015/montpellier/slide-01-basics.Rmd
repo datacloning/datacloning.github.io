@@ -3,7 +3,6 @@ title: Slides for Lecture 1
 layout: slide
 ---
 <textarea id="source">
----
 ## How does it work, then?
 ---
 # 1st slide
