@@ -71,13 +71,13 @@ We take product because observations are assumed to be independent of each other
 ```r
 ## random numbers from Binomial distribution
 ## Binomial with size=1 is a Bernoulli distribution
-## p value set as 0.5
+## p value set as 0.3
 set.seed(1234) # set random seed for reproducibility
-(y <- rbinom(n = 1000, size = 1, p = 0.5))
-y1 <- y[1:10] # take only the 1st 10 eloements of y
+(y <- rbinom(n = 1000, size = 1, p = 0.3))
+y1 <- y[1:10] # take only the 1st 10 elements of y
 
 ## pt is our p value that we want the Likelihood to be calculated for
-pt <- 0.4
+pt <- 0.3
 ## the Likelihood is based on the formula from above
 (L <- prod(pt^y1 * (1 - pt)^(1-y1)))
 ## the following statement is equivalent to typing in the formula
@@ -111,7 +111,7 @@ dcpal_grbu <- colorRampPalette(c("#18bc9c", "#3498db"))
 ## now we plot the Likelihood function
 plot(pt, L, type = "l", col = flatly$info,
     main = paste("n =", length(y1)))
-abline(v = 0.5, lwd = 2, col = flatly$red) # true value
+abline(v = p, lwd = 2, col = flatly$red) # true value
 abline(v = pt[which.max(L)], lwd = 2, col = flatly$success) # ML extimate
 ```
 
@@ -133,7 +133,7 @@ plot(0, type = "n", main = "n constant, y changes",
 tmp <- replicate(100, 
     lines(pt+runif(1,-0.01,0.01), f(25), 
     col = flatly$info))
-abline(v = 0.5, lwd = 2, col = flatly$red)
+abline(v = p, lwd = 2, col = flatly$red)
 ```
 
 ### As we increase the sample size, the likelihood becomes concentrated around the true value. 
@@ -153,7 +153,7 @@ Lm <- sapply(nvals,
 matplot(pt, Lm, type = "l", 
     lty = 1, ylab = "L / max(L)", main = "n increases",
     col=dcpal_grbu(length(nvals)))
-abline(v = 0.5, lwd = 2, col = flatly$red)
+abline(v = p, lwd = 2, col = flatly$red)
 ```
 
 * Likelihood value represents the support in the data for a particular parameter value. This is intrinsically a relative concept. How much more support do we have for this parameter value vs. another parameter value. 
@@ -285,10 +285,6 @@ lines are not visible:
 hist(res, col = flatly$palered, border = flatly$pre_border,
     xlim = c(0, 1))
 rug(res+runif(B, -0.01, 0.01), col = flatly$info, lwd = 2)
-## true value and analyticsl confidence intervals
-abline(v = p, lwd = 2, col = flatly$red)
-abline(v = qbinom(a, size = n, prob = p) / n, 
-    lwd = 2, col = flatly$red, lty = 2)
 ## sampling distribution based sumarry statistics
 abline(v = mean(res), lwd = 2, col = flatly$success)
 abline(v = quantile(res, c(0.025, 0.975)), 
@@ -344,8 +340,7 @@ for (i in 1:B) {
 Let us compare the true CI with the estimated CIs:
 
 ```r
-cbind(true=ci0, asy=ci1,
-    pb=ci2, npb=ci3)
+cbind(true = ci0, asy = ci1, pb = ci2, npb = ci3)
 ```
 
 ### Summary
