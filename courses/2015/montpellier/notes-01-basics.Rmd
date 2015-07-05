@@ -48,14 +48,14 @@ assumptions are fulfilled or not.
 
 Mathematically we write this as follows:
 
-$Y_{i} \sim Binomial(1, p)$  (this is also known as the Bernoulli distribution) are independent, identically distributed (*i.i.d.*) random variables. 
+$$Y_{i} \sim Binomial(1, p)$$  (this is also known as the Bernoulli distribution) are independent, identically distributed (*i.i.d.*) random variables. 
 
-Observed data: \\( Y_{1}, Y_{2}, \ldots, Y_{n} \\)
+Observed data: $$ Y_{1}, Y_{2}, \ldots, Y_{n} $$
 
-Unobserved data: $ Y_{n+1}, Y_{n+2}, \ldots, Y_{N} $
+Unobserved data: $$ Y_{n+1}, Y_{n+2}, \ldots, Y_{N} $$
 
 The probability mass function of the Bernoulli random variable is written as: 
-$P(Y=y) = p^y (1-p)^{1-y}$, where $p \in (0,1)$ and $y=0,1$.
+$$P(Y=y) = p^y (1-p)^{1-y}$$, where $$p \in (0,1)$ and $y=0,1$$.
 
 We can now write down the likelihood function. This is proportional to the probability of observing the data at hand: 
 
@@ -67,7 +67,7 @@ We take product because observations are assumed to be independent of each other
 
 * Likelihood is a function of the parameter. 
 * Data are fixed. 
-* Likelihood is _not_ a probability of the parameter taking a specific value. It represents the following quantity: If the parameter is $p=p^{\ast}$, then the probability of observing the data at hand is $L(\tilde{p}; y_{1}, y_{2}, \ldots, y_{n}) = \prod_{i=1}^{n} \tilde{p}^{y_{i}} (1-\tilde{p})^{1-y_{i}}$. We can vary the parameter value and get a function as represented below:
+* Likelihood is _not_ a probability of the parameter taking a specific value. It represents the following quantity: If the parameter is $$p=p^{\ast}$$, then the probability of observing the data at hand is $$L(\tilde{p}; y_{1}, y_{2}, \ldots, y_{n}) = \prod_{i=1}^{n} \tilde{p}^{y_{i}} (1-\tilde{p})^{1-y_{i}}$$. We can vary the parameter value and get a function as represented below:
 
 ```r
 ## random numbers from Binomial distribution
@@ -375,7 +375,7 @@ $\pi(\theta)$ is the prior distribution.
 
 
 
-~~~~~~~~~~~~~~~~~~~
+***
 
 ## Sandbox
 
