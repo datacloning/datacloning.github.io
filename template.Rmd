@@ -28,7 +28,7 @@ Unobserved data: ${Y{_n+1}}$,
 
 $Y{_n+1}$, 
 
-$Y_n+2$
+$Y_n _+ _2$
 
 
 
