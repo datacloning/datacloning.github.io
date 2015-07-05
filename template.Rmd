@@ -16,6 +16,8 @@ Display math:
 
 $$ Y_{i+1} = \lambda_{i+1} $$
 
+`$$ Y_{i+1} = \lambda_{i+1} $$`
+
 \\[ Y_{i+1} = \lambda_{i+1} \\]
 
 `\\[ Y_{i+1} = \lambda_{i+1} \\]`
@@ -23,7 +25,7 @@ $$ Y_{i+1} = \lambda_{i+1} $$
 Inline math: $ Y_i = \lambda_i $, \\( Y_i = \lambda_i \\), `\\( Y_i = \lambda_i \\)`.
 
 Inline math: $Y_{i} = \lambda_{i}$, \\( Y_{i} = \lambda_{i} \\), 
-`\\( Y_{i} = \lambda_{i} \\)`, $$Y_{i} = \lambda_{i}$$, \\[ Y_{i} = \lambda_{i} \\].
+`\\( Y_{i} = \lambda_{i} \\)`, $$Y_{i} = \lambda_{i}$$, `$$Y_{i} = \lambda_{i}$$`, \\[ Y_{i} = \lambda_{i} \\].
 
 Observed data: $Y_1$, $Y_2$, $\ldots$, $Y_n$
 
