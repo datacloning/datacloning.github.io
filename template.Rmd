@@ -29,6 +29,8 @@ Inline math: $Y_{i+1} = \lambda_{i+1}$, \\( Y_{i+1} = \lambda_{i+1} \\),
 Solution to MathJax parsing problem:
 
 * Use `$$` for display and inline math.
+* Use `$` for inline math when subscript does not need braces, because
+  this works: $Y_i$, $Y_100$, but this does not $Y_{i}$, $Y_{i+1}$, $Y_{100}$.
 * Use empty line above and below display math, so that display math
   is defined as newline+`$$` and `$$`+newline.
 * Inline math is then defined as:
