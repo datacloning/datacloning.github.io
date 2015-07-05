@@ -365,8 +365,11 @@ We may believe that it is most likely to be 0.7. Then we consider distribution w
 Posterior distribution: This quantifies the beliefs as modified by the data. The mathematical formulation is as follows:
 
 $$(y \mid X = x) \sim h(y; X = x, \theta_{1})$$
+
 $$X \sim g(x; \theta_{2})$$
+
 $$\theta = (\theta_{1}, \theta_{2})$$
+
 $$L(\theta;y) = \int h(y \mid x; \theta_{1}) g(x; \theta_{2}) dx$$
 
 Posterior distribution:
@@ -378,8 +381,11 @@ $\pi(\theta)$ is the prior distribution.
 Normal&ndash;Normal model:
 
 $$Y_{ij} \mid \mu_{ij} \sim Normal(\mu_{ij}, \sigma^2)$$
+
 $$i=1,\ldots,n; j=1,\ldots,m_{n}$$
+
 $$\mu_{ij} = X_{ij}^{T}\theta + \epsilon_{i}$$
+
 $$\epsilon_{i} \sim Normal(0, \tau^2)$$
 
 ```r
@@ -441,9 +447,12 @@ pairs(m)
 
 DC:
 
-$$y^{(K)} = (y,\ldots,y)$
-$$L(\theta;y^{K}) = L(\theta;y)^{K}$
+$$y^{(K)} = (y,\ldots,y)$$
+
+$$L(\theta;y^{K}) = L(\theta;y)^{K}$$
+
 $$\pi_{K}(\theta \mid y) = \frac{[L(\theta;y)]^{K} \pi(\theta)}{ \int [L(\theta;y)]^{K} \pi(\theta) d\theta }$$
+
 $$\pi_{K}(\theta \mid y) \sim MVN(\hat{\theta}, \frac{1}{K} I^{-1}(\hat{\theta}))$$
 
 ```r
