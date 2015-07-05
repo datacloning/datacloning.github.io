@@ -23,11 +23,11 @@ $$ Y_{i} = \lambda_{i} $$
 Inline math: $ Y_i = \lambda_i $, \\( Y_i = \lambda_i \\), `\\( Y_i = \lambda_i \\)`.
 
 Inline math: $Y_{i} = \lambda_{i}$, \\( Y_{i} = \lambda_{i} \\), 
-`\\( Y_{i} = \lambda_{i} \\)`, $$Y_{i} = \lambda_{i}$$, \\[Y_{i} = \lambda_{i}\\].
+`\\( Y_{i} = \lambda_{i} \\)`, $$Y_{i} = \lambda_{i}$$, \\[ Y_{i} = \lambda_{i} \\].
 
 Observed data: $Y_1$, $Y_2$, $\ldots$, $Y_n$
 
-Unobserved data: $${Y_{n+1}, Y_{n+2}$$
+Unobserved data: $$Y_{n+1}, Y_{n+2}$$
 
 
 
