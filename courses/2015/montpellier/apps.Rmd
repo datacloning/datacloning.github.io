@@ -1,8 +1,37 @@
 ---
 title: 'Hierarchical models for conservation biologists made easy'
 layout: default
-subtitle: 'Apps'
+subtitle: 'Shiny apps'
 ---
+
+### How to run the apps
+
+[Shiny](http://shiny.rstudio.com/) apps can be run from within 
+[RStudio](http://www.rstudio.com/) by opening the 
+**raw** [R markdown](http://rmarkdown.rstudio.com/).
+
+Before being able to run apps from within RStudio, make sure to
+install the `shiny` [R](http://www.r-project.org) package:
+
+```r
+install.packages("shiny")
+```
+
+Once opened, a **Run document** should be visible. Click on that,
+and the app will run through RStudios built-in web local server.
+
+The **html** link leads to a web page that shows the R code in the app.
+
+### Lecture 1
+
+App name | html | raw 
+-------- | ---- | ---------
+MLE      | [](./app-01-mle.html) | [](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-mle.Rmd)
+Bayesian, Beta prior      | [](./app-01-beta-prior.html) | [](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-beta-prior.Rmd)
+Bayesian, Normal prior      | [](./app-01-normal-prior.html) | [](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-normal-prior.Rmd)
+Data cloning      | [](./app-01-data-cloning.html) | [](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-data-cloning.Rmd)
+
+
 
 ### Simple MLE example
 
