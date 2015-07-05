@@ -22,9 +22,13 @@ $$ Y_i = \lambda_i $$
 
 Inline math: $ Y_i = \lambda_i $, \\( Y_i = \lambda_i \\), `\\( Y_i = \lambda_i \\)`.
 
-Observed data: $Y_{1}$, $Y_{2}$, $\ldots$, $Y_{n}$
+Observed data: $Y_1$, $Y_2$, $\ldots$, $Y_n$
 
-Unobserved data: ${Y{_n+1}}$, $Y{_n+1}$, $Y_n+2$, $\ldots$, $Y_{N}$
+Unobserved data: ${Y{_n+1}}$, 
+
+$Y{_n+1}$, 
+
+$Y_n+2$
 
 
 
