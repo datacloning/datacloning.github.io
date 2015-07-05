@@ -14,11 +14,11 @@ navbar: inverse
 
 Display math:
 
-$$ Y_{i} = \lambda_{i} $$
+$$ Y_{i+1} = \lambda_{i+1} $$
 
-\\[ Y_i = \lambda_i \\]
+\\[ Y_{i+1} = \lambda_{i+1} \\]
 
-`\\[ Y_i = \lambda_i \\]`
+`\\[ Y_{i+1} = \lambda_{i+1} \\]`
 
 Inline math: $ Y_i = \lambda_i $, \\( Y_i = \lambda_i \\), `\\( Y_i = \lambda_i \\)`.
 
