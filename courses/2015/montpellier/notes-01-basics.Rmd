@@ -66,7 +66,9 @@ We take product because observations are assumed to be independent of each other
 
 * Likelihood is a function of the parameter. 
 * Data are fixed. 
-* Likelihood is _not_ a probability of the parameter taking a specific value. It represents the following quantity: If the parameter is $p=p^\ast$, then the probability of observing the data at hand is $L(\tilde{p}; y_{1}, y_{2}, \ldots, y_{n}) = \prod_{i=1}^{n} \tilde{p}^{y_{i}} (1-\tilde{p})^{1-y_{i}}$. We can vary the parameter value and get a function as represented below:
+* Likelihood is _not_ a probability of the parameter taking a specific value. 
+
+It represents the following quantity: If the parameter is $p=p^\ast$, then the probability of observing the data at hand is $L(\tilde{p}; y_{1}, y_{2}, \ldots, y_{n}) = \prod_{i=1}^{n} \tilde{p}^{y_{i}} (1-\tilde{p})^{1-y_{i}}$. We can vary the parameter value and get a function as represented below:
 
 ```r
 ## random numbers from Binomial distribution
@@ -364,6 +366,20 @@ We may believe that it is most likely to be 0.7. Then we consider distribution w
 
 Posterior distribution: This quantifies the beliefs as modified by the data. The mathematical formulation is as follows:
 
+$$\pi(\theta \mid y) = \frac{L(\theta;y) \pi(\theta)}{ \int L(\theta;y) \pi(\theta) d\theta }$$
+
+$\pi(\theta)$ is the prior distribution.
+
+
+
+
+
+
+
+~~~~~~~~~~~~~~~~~~~
+
+## Sandbox
+
 $$(y \mid X = x) \sim h(y; X = x, \theta_{1})$$
 
 $$X \sim g(x; \theta_{2})$$
@@ -582,7 +598,9 @@ MORAL: If the sample size is large, the numerical differences between the Freque
 > cloning dclone with dcdim command as well as init values). We also remind them 
 > to check the results with different priors to make sure the MCMC is not stuck.
 
+### DAGs
 
+```r
 library(diagram)
 
 ## Bernoulli
@@ -611,7 +629,6 @@ textrect(pos[4,], 0.05, 0.05, lab="W", shadow.size=0, box.col="#ecf0f1")
 textellipse(pos[5,], 0.05, 0.05, lab="p", shadow.size=0)
 textdiamond(pos[6,], 0.05, 0.05, lab=expression(pi[p]), shadow.size=0)
 
-
 ## Binomial-Poisson
 par(mar = c(1, 1, 1, 1))
 openplotmat(main = "Binomial-Poisson")
@@ -628,5 +645,14 @@ textrect(pos[4,], 0.05, 0.05, lab="Y", shadow.size=0, box.col="#ecf0f1")
 textellipse(pos[5,], 0.05, 0.05, lab="p", shadow.size=0)
 textdiamond(pos[6,], 0.05, 0.05, lab=expression(pi[p]), shadow.size=0)
 
+## Normal-Normal
+
+## Binomial-Lognormal
+
+## Poisson-Lognormal
+
+## Gompertz/Ricker
+
+```
 
 
