@@ -132,7 +132,7 @@ dev.off()
 
 ---
 
-# 480x
+# 480 x 480
 
 ![]({{ site.url }}/images/480x.png)
 
@@ -156,6 +156,8 @@ dev.off()
 ```
 
 ---
+
+# 600 x 800
 
 ![]({{ site.url }}/images/600x800.png)
 
