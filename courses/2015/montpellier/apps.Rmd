@@ -26,10 +26,10 @@ The **html** link leads to a web page that shows the R code in the app.
 
 App name | html | raw 
 -------- | ---- | ---------
-MLE      | [](./app-01-mle.html) | [](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-mle.Rmd)
-Bayesian, Beta prior      | [](./app-01-beta-prior.html) | [](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-beta-prior.Rmd)
-Bayesian, Normal prior      | [](./app-01-normal-prior.html) | [](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-normal-prior.Rmd)
-Data cloning      | [](./app-01-data-cloning.html) | [](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-data-cloning.Rmd)
+MLE      | [html](./app-01-mle.html) | [raw](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-mle.Rmd)
+Bayesian, Beta prior      | [html](./app-01-beta-prior.html) | [raw](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-beta-prior.Rmd)
+Bayesian, Normal prior      | [html](./app-01-normal-prior.html) | [raw](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-normal-prior.Rmd)
+Data cloning      | [html](./app-01-data-cloning.html) | [raw](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-data-cloning.Rmd)
 
 
 
