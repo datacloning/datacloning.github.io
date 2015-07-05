@@ -18,9 +18,9 @@ install.packages("shiny")
 ```
 
 Once opened, a **Run document** should be visible. Click on that,
-and the app will run through RStudios built-in web local server.
+and the app will run through RStudio's built-in web local server.
 
-The **html** link leads to a web page that shows the R code in the app.
+The **html** link leads to a web page that shows the R code used in the app.
 
 ### Apps from lecture 1
 
