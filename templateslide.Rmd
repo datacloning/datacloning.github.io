@@ -157,7 +157,11 @@ dev.off()
 
 ---
 
-# 600 x 800
+# 600 x 800: does not fit
+
+![]({{ site.url }}/images/600x800.png)
+
+---
 
 ![]({{ site.url }}/images/600x800.png)
 
