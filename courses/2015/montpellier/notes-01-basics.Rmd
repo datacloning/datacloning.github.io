@@ -55,7 +55,7 @@ Observed data: $$ Y_{1}, Y_{2}, \ldots, Y_{n} $$
 Unobserved data: $$ Y_{n+1}, Y_{n+2}, \ldots, Y_{N} $$
 
 The probability mass function of the Bernoulli random variable is written as: 
-$$P(Y=y) = p^y (1-p)^{1-y}$$, where $$p \in (0,1)$ and $y=0,1$$.
+$$P(Y=y) = p^y (1-p)^{1-y}$$, where $$p \in (0,1)$$ and $$y=0,1$$.
 
 We can now write down the likelihood function. This is proportional to the probability of observing the data at hand: 
 
