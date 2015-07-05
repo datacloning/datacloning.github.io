@@ -14,7 +14,7 @@ navbar: inverse
 
 Display math:
 
-$$ Y_i = \lambda_i $$
+$$ Y_{i} = \lambda_{i} $$
 
 \\[ Y_i = \lambda_i \\]
 
@@ -24,11 +24,7 @@ Inline math: $ Y_i = \lambda_i $, \\( Y_i = \lambda_i \\), `\\( Y_i = \lambda_i 
 
 Observed data: $Y_1$, $Y_2$, $\ldots$, $Y_n$
 
-Unobserved data: ${Y{_n+1}}$, 
-
-$Y{_n+1}$, 
-
-$Y_n _+ _2$
+Unobserved data: $${Y_{n+1}, Y_{n+2}$$
 
 
 
