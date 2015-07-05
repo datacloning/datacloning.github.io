@@ -531,3 +531,4 @@ textellipse(pos[5,], 0.05, 0.05, lab="p", shadow.size=0)
 textdiamond(pos[6,], 0.05, 0.05, lab=expression(pi[p]), shadow.size=0)
 
 
+

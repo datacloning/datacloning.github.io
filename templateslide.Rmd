@@ -87,4 +87,55 @@ class: center, middle
 Display formula:
     `$$e^{i\pi} + 1 = 0$$`
 
+---
+
+# Figures optimized for slides
+
+```r
+## defining a website compatible palette
+dcpal_flatly <- list(
+    "red"="#c7254e",
+    "palered"="#f9f2f4",
+    "primary"="#2c3e50",
+    "success"="#18bc9c",
+    "info"="#3498db",
+    "warning"="#f39c12",
+    "danger"="#e74c3c",
+    "pre_col"="#7b8a8b",
+    "pre_bg"="#ecf0f1",
+    "pre_border"= "#cccccc"
+)
+dcpal_reds <- colorRampPalette(c("#f9f2f4", "#c7254e"))
+dcpal_ogrd <- colorRampPalette(c("#f39c12", "#e74c3c"))
+dcpal_grbu <- colorRampPalette(c("#18bc9c", 
+    "#3498db", "#2c3e50"))
+```
+
+---
+
+## continued
+
+```r
+png("~/repos/datacloning.github.io/images/480x.png",
+    width = 480, height = 480)
+op <- par(las=2, mar=c(6,5,2,2), mfrow=c(2,2))
+barplot(1:length(dcpal_flatly), 
+    names=names(dcpal_flatly), 
+    border=dcpal_flatly$pre_border,
+    col=unlist(dcpal_flatly))
+barplot(1:10, col=dcpal_reds(10), main="Reds")
+barplot(1:10, col=dcpal_grbu(10), main="Green-Blue")
+barplot(1:10, col=dcpal_ogrd(10), main="Orange-Red")
+par(op)
+dev.off()
+```
+
+---
+
+# 480x
+
+![]({{ site.url }}/images/480x.png)
+
+```
+
 </textarea>

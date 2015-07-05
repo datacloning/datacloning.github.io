@@ -429,7 +429,7 @@ barplot(1:10, col=dcpal_grbu(10), main="Green-Blue")
 barplot(1:10, col=dcpal_ogrd(10), main="Orange-Red")
 par(op)
 ```
-![]({{ site.url }}/images/dc_pal_flatly.png)
+![]({{ site.url }}/images/480x.png)
 
 > ## Learning Objectives
 >
