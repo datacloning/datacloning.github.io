@@ -12,10 +12,6 @@ navbar: inverse
 >* [Workflow](#workflow)
 >* [Showcase](#showcase)
 
-| How this
-| looks like?
-  And this?
-| See...
 
 ## Always start with a header
 
@@ -137,21 +133,6 @@ horizontal rule (or slide break):
  + sub-item 1
  + sub-item 2
 
- 9)  Ninth
-10)  Tenth
-11)  Eleventh
-       i. subone
-      ii. subtwo
-     iii. subthree
-
-(2) Two
-(5) Three
-1.  Four
-*   Five
-
-#.  one
-#.  two
-#.  three
 
 ## Definition lists
 
@@ -167,17 +148,6 @@ Term 2 with *inline markup*
 
     Third paragraph of definition 2.
 
-Term 1
-  ~ Definition 1
-
-Term 2
-  ~ Definition 2a
-  ~ Definition 2b
-
-
-(@good)  This is a good example.
-
-As (@good) illustrates, ...
 
 
 ## Table formatting
