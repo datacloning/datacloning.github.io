@@ -161,7 +161,8 @@ dev.off()
 
 ![]({{ site.url }}/images/600x800.png)
 
-*???
+???
+
 Note: 600 x 800 fig is too big, don't use any text around it.
 This is pretty much the max size for a figure.
 
@@ -169,7 +170,8 @@ This is pretty much the max size for a figure.
 
 ![]({{ site.url }}/images/600x800.png)
 
-*???
+???
+
 It looks much better without a header. Keep that in mind.
 
 </textarea>
