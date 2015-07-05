@@ -12,6 +12,18 @@ navbar: inverse
 >* [Workflow](#workflow)
 >* [Showcase](#showcase)
 
+Display math:
+
+$$ Y_i = \lambda_i $$
+
+\[ Y_i = \lambda_i \]
+
+`\[ Y_i = \lambda_i \]`
+
+Inline math: $ Y_i = \lambda_i $, \( Y_i = \lambda_i \), `\( Y_i = \lambda_i \)`.
+
+
+
 
 ## Always start with a header
 
