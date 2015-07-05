@@ -50,8 +50,8 @@ Mathematically we write this as follows:
 
 $Y_{i} \sim Binomial(1, p)$  (this is also known as the Bernoulli distribution) are independent, identically distributed (*i.i.d.*) random variables. 
 
-* Observed data: $Y_{1}, Y_{2}, \ldots, Y_{n}$
-* Unobserved data: $Y_{n+1}, Y_{n+2}, \ldots, Y_{N}$
+* Observed data: \\( Y_{1}, Y_{2}, \ldots, Y_{n} \\)
+* Unobserved data: $ Y_{n+1}, Y_{n+2}, \ldots, Y_{N} $
 
 The probability mass function of the Bernoulli random variable is written as: 
 $P(Y=y) = p^y (1-p)^{1-y}$, where $p \in (0,1)$ and $y=0,1$.
