@@ -62,11 +62,11 @@ f <- a
 ```
 
 <p>Inline math is \(x_i = \sqrt{\frac{a}{c}} \), or eq:</p>
-<p>$$x_i = \pi r_{i}^{\Lambda}$$</p>
+<p>$$x_i = \pi r_{i+1}^{\Lambda}$$</p>
 <p>\[x_i = \pi r_{i}^{\Lambda}\]</p>
 
 Inline math is `$x_i = \sqrt{\frac{a}{c}} $`, or eq:
-`$$x_i = \pi r_{i}^{\Lambda}$$`
+`$$x_i = \pi r_{i+1}^{\Lambda}$$`
 `$$x_i = \pi r_{i}^{\Lambda}$$`
 
 .footnote[.red.bold[*] Important footnote]

@@ -41,6 +41,8 @@ RStudo parsing before knitr should take care of these:
 * replace triple backtick and `r` with `{r}`
 * replace inline `$$` with `$`
 
+Note: slides work OK, no need to tweak inline math
+
 ## Always start with a header
 
 This `Rmd` file demonstrates how we intend to host text/math/code
