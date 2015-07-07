@@ -8,7 +8,7 @@ layout: plain
             <div class="col-md-10 col-md-offset-1">
 
 <h1 class="title">Data Cloning</h1>
-<p>A numerical optimization algorithm for
+<p>Global optimization for
 frequentist statistical inference using
 Markov-chain Monte Carlo (MCMC) methods.</p>
 <!-- <p><a class="btn btn-primary" href="{{ site.baseurl }}/dc.html">Learn more</a></p> -->
