@@ -2,7 +2,8 @@ title: Data Cloning
 description: Hierarchical model made easy
 
 #baseurl:  http://localhost:4000
-baseurl: http://datacloning.github.io
+baseurl: http://datacloning.org
+#baseurl: http://datacloning.github.io
 
 include: [".htaccess"]
 exclude: ["README.md","LICENSE.md"]
