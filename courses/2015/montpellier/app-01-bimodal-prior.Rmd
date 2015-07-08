@@ -11,13 +11,14 @@ inputPanel(
               min = 0, max = 1, value = 0.3, step = 0.05),
   sliderInput("n", label = "Sample size",
               min = 0, max = 1000, value = 10, step = 10),
-  sliderInput("mu", label = "Normal prior mean",
-              min = -10, max = 10, value = 0, step = 1),
-  sliderInput("sig2", label = "Normal prior variance",
-              min = 0.001, max = 100, value = 1, step = 10),
-  radioButtons("scale", label="Scale",
-             c("Probability (0, 1)" = "prob",
-               "Logit (-Inf, Inf)" = "logit")),
+  sliderInput("mu_1", label = "Normal prior mean",
+              min = -10, max = 10, value = -2, step = 1),
+  sliderInput("sig2_1", label = "Normal prior variance",
+              min = 0.001, max = 10, value = 1, step = 1),
+  sliderInput("mu_2", label = "Normal prior mean",
+              min = -10, max = 10, value = 2, step = 1),
+  sliderInput("sig2_2", label = "Normal prior variance",
+              min = 0.001, max = 10, value = 2, step = 1),
   sliderInput("seed", label = "Random seed",
               min = 0, max = 100, value = 0, step = 10)
 )
@@ -28,21 +29,16 @@ renderPlot({
     pval <- seq(0.001, 0.999, by = 0.0005)
     fLik <- function(p, y)
         prod(dbinom(y, size = 1, prob = p))
-    fPri <- function(p, mu, sig2, scale) {
-        if (scale == "prob")
-            out <- (1/(p*(1-p))) * dnorm(qlogis(p), mu, sqrt(sig2))
-        if (scale == "logit")
-            out <- dnorm(qlogis(p), mu, sqrt(sig2))
-        out
-    }
+    fPri <- function(p, mu_1, sig2_1, mu_2, sig2_2)
+        0.5 * (dnorm(qlogis(p), mu_1, sqrt(sig2_1)) + 
+            dnorm(qlogis(p), mu_2, sqrt(sig2_2)))
     Lik <- sapply(pval, fLik, y=y[1:input$n])
-    Pri <- sapply(pval, fPri, input$mu, input$sig2, input$scale)
+    Pri <- sapply(pval, fPri, input$mu_1, input$sig2_1, input$mu_2, input$sig2_2)
     Pos <- Lik * Pri
     M <- cbind(Pri=Pri/max(Pri),
         Lik=Lik/max(Lik),
         Pos=Pos/max(Pos))
-    if (input$scale == "logit")
-        pval <- qlogis(pval)
+    pval <- qlogis(pval)
     Col <- c("#cccccc", "#3498db", "#f39c12")
     matplot(pval, M, type = "l", 
         col=Col, lwd=2, lty=1,
