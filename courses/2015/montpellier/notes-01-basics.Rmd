@@ -9,6 +9,7 @@ course:
   location: Montpellier
   title: "Hierarchical Models Made Easy &mdash; August 1, 2015 &mdash; Montpellier, France &mdash; ICCB/ECCB Congress"
   lecture: Basics
+  next: notes-02-dc
 ---
 
 ### Introduction
@@ -666,7 +667,3 @@ plot(dctable(mk), position=c(-100, -100))
 par(op)
 ```
 
-<ul class="pager">
-    <li class="previous disabled"><a href="#"><i class="fa fa-chevron-left"></i> Previous</a></li>
-    <li class="next"><a href="#">Next <i class="fa fa-chevron-right"></i></a></li>
-</ul>
