@@ -7,7 +7,7 @@ layout: course
 course:
   year: 2015
   location: Montpellier
-  title: "Hierarchical Models Made Easy"
+  title: "Hierarchical Models Made Easy &mdash; August 1, 2015 &mdash; Montpellier, France &mdash; ICCB/ECCB Congress"
   lecture: Basics
 ---
 
