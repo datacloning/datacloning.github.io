@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% include _head.html %}
+{% include _highlight.html %}
+</head>
+<body>
+{% include _navigation.html %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+        {% if page.course %}
+            <ul class="breadcrumb">
+                <li><a href="{{ site.baseurl }}">Home</a></li>
+                <li><a href="{{ site.baseurl }}/courses/">Courses</a></li>
+                <li><a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location }}/">{{ page.course.location }} {{ page.course.year }}</a></li>
+                <li class="active">{{ page.course.lecture }}</li>
+            </ul>                
+        <h1 class="title">{{ page.title }}</h1>
+        {% endif %}
+<!-- content starts here %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+            {{ content }}
+
+<!-- content ends here %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+        </div>
+    </div>
+</div>
+{% include _footer.html %}
+</body>
+</html>

@@ -5,6 +5,10 @@ date: "August 1, 2015 -- Montpellier, France -- ICCB/ECCB Congress"
 output: pdf_document
 subtitle: Maximum Likelihood Estimation
 layout: default
+course:
+  year: 2015
+  location: Montpellier
+  lecture: Basics
 ---
 
 ### Introduction
