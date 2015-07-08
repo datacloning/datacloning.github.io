@@ -666,3 +666,7 @@ plot(dctable(mk), position=c(-100, -100))
 par(op)
 ```
 
+<ul class="pager">
+    <li class="previous disabled"><a href="#"><i class="fa fa-chevron-left"></i> Previous</a></li>
+    <li class="next"><a href="#">Next <i class="fa fa-chevron-right"></i></a></li>
+</ul>
