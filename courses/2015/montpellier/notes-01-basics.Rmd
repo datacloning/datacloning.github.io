@@ -166,6 +166,10 @@ We can now summarize the goals of statistical inference:
 2. Given these data, how do we change our beliefs?
 3. Given these data, what decision do we make?
 
+> ### Check out the Shiny app
+>
+> Play around with the app to see how
+> sample size affects the likelihood function.
 
 ### The maximum likelihood estimator
 
@@ -370,9 +374,188 @@ $$\pi(\theta \mid y) = \frac{L(\theta;y) \pi(\theta)}{ \int L(\theta;y) \pi(\the
 $\pi(\theta)$ is the prior distribution.
 
 
+> ### Shiny apps to illustrate the following features
+> 
+> * Beta priors (including Uniform and Jeffrey's prior):
+>   - Different priors, same data lead to different posteriors.
+>   - Same prior, different data lead to different posteriors. 
+>   - As the sample size increases, the posterior is invariant to the prior 
+>     (eventually degenerate at the true value).
+> * Normal prior:
+>   - check the effects of probability vs. log scale on the prior and posterior.
+> * Bimodal Normal mixture prior:
+>   - check how a bimodal prior changes the posterior.
+
+Here the code for the Beta priors:
+
+```r
+## Bayesian posterior calculations
+y0 <- sim_fun(100, p)
+y <- y0[1:10]
+pval <- seq(0.001, 0.999, by = 0.0005)
+## beta(0.5,0.5) is the Jeffrey's prior
+## beta(1,1) is Uniform prior
+fPri <- function(p, shape1=0.5, shape2=0.5)
+    dbeta(p, shape1, shape2)
+fLik <- function(p, y)
+    prod(dbinom(y, size = 1, prob = p))
+Lik <- sapply(pval, fLik, y=y[1:input$n])
+Pri <- sapply(pval, fPri, 0.5, 0.5) # change the prior here
+Pos <- Lik * Pri
+M <- cbind(Pri=Pri/max(Pri),
+    Lik=Lik/max(Lik),
+    Pos=Pos/max(Pos))
+Col <- c("#cccccc", "#3498db", "#f39c12")
+matplot(pval, M, type = "l", 
+    col=Col, lwd=2, lty=1,
+    ylab = "Density", 
+    xlab=ifelse(input$scale == "logit", "logit(p)","p"),
+    sub=paste0("Mean = ", round(mean(y[1:input$n]), 2), " (", 
+        sum(1-y[1:input$n]), " 0s & ", sum(y[1:input$n]), " 1s)"),
+    main = paste("Posterior mean =", round(sum(pval * M[,"Pos"]), 2)))
+abline(v = input$p, lwd = 2, col = "#c7254e")
+abline(v = sum(pval * Pos/sum(Pos)), lwd = 2, col = "#18bc9c")
+legend("topleft",lty=1, lwd=2, col=Col, bty="n",
+   legend=c("Prior","Likelihood","Posterior"))
+```
+
+
+### Non-informative priors (Objective Bayesian analysis)
+
+It is clear that priors have an effect on the Bayesian inference. And, they should have an effect. However, this subjectivity is bothersome to many scientists. There is an approach that is euphemistically called an objective Bayesian approach. In this approach, we try to come up with priors that have least influence on the inference (e.g. Bernardo, 1980). There is no unique definition of what we mean by non-informative priors. Various priors have been suggested in the literature. The most commonly used non-informative priors are: Uniform priors and the large variance priors. Other priors are nearly impossible to specify for the complex models that ecologists are faced with. 
+
+Do these priors affect the inference? 
+
+The answer is that ''they most certainly do''. There is nothing wrong with the priors affecting the inference as long as the researchers can justify their priors. 
+
+> Uniform prior and its effect: prob scale
+>
+> Log-normal prior and its effect: normal prior on logit scale
+>
+> Jeffrey's prior and its effect: not affected
+>
+> for same data you get different answers
+
+Fundamentally there is no such thing as 'objective' Bayesian inference. Those who want to use Bayesian inference should simply accept that the inferences are affected by the choice of the priors. 
 
 
 
+### Data cloning: How to trick Bayesians into giving Frequentist answers?
+
+> Difference between Frequentist and Bayesian inferential statements:
+>
+> Summarize the philosophical differences between the inferential statements made 
+> by a Frequentist and a Bayesian in the context of occupancy model. 
+
+Add here: not increasing n but copy the data, see what happens (should be the same as more n)
+--> another app for DC (show MLE as well)
+
+
+### Data cloning for Frequentist predictive distribution:
+
+MORAL: If the sample size is large, the numerical differences between the Frequentist and Bayesian answers vanish. However, their interpretation is different. 
+
+### What have we learnt?
+
+* Data generation
+* Likelihood (Analytical, Graphical and also in JAGS)
+* Frequentist inference 
+* Bayesian inference 
+* Data cloning to get MLE and confidence intervals 
+
+***
+
+### Continuous observations
+
+> Peter: 
+> Can you come up with an ecological situation where the response is continuous? 
+> And, we want to do prediction of the unobserved data? 
+
+Let us look at the likelihood function and all the other things we did so far when the observations are continuous. We will have exactly the same programs but with Normal distribution substituted for the Bernoulli distribution. 
+
+Prediction of the unobserved data:
+
+This is where there is substantial difference between the frequentist method and Bayesian method.
+
+> #### R commands:
+> True predictive distribution: This will be under the true parameter values. 
+
+Can we get a reasonable approximation of this distribution? 
+
+1. Estimated predictive distribution: This will change from one sample to the other. 
+2. Frequentist predictive distribution: 
+3. Bayesian predictive distribution: 
+
+What do we mean by: Is the prediction interval correct? 
+
+Coverage probability: 
+Estimated predictive distribution has smaller than nominal coverage.
+Frequentist and Bayesian predictive distributions are wider and hence tend to have better coverage. 
+Obviously, the Bayesian predictive coverage depends on the prior distribution. For some priors, one gets really good coverage and some can have really bad coverage. 
+Frequentist predictive coverage is also not guaranteed to have good coverage. 
+As the sample size increases, both Bayesian and Frequentist predictive distributions converge to the true predictive distribution. 
+
+
+> (This will illustrate how to extend the standard model file to accommodate data 
+> cloning dclone with dcdim command as well as init values). We also remind them 
+> to check the results with different priors to make sure the MCMC is not stuck.
+
+### DAGs
+
+```r
+library(diagram)
+
+## Bernoulli
+par(mar = c(1, 1, 1, 1))
+openplotmat(main = "Bernoulli")
+pos <- coordinates(3)
+straightarrow(from = pos[2, ], to = pos[1, ])
+straightarrow(from = pos[3, ], to = pos[2, ])
+textrect(pos[1,], 0.05, 0.05, lab="Y", shadow.size=0, box.col="#ecf0f1")
+textellipse(pos[2,], 0.05, 0.05, lab="p", shadow.size=0)
+textdiamond(pos[3,], 0.05, 0.05, lab=expression(pi[p]), shadow.size=0)
+
+## Bernoulli-Bernoulli
+par(mar = c(1, 1, 1, 1))
+openplotmat(main = "Bernoulli-Bernoulli")
+pos <- coordinates(c(3,3))
+straightarrow(from = pos[2, ], to = pos[1, ])
+straightarrow(from = pos[3, ], to = pos[2, ])
+straightarrow(from = pos[1, ], to = pos[4, ])
+straightarrow(from = pos[6, ], to = pos[5, ])
+straightarrow(from = pos[5, ], to = pos[4, ])
+textellipse(pos[1,], 0.05, 0.05, lab="Y", shadow.size=0)
+textellipse(pos[2,], 0.05, 0.05, lab=expression(phi), shadow.size=0)
+textdiamond(pos[3,], 0.05, 0.05, lab=expression(pi[phi]), shadow.size=0)
+textrect(pos[4,], 0.05, 0.05, lab="W", shadow.size=0, box.col="#ecf0f1")
+textellipse(pos[5,], 0.05, 0.05, lab="p", shadow.size=0)
+textdiamond(pos[6,], 0.05, 0.05, lab=expression(pi[p]), shadow.size=0)
+
+## Binomial-Poisson
+par(mar = c(1, 1, 1, 1))
+openplotmat(main = "Binomial-Poisson")
+pos <- coordinates(c(3,3))
+straightarrow(from = pos[2, ], to = pos[1, ])
+straightarrow(from = pos[3, ], to = pos[2, ])
+straightarrow(from = pos[1, ], to = pos[4, ])
+straightarrow(from = pos[6, ], to = pos[5, ])
+straightarrow(from = pos[5, ], to = pos[4, ])
+textellipse(pos[1,], 0.05, 0.05, lab="N", shadow.size=0)
+textellipse(pos[2,], 0.05, 0.05, lab=expression(lambda), shadow.size=0)
+textdiamond(pos[3,], 0.05, 0.05, lab=expression(pi[lambda]), shadow.size=0)
+textrect(pos[4,], 0.05, 0.05, lab="Y", shadow.size=0, box.col="#ecf0f1")
+textellipse(pos[5,], 0.05, 0.05, lab="p", shadow.size=0)
+textdiamond(pos[6,], 0.05, 0.05, lab=expression(pi[p]), shadow.size=0)
+
+## Normal-Normal
+
+## Binomial-Lognormal
+
+## Poisson-Lognormal
+
+## Gompertz/Ricker
+
+```
 
 
 ***
@@ -478,180 +661,4 @@ op <- par(mar=0.6*c(5, 4, 4, 2) + 0.1, cex=0.5)
 plot(dctable(mk), position=c(-100, -100))
 par(op)
 ```
-
-R commands: 
- Illustrate the following features:
-Different priors, same data lead to different posteriors.
-Same prior, different data lead to different posteriors. 
-As the sample size increases, the posterior is invariant to the prior. (eventually degenerate at the true value).
-
-We can have a figure for these with Beta family of priors. We should also have a bimodal prior distribution and show what kind of posterior it leads to. 
-
-
-
-
-```r
-## Bayesian posterior calculations
-y0 <- sim_fun(100, p)
-y <- y0[1:10]
-fLik <- function(p, y) {
-    prod(dbinom(y, size = 1, prob = p))
-}
-## beta(0.5,0.5) is the Jeffrey's prior
-fPri <- function(p, type=c("uniform"), shape1=0.5, shape2=0.5) {
-    switch(type,
-        "uniform" = dunif(p, min = 0, max = 1),
-        "beta" = dbeta(p, shape1, shape2))
-}
-fPos <- function(p, y, ...) {
-    fLik(0, y) * fPri(p, ...)
-}
-pval <- seq(0.01, 0.99, 0.01)
-
-Lik <- sapply(pval, fLik, y=y)
-Pri <- sapply(pval, fPri, type="beta", 0.5, 0.5)
-Pos <- sapply(pval, fPos, y=y, type="beta", 0.5, 0.5)
-
-par(mfrow=c(1,3))
-plot(pval, Pri/sum(Pri), type="l")
-plot(pval, Lik/sum(Lik), type="l")
-plot(pval, Lik*Pri/sum(Lik*Pri), type="l")
-
-```
-
-
-### Non-informative priors (Objective Bayesian analysis)
-
-It is clear that priors have an effect on the Bayesian inference. And, they should have an effect. However, this subjectivity is bothersome to many scientists. There is an approach that is euphemistically called an objective Bayesian approach. In this approach, we try to come up with priors that have least influence on the inference (e.g. Bernardo, 1980). There is no unique definition of what we mean by non-informative priors. Various priors have been suggested in the literature. The most commonly used non-informative priors are: Uniform priors and the large variance priors. Other priors are nearly impossible to specify for the complex models that ecologists are faced with. 
-
-Do these priors affect the inference? 
-
-The answer is that ''they most certainly do''. There is nothing wrong with the priors affecting the inference as long as the researchers can justify their priors. 
-
-> Uniform prior and its effect: prob scale
->
-> Log-normal prior and its effect: normal prior on logit scale
->
-> Jeffrey's prior and its effect: not affected
->
-> for same data you get different answers
-
-Fundamentally there is no such thing as 'objective' Bayesian inference. Those who want to use Bayesian inference should simply accept that the inferences are affected by the choice of the priors. 
-
-
-
-### Data cloning: How to trick Bayesians into giving Frequentist answers?
-
-> Difference between Frequentist and Bayesian inferential statements:
->
-> Summarize the philosophical differences between the inferential statements made 
-> by a Frequentist and a Bayesian in the context of occupancy model. 
-
-Add here: not increasing n but copy the data, see what happens (should be the same as more n)
---> another app for DC (show MLE as well)
-
-
-### Continuous observations
-
-> Peter: 
-> Can you come up with an ecological situation where the response is continuous? 
-> And, we want to do prediction of the unobserved data? 
-
-Let us look at the likelihood function and all the other things we did so far when the observations are continuous. We will have exactly the same programs but with Normal distribution substituted for the Bernoulli distribution. 
-
-Prediction of the unobserved data:
-
-This is where there is substantial difference between the frequentist method and Bayesian method.
-
-> #### R commands:
-> True predictive distribution: This will be under the true parameter values. 
-
-Can we get a reasonable approximation of this distribution? 
-
-1. Estimated predictive distribution: This will change from one sample to the other. 
-2. Frequentist predictive distribution: 
-3. Bayesian predictive distribution: 
-
-What do we mean by: Is the prediction interval correct? 
-
-Coverage probability: 
-Estimated predictive distribution has smaller than nominal coverage.
-Frequentist and Bayesian predictive distributions are wider and hence tend to have better coverage. 
-Obviously, the Bayesian predictive coverage depends on the prior distribution. For some priors, one gets really good coverage and some can have really bad coverage. 
-Frequentist predictive coverage is also not guaranteed to have good coverage. 
-As the sample size increases, both Bayesian and Frequentist predictive distributions converge to the true predictive distribution. 
-
-### Data cloning for Frequentist predictive distribution:
-
-MORAL: If the sample size is large, the numerical differences between the Frequentist and Bayesian answers vanish. However, their interpretation is different. 
-
-### What have we learnt?
-
-* Data generation
-* Likelihood (Analytical, Graphical and also in JAGS)
-* Frequentist inference 
-* Bayesian inference 
-* Data cloning to get MLE and confidence intervals 
-
-> (This will illustrate how to extend the standard model file to accommodate data 
-> cloning dclone with dcdim command as well as init values). We also remind them 
-> to check the results with different priors to make sure the MCMC is not stuck.
-
-### DAGs
-
-```r
-library(diagram)
-
-## Bernoulli
-par(mar = c(1, 1, 1, 1))
-openplotmat(main = "Bernoulli")
-pos <- coordinates(3)
-straightarrow(from = pos[2, ], to = pos[1, ])
-straightarrow(from = pos[3, ], to = pos[2, ])
-textrect(pos[1,], 0.05, 0.05, lab="Y", shadow.size=0, box.col="#ecf0f1")
-textellipse(pos[2,], 0.05, 0.05, lab="p", shadow.size=0)
-textdiamond(pos[3,], 0.05, 0.05, lab=expression(pi[p]), shadow.size=0)
-
-## Bernoulli-Bernoulli
-par(mar = c(1, 1, 1, 1))
-openplotmat(main = "Bernoulli-Bernoulli")
-pos <- coordinates(c(3,3))
-straightarrow(from = pos[2, ], to = pos[1, ])
-straightarrow(from = pos[3, ], to = pos[2, ])
-straightarrow(from = pos[1, ], to = pos[4, ])
-straightarrow(from = pos[6, ], to = pos[5, ])
-straightarrow(from = pos[5, ], to = pos[4, ])
-textellipse(pos[1,], 0.05, 0.05, lab="Y", shadow.size=0)
-textellipse(pos[2,], 0.05, 0.05, lab=expression(phi), shadow.size=0)
-textdiamond(pos[3,], 0.05, 0.05, lab=expression(pi[phi]), shadow.size=0)
-textrect(pos[4,], 0.05, 0.05, lab="W", shadow.size=0, box.col="#ecf0f1")
-textellipse(pos[5,], 0.05, 0.05, lab="p", shadow.size=0)
-textdiamond(pos[6,], 0.05, 0.05, lab=expression(pi[p]), shadow.size=0)
-
-## Binomial-Poisson
-par(mar = c(1, 1, 1, 1))
-openplotmat(main = "Binomial-Poisson")
-pos <- coordinates(c(3,3))
-straightarrow(from = pos[2, ], to = pos[1, ])
-straightarrow(from = pos[3, ], to = pos[2, ])
-straightarrow(from = pos[1, ], to = pos[4, ])
-straightarrow(from = pos[6, ], to = pos[5, ])
-straightarrow(from = pos[5, ], to = pos[4, ])
-textellipse(pos[1,], 0.05, 0.05, lab="N", shadow.size=0)
-textellipse(pos[2,], 0.05, 0.05, lab=expression(lambda), shadow.size=0)
-textdiamond(pos[3,], 0.05, 0.05, lab=expression(pi[lambda]), shadow.size=0)
-textrect(pos[4,], 0.05, 0.05, lab="Y", shadow.size=0, box.col="#ecf0f1")
-textellipse(pos[5,], 0.05, 0.05, lab="p", shadow.size=0)
-textdiamond(pos[6,], 0.05, 0.05, lab=expression(pi[p]), shadow.size=0)
-
-## Normal-Normal
-
-## Binomial-Lognormal
-
-## Poisson-Lognormal
-
-## Gompertz/Ricker
-
-```
-
 
