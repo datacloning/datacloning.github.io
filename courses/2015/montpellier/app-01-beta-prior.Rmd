@@ -30,21 +30,19 @@ renderPlot({
     fLik <- function(p, y)
         prod(dbinom(y, size = 1, prob = p))
     Lik <- sapply(pval, fLik, y=y[1:input$n])
+    fPri <- function(p, shape1=0.5, shape2=0.5)
+        dbeta(p, shape1, shape2)
+    Pri <- sapply(pval, fPri, input$a, input$b)
     if (input$scale == "prob") {
         p <- input$p
-        fPri <- function(p, shape1=0.5, shape2=0.5)
-            dbeta(p, shape1, shape2)
-        Pri <- sapply(pval, fPri, input$a, input$b)
     } else {
         p <- qlogis(input$p)
-        N <- 10^5
-        x <- rbeta(N, input$a, input$b)
         br <- c(0.001, seq(0.001+BY/2, 0.999-BY/2, by = BY), 0.999)
-        d <- as.numeric(table(cut(x, breaks=br))) / N
+        dx <- diff(pval)
+        dx <- c(dx[1], dx)
+        d <- Pri * dx / diff(qlogis(br))
+        Pri <- smooth.spline(pval, d)$y
         pval <- qlogis(pval)
-        g <- diff(qlogis(br))
-        gy <-  d / g
-        Pri <- smooth.spline(pval, gy)$y
     }
     Pos <- Lik * Pri
     M <- cbind(Pri=Pri/max(Pri),

@@ -43,13 +43,11 @@ renderPlot({
         input$mu_2, input$sig2_2)
     if (input$scale == "prob") {
         p <- input$p
-
         br <- qlogis(c(0.001, seq(0.001+BY/2, 0.999-BY/2, by = BY), 0.999))
         dx <- diff(qlogis(pval))
         dx <- c(dx[1], dx)
         d <- Pri * dx / diff(plogis(br))
         Pri <- smooth.spline(pval, d)$y
-
     } else {
         pval <- qlogis(pval)
         p <- qlogis(input$p)
