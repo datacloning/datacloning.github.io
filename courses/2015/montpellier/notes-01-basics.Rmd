@@ -667,3 +667,72 @@ plot(dctable(mk), position=c(-100, -100))
 par(op)
 ```
 
+## PDF transformation trick with KDE
+
+## analytic results for Logit-Normal
+
+The problem is this: X is a random variable say Normal(2,4). I can plot histogram of 1000 draws, and have the PDF
+
+```r
+hist(rnorm(1000, 2, 2), freq=FALSE)
+curve(dnorm(x, 2, 2), add=TRUE, col=2)
+```
+
+Now what is the PDF of inverse_logit(X)?
+
+```r
+dlogitnorm <- function(x, mean = 0, sd = 1, log = FALSE) {
+    if (log) {
+        log(1/(x*(1-x))) + dnorm(qlogis(x), mean, sd, TRUE)
+    } else {
+        (1/(x*(1-x))) * dnorm(qlogis(x), mean, sd)
+    }
+}
+hist(plogis(rnorm(1000, 2, 2)), freq=FALSE)
+curve(dlogitnorm(x, 2, 2), from=0, to=1, add=TRUE, col=2)
+```
+
+Let's approximate the result using KDE
+
+```r
+x <- rnorm(10000, 2, 2)
+dr <- density(x)
+hist(x, freq=FALSE)
+curve(dnorm(x, 2, 2), add=TRUE, col=2)
+lines(dr, col=4)
+```
+
+On the probability scale we get:
+
+```r
+dp <- dr
+dp$dx <- diff(dp$x)
+dp$dx <- c(dp$dx[1], dp$dx)
+dp$gx <- plogis(dp$x)
+dp$dgx <- diff(dp$gx)
+dp$dgx <- c(dp$dgx[1], dp$dgx)
+dp$gy <- dp$dx * dp$y / dp$dgx
+
+hist(plogis(x), freq=FALSE)
+curve(dlogitnorm(x, 2, 2), from=0, to=1, add=TRUE, col=2)
+lines(dp$gx, dp$gy, col=4)
+```
+
+
+## Beta
+
+The problem is this: X is a random variable say Beta(0.5,1). I can plot histogram of 1000 draws, and have the PDF
+
+```r
+hist(rbeta(1000, 0.5, 1), freq=FALSE)
+curve(dbeta(x, 0.5, 1), add=TRUE, col=2)
+```
+
+Now what is the PDF of logit(X)?
+
+```r
+x <- rbeta(10^6, 0.5, 1)
+hist(qlogis(x), freq=FALSE)
+lines(density(qlogis(x)), col=4)
+```
+
