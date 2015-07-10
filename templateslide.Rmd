@@ -73,6 +73,26 @@ c <- c(5, 6)
 ]
 
 ---
+## This is full width title
+
+.left-2column[
+
+```r
+a <- 10
+
+*c <- c(5, 6)
+```
+]
+--
+.right-2column[
+
+```r
+a <- 10
+*b = a
+c <- c(5, 6)
+```
+]
+---
 
 # Introduction
 
