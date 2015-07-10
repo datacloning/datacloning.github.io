@@ -736,3 +736,17 @@ hist(qlogis(x), freq=FALSE)
 lines(density(qlogis(x)), col=4)
 ```
 
+## Statistical distributions
+
+Normal
+Bernoulli
+Binomial
+Poisson
+Lognormal
+Gamma
+Beta
+
+n
+seed
+
+
