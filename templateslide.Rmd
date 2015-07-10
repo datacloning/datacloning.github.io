@@ -52,6 +52,27 @@ Then remark might be perfect for your next.red[*] slideshow!
 .footnote[.red[*] You probably want to convert existing slideshows as well]
 ]
 ---
+.left-2column[
+  ## Left
+
+```r
+a <- 10
+
+*c <- c(5, 6)
+```
+]
+--
+.right-2column[
+  ## Right
+
+```r
+a <- 10
+*b = a
+c <- c(5, 6)
+```
+]
+
+---
 
 # Introduction
 

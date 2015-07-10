@@ -3,7 +3,6 @@
 <head>
 <title>{% if page.title %}{{ page.title | strip_html }} &#8211; {% endif %}{{ site.title }}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<link rel="stylesheet" href="{{ site.baseurl }}/assets/remark.css" media="screen">
 <style type="text/css">
     {% if site.fancyfonts == true %}/* different font family */
     @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -33,7 +32,7 @@
         color: #f3f3f3;
         line-height: 0.8em;
     }
-    /* Two-column layout */
+    /* Two-column layout for title on the left*/
     .left-column {
         color: #777;
         width: 20%;
@@ -45,6 +44,17 @@
     }
     .right-column {
         width: 75%;
+        float: right;
+        padding-top: 1em;
+    }
+    /* Two-column layout for 2 column layout */
+    .left-2column {
+        width: 48%;
+        float: left;
+        padding-top: 1em;
+    }
+    .right-2column {
+        width: 48%;
         float: right;
         padding-top: 1em;
     }
