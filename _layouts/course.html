@@ -33,9 +33,9 @@
         		<span class="caret"></span>
       			</a>
       			<ul class="dropdown-menu">
-        			<li><a href="#">html</a></li>
-        			<li><a href="#">pdf</a></li>
-        			<li><a href="#">Rmd</a></li>
+        			<li><a href="{{ page.url }}" download>html</a></li>
+        			<li><a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.file }}.pdf" download>pdf</a></li>
+        			<li><a href="https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.file }}.Rmd" download>Rmd</a></li>
        			</ul>
     		  </div>
 			</span>
@@ -54,12 +54,12 @@
                 {% if page.course.previous %}
                 <li class="previous"><a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.course.previous }}.html"><i class="fa fa-chevron-left"></i> Previous</a></li>
                 {% else %}
-                <li class="previous disabled"><a href="#"><i class="fa fa-chevron-left"></i> Previous</a></li>
+                <li class="previous disabled"><a href="#"><i class="fa fa-caret-left"></i> Previous</a></li>
                 {% endif %}
                 {% if page.course.next %}
                 <li class="next"><a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.course.next }}.html">Next <i class="fa fa-chevron-right"></i></a></li>
                 {% else %}
-                <li class="next disabled"><a href="#">Next <i class="fa fa-chevron-right"></i></a></li>
+                <li class="next disabled"><a href="#">Next <i class="fa fa-caret-right"></i></a></li>
                 {% endif %}
             </ul>
         </div>

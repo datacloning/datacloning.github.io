@@ -4,6 +4,7 @@ author: "Peter Solymos and Subhash Lele"
 date: "August 1, 2015 -- Montpellier, France -- ICCB/ECCB Congress"
 output: pdf_document
 layout: course
+file: notes-01-basics
 course:
   year: 2015
   location: Montpellier
