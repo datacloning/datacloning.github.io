@@ -4,6 +4,63 @@ output: html_document
 layout: default
 ---
 
-General description
+## Motivation
 
-reference
+Hierarchical models, including generalized
+linear models with mixed random and fixed effects, are increasingly popular.
+The rapid expansion of applications is largely due to the advancement of
+the Markov Chain Monte Carlo (MCMC) algorithms and related software.
+Data cloning is a statistical computing method introduced by Lele et al. 2007[^Lele2007] and 2010[^Lele2010].
+It exploits the computational simplicity of the MCMC algorithms
+used in the Bayesian statistical framework, but it provides the maximum
+likelihood point estimates and their standard errors for complex hierarchical models.
+The use of the data cloning algorithm is especially valuable for complex models,
+where the number of unknowns increases with sample size (i.e. with latent variables),
+because inference and prediction procedures are often hard to implement in such situations.
+
+## A brief theory of data cloning
+
+Imagine a hypothetical situation where an experiment is repeated by $k$ different observers,
+and all $k$ experiments happen to result in exactly the same set of observations, $y^{(k)} = \left(y,y,\ldots,y\right)$.
+The likelihood function based on the combination of the data from these $k$ experiments
+is $L(\theta, y^{\left(k\right)}) = \left[L\left(\theta, y\right)\right]^k$.
+The location of the maximum of $L(\theta,y^{(k)})$ exactly equals the
+location of the maximum of the function $L\left(\theta, y\right)$,
+and the Fisher information matrix based on this likelihood is $k$ times the Fisher information matrix
+based on $L\left(\theta, y\right)$.
+
+One can use MCMC methods to calculate the posterior distribution of the model parameters ($\theta$)
+conditional on the data. Under regularity conditions, if $k$ is large, the posterior distribution
+corresponding to $k$ clones of the observations is approximately normal with mean $\hat{\theta}$
+and variance $1/k$ times the inverse of the Fisher information matrix. When $k$ is large, the mean of this
+posterior distribution is the maximum likelihood estimate and $k$ times the posterior variance is the
+corresponding asymptotic variance of the maximum likelihood estimate if the parameter space is continuous.
+
+Data cloning is a computational algorithm to compute maximum likelihood estimates and the
+inverse of the Fisher information matrix, and is related to simulated annealing. 
+By using data cloning, the statistical accuracy of the estimator remains
+a function of the sample size and not of the number of cloned copies. Data cloning does not
+improve the statistical accuracy of the estimator by artificially increasing the sample size.
+The data cloning procedure avoids the analytical or numerical evaluation of high dimensional integrals,
+numerical optimization of the likelihood function, and numerical
+computation of the curvature of the likelihood function.
+
+## Software implementation
+
+The `dclone` R package explained in S&oacute;lymos 2010[^Solymos2010] provides infrastructure for data cloning.
+Users who are familiar with Bayesian methodology can instantly use the package for maximum likelihood
+inference and prediction. Developers of R packages can build on the low level functionality provided by
+the package to implement more specific higher level estimation procedures
+for users who are not familiar with Bayesian methodology.
+This paper demonstrates the implementation of the data cloning algorithm, and presents a case study on
+how to write high level functions for specific modeling problems.
+
+
+[^Lele2007]: Lele, S.R., B. Dennis and F. Lutscher, 2007. Data cloning: easy maximum likelihood estimation for complex ecological models using Bayesian Markov chain Monte Carlo methods. *Ecology Letters* **10**, 551&ndash;563. <i class="fa fa-file-pdf-o"></i>&nbsp;[PDF](http://www.math.ualberta.ca/~slele/publications/Lele%20Dennis%20Lutscher%20data%20cloning%20Ecology%20Letters%2020071.pdf) &mdash; <i class="fa fa-external-link"></i>&nbsp;[citing articles](https://scholar.google.ca/scholar?cites=10254594770183679179&as_sdt=2005&sciodt=0,5&hl=en)
+
+[^Lele2010]: Lele, S. R., Nadeem, K., and Schmuland, B., 2010. Estimability and likelihood inference for generalized linear mixed models using data cloning. *Journal of the American Statistical Association* **105**, 1617&ndash;1625. <i class="fa fa-file-pdf-o"></i>&nbsp;[PDF](http://www.math.ualberta.ca/~slele/publications/Lele%20et%20al%20GLMM%202010.pdf) &mdash; <i class="fa fa-external-link"></i>&nbsp;[citing articles](https://scholar.google.ca/scholar?cites=7376405901792313149&as_sdt=2005&sciodt=0,5&hl=en)
+
+[^Solymos2010]: S&oacute;lymos, P., 2010. dclone: Data Cloning in R. *The R Journal* **2(2)**, 29&ndash;37. <i class="fa fa-file-pdf-o"></i>&nbsp;[PDF](http://journal.r-project.org/archive/2010-2/RJournal_2010-2_Solymos.pdf) &mdash; <i class="fa fa-external-link"></i>&nbsp;[citing articles](https://scholar.google.ca/scholar?cites=3899679749958212169&as_sdt=2005&sciodt=0,5&hl=en)
+
+
+
