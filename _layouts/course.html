@@ -9,25 +9,8 @@
 <div class="container">
 {% if page.course %}
     <div class="row">
-        <div class="col-md-8 col-md-offset-1">
+        <div class="col-md-10 col-md-offset-1">
             <a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/"><h3><em>{{ page.course.title }}</em></h3></a>
-		</div>
-        <div class="col-md-2">
-
-			<span class="pull-right">
-    		  <div class="btn-group">
-      			<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-		        Download
-        		<span class="caret"></span>
-      			</a>
-      			<ul class="dropdown-menu">
-        			<li><a href="#">html</a></li>
-        			<li><a href="#">pdf</a></li>
-        			<li><a href="#">Rmd</a></li>
-       			</ul>
-    		  </div>
-			</span>
-
 		</div>
 	</div>
     <div class="row">
@@ -45,7 +28,7 @@
 
 			<span class="pull-right">
     		  <div class="btn-group">
-      			<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+      			<a href="#" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
 		        Download
         		<span class="caret"></span>
       			</a>
