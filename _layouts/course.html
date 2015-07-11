@@ -9,18 +9,11 @@
 <div class="container">
 {% if page.course %}
     <div class="row">
-        <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-8 col-md-offset-1">
             <a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/"><h3><em>{{ page.course.title }}</em></h3></a>
 		</div>
-	</div>
-    <div class="row">
-		<div class="col-md-10 col-md-offset-1">
-            <ul class="breadcrumb">
-                <li><a href="{{ site.baseurl }}">Home</a></li>
-                <li><a href="{{ site.baseurl }}/courses/">Courses</a></li>
-                <li><a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/">{{ page.course.location }} {{ page.course.year }}</a></li>
-                <li class="active">{{ page.course.lecture }}</li>
-            </ul>
+        <div class="col-md-2">
+
 			<span class="pull-right">
 <ul class="nav nav-pills">
   <li class="dropdown">
@@ -35,6 +28,17 @@
   </li>
 </ul>
 			</span>
+
+		</div>
+	</div>
+    <div class="row">
+		<div class="col-md-10 col-md-offset-1">
+            <ul class="breadcrumb">
+                <li><a href="{{ site.baseurl }}">Home</a></li>
+                <li><a href="{{ site.baseurl }}/courses/">Courses</a></li>
+                <li><a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/">{{ page.course.location }} {{ page.course.year }}</a></li>
+                <li class="active">{{ page.course.lecture }}</li>
+            </ul>
 		</div>
 	</div>
     <div class="row">
