@@ -5,7 +5,7 @@ layout: plain
 <div class="jumbotron">
     <div class="container">
         <div class="row">
-            <div class="col-md-10 col-md-offset-1">
+            <div class="col-md-8 col-md-offset-2">
 
 <h1 class="title">Data Cloning</h1>
 <p>Frequentist statistical inference meets
@@ -60,7 +60,7 @@ works with all major MCMC engines. See the <a href="{{ site.baseurl }}/install.h
 
 <div class="container">
     <div class="row">
-        <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-8 col-md-offset-2">
 
 <div class="well">
 <h3><a href="{{ site.baseurl }}/courses/2015/montpellier/">Hierarchical models for conservation biologists made easy</a></h3>
