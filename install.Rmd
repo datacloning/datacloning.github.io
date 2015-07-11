@@ -4,39 +4,88 @@ output: html_document
 layout: default
 ---
 
-MCMC engine | Data cloning support | Parallel support
-------------- | ------------------ | -------------
-JAGS | `dclone::jags.fit` | `dclone::jags.parfit`
-WinBUGS | `dclone::bugs.fit` | `dclone::bugs.parfit`
-OpenBUGS | `dclone::bugs.fit` | `dclone::bugs.parfit`
-Stan | `dcextras::stan.fit` | `dcextras::stan.parfit`
-Nimble | N/A | N/A
-INLA | dclone | N/A
-MCMCglmm | dclone | N/A
+## Install R
 
-## Installing R
+Follow the instructions at the [R website](http://cran.r-project.org) to download and install
+the most up-to-date base R version suitable for your operating system.
 
-## Installing dclone
+## Install RStudio
 
-## Intalling the MCMC engine
+Having RStudio is not absolutely necessary, but material
+on the website follows a syntax that is close to RStudio's [R markdown](http://rmarkdown.rstudio.com/)
+notation. 
+RStudio is available for different operating systems. Pick the open source descktop edition from [here](http://www.rstudio.com/products/rstudio/download/).
 
-### JAGS
+Some material on the website also contains [Shiny](http://shiny.rstudio.com/) apps for demonstration purposes, this is where RStudio
+comes handy again. To be able to run Shiny apps, install the
+`shiny` package:
 
-### WinBUGS
+```r
+install.packages("shiny")
+```
 
-platform dependence
+## Install JAGS
 
-### OpenBUGS
+JAGS is robust, easy to install, and cross-paltform available. Download the latest version suitable for your operating system from [here](http://sourceforge.net/projects/mcmc-jags/files/JAGS/3.x/).
 
-### Stan
+Once R/RStudio and JAGS are installed, run the following command in R/RStudio to install the necessary R packages:
 
-need extras extras
+```r
+install.packages(c("rjags", "dclone", "coda", "snow", "rlecuyer"))
+```
 
-checking the setup using example(run_dontrun)
+## Install WinBUGS
 
-### Nimble
+Install links. Cross-platform issues.
 
-### INLA
+Get WinBUGS from [this website](http://www.mrc-bsu.cam.ac.uk/software/bugs/the-bugs-project-winbugs/), apply the patch and use the immortality key for best result.
 
-### MCMCglmm
+Once R/RStudio and WinBUGS are installed, run the following command in R/RStudio to install the necessary R packages:
+
+```r
+install.packages(c("R2WinBUGS", "dclone", "coda", "snow", "rlecuyer"))
+```
+
+## Install OpenBUGS
+
+Get OpenBUGS by following the installation guide 
+from [this website](http://www.openbugs.net/w/Downloads).
+
+Once R/RStudio and OpenBUGS are installed, run the following command in R/RStudio to install the necessary R packages:
+
+```r
+install.packages(c("R2OpenBUGS", "dclone", "coda",
+    "BRugs", "snow", "rlecuyer"))
+```
+
+## Install Stan
+
+Follow the steps on the [Stan website](http://mc-stan.org/rstan.html) and 
+[wiki](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started) to install Stan and RStan.
+
+Once R/RStudio and Stan/`RStan` are installed, run the following command in R/RStudio to install other necessary R packages:
+
+```r
+install.packages(c("dclone", "coda", "snow", "rlecuyer"))
+```
+
+Because `RStan` is not available via [CRAN](http://cran.r-project.org),
+the data cloning related Stan functions in the `dcextras` R package
+can only be downloaded from [GitHub](https://github.com/datacloning/dcextras). Make sure to update the `devtools` package as
+described [here](https://github.com/hadley/devtools).
+
+```r
+library(devtools)
+install_github("datacloning/dcextras")
+```
+
+## Development version of `dclone`
+
+To install development version of `dclone`, install
+it from GitHub:
+
+```r
+library(devtools)
+install_github("datacloning/dclone")
+```
 
