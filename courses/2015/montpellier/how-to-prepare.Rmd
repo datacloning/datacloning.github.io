@@ -1,7 +1,15 @@
 ---
-title: 'Hierarchical models for conservation biologists made easy'
-layout: default
-subtitle: 'How to prepare'
+title: "How to prepare"
+author: "Peter Solymos and Subhash Lele"
+output: pdf_document
+layout: course
+course:
+  year: 2015
+  location: Montpellier
+  title: "Hierarchical Models Made Easy &mdash; August 1, 2015 &mdash; Montpellier, France &mdash; ICCB/ECCB Congress"
+  lecture: How to
+  previous: about-the-course
+  next: notes-01-basics
 ---
 
 Please follow these steps and install necessary software onto your computer that you are going to use at the course. This way we can spend more time on talking about modeling.

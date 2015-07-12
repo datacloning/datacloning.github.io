@@ -1,7 +1,14 @@
 ---
-title: 'Hierarchical models for conservation biologists made easy'
-layout: default
-subtitle: 'About the course'
+title: "About the course"
+author: "Peter Solymos and Subhash Lele"
+output: pdf_document
+layout: course
+course:
+  year: 2015
+  location: Montpellier
+  title: "Hierarchical Models Made Easy &mdash; August 1, 2015 &mdash; Montpellier, France &mdash; ICCB/ECCB Congress"
+  lecture: About
+  next: how-to-prepare
 ---
 
 ### Goal and justification
