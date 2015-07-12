@@ -26,6 +26,7 @@
     <div class="row">
     	<div class="col-md-8 col-md-offset-2">
 
+			{% if page.course.file %}
 			<span class="pull-right">
     		  <div class="btn-group">
       			<a href="#" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
@@ -34,11 +35,12 @@
       			</a>
       			<ul class="dropdown-menu">
         			<li><a href="{{ page.url }}" download>html</a></li>
-        			<li><a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.file }}.pdf" download>pdf</a></li>
-        			<li><a href="https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.file }}.Rmd" download>Rmd</a></li>
+        			<li><a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.course.file }}.pdf" download>pdf</a></li>
+        			<li><a href="https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.course.file }}.Rmd" download>Rmd</a></li>
        			</ul>
     		  </div>
 			</span>
+			{% endif %}
 
             <h1 class="title">{{ page.title }}</h1>
 {% else %}
