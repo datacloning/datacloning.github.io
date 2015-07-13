@@ -5,7 +5,7 @@ date: "August 1, 2015 -- Montpellier, France -- ICCB/ECCB Congress"
 output: pdf_document
 layout: course
 course:
-  file: notes-03-pva
+  file: 03-pva
   year: 2015
   location: Montpellier
   title: "Hierarchical Models Made Easy &mdash; August 1, 2015 &mdash; Montpellier, France &mdash; ICCB/ECCB Congress"
