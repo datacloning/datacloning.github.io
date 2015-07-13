@@ -10,9 +10,9 @@ layout: default
 This training course is aimed towards the conservation professionals who need to understand and feel comfortable with modern statistical and computational tools used to address pressing conservation issues. By presenting both Bayesian and Likelihood based approaches, the participants will be able to go beyond the rhetorics of philosophy of statistics and use the tools with full understanding of their assumptions and implications.
 
 * [About the course]({{ site.baseurl }}/courses/2015/montpellier/about-the-course.html)
-* [What to do before the course]({{ site.baseurl }}/courses/2015/montpelli
+* [What to do before the course]({{ site.baseurl }}/courses/2015/montpellier/how-to-prepare.html)
 
-***
+{% comment %}
 
 ## Course resources
 
@@ -20,7 +20,9 @@ The links below will take you to the course material pages:
 lecture notes and slides.
 There are navigation (previous/next) buttons within each
 page. You can download the lecture notes in various
-formats (html, pdf, source Rmd).
+formats (html, pdf, source Rmd). Alternatively, 
+clone or download the full website content from
+[GitHub](https://github.com/datacloning/datacloning.github.io).
 
 * [About the course]({{ site.baseurl }}/courses/2015/montpellier/about-the-course.html)
 * [What to do before the course]({{ site.baseurl }}/courses/2015/montpellier/how-to-prepare.html)
@@ -30,7 +32,4 @@ formats (html, pdf, source Rmd).
 * Lecture 4: Miscellaneous topics ([notes]({{ site.baseurl }}/courses/2015/montpellier/notes-04-misc.html), [slides]({{ site.baseurl }}/courses/2015/montpellier/slides-04-misc.html))
 * [A list of Shiny apps used in the lectures]({{ site.baseurl }}/courses/2015/montpellier/apps.html)
 
-Alternatively, clone or download the full website content from
-[GitHub](https://github.com/datacloning/datacloning.github.io).
-{% comment %}
 {% endcomment %}
