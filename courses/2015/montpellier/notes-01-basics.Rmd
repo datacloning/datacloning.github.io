@@ -11,7 +11,7 @@ course:
   title: "Hierarchical Models Made Easy &mdash; August 1, 2015 &mdash; Montpellier, France &mdash; ICCB/ECCB Congress"
   lecture: Basics
   previous: how-to-prepare
-  next: notes-02-occupancy
+  next: notes-02-hmods
 ---
 
 ### Introduction
