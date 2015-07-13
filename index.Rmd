@@ -23,7 +23,7 @@ Bayesian Markov-chain Monte Carlo (MCMC) methods.</p>
 
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-laptop"></i> Easy to Install</h3>
-<p>The <a href="{{ site.baseurl }}/dclone">dclone</a> <a href="http://www.r-project.org">R</a> package 
+<p>The <a href="http://cran.r-project.org/package=dclone">dclone</a> <a href="http://www.r-project.org">R</a> package 
 works with all major MCMC engines. See the <a href="{{ site.baseurl }}/install.html">installation guide</a>.</p>
 </div>
 
