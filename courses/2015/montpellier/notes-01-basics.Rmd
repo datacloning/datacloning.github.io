@@ -132,6 +132,8 @@ abline(v = p, lwd = 2, col = flatly$red) # true value
 abline(v = pt[which.max(L)], lwd = 2, col = flatly$success) # ML extimate
 ```
 
+![Likelihood function](./images-01/likelihood.png)
+
 > As we change the data, the likelihood function changes.
 
 The following code is to demonstrate how the
@@ -157,6 +159,8 @@ tmp <- replicate(100,
     col = flatly$info))
 abline(v = p, lwd = 2, col = flatly$red)
 ```
+
+![Changing the data](./images-01/data-impact.png)
 
 > As we increase the sample size, 
 > the likelihood becomes concentrated around the true value. 
@@ -185,6 +189,8 @@ text(apply(Lm, 2, function(z) pt[which.max(z)]),
     col = unlist(flatly)[3:7])
 ```
 
+![Sample size effect](./images-01/sample-size-effect.png)
+
 The likelihood value represents the support in the data for a 
 particular parameter value. This is intrinsically a relative concept. 
 How much more support do we have for this parameter value vs. another parameter value. The **likelihood ratio** is a more fundamental concept than the likelihood function itself. Law of the likelihood (Hacking, Royall).
@@ -203,14 +209,14 @@ App name | html | raw
 Distributions      | [html](./app-01-distr.html) | [raw](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-distr.Rmd)
 MLE      | [html](./app-01-mle.html) | [raw](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-mle.Rmd)
 
-### The maximum likelihood estimator
+## The maximum likelihood estimator
 
 Which parameter value has the largest support in the data? 
 
 We can use numerical optimization to get the value of a parameter
 where the likelihood function is maximal.
-Such a parameter value is called an (point) estimate,
-while the function we are using to do the estimation (in this case th
+Such a parameter value is called a (point) estimate,
+while the function we are using to do the estimation (in this case the
 likelihood function, but there might be other functions, too) is
 called an estimator.
 
@@ -253,7 +259,7 @@ Once we can write down the likelihood, we can in principle
 write a program to calculate the value of the (negative log) likelihood
 function given some parameter value and the data.
 
-### The sampling distribution of the estimates
+## The sampling distribution of the estimates
 
 Let us revisit now what happened when we kept the sample size fixed but changed
 the data. In this case, we get different parameter estimates (MLEs) for different
@@ -293,7 +299,7 @@ mean(res - p)
 
 Precision is the corresponding feature of an estimate.
 
-### Confidence interval and efficiency
+## Confidence interval and efficiency
 
 The 2.5% and 97.5% percentiles of the sampling distribution correspond to the
 95% analytical confidence intervals around the true parameter value.
@@ -328,7 +334,9 @@ abline(v = quantile(res, c(0.025, 0.975)),
     lwd = 2, col = flatly$success, lty = 2)
 ```
 
-### Estimated confidence intervals
+![Sampling distribution](./images-01/sampling-distr.png)
+
+## Estimated confidence intervals
 
 Of course, in real life, we do not have the luxury of conducting such repeated experiments. So what good are these ideas? 
 
@@ -380,7 +388,7 @@ Let us compare the true CI with the estimated CIs:
 cbind(true = ci0, asy = ci1, pb = ci2, npb = ci3)
 ```
 
-### Summary
+## Summary
 
 This kind of analysis is called the frequentist analysis. We are studying the properties of the inferential statement under the hypothetical replication of the experiment. This analysis tells us about the reliability of the procedure. 
 
@@ -389,10 +397,11 @@ The implicit logic is that if the procedure is reliable, we could rely on the in
 This is similar to relying more on the blood pressure results from a machine that has small measurement error instead of one with large measurement error. 
 
 
-### Bayesian analysis 
+## Bayesian analysis 
 
-One major criticism of the Frequetist approach is that we do not repeat the experiment. What we want to know is: What do the data at hand tell us? 
-Bayesian approach does not quite answer that question but answers a different question: Given these data, how do I change my beliefs? 
+One major criticism of the Frequetist approach is that we do not repeat the experiment. What we want to know is: 
+What do the data at hand tell us? 
+Bayesian approach does not quite answer that question but answers a different question: Given these data, how do I change my **beliefs**? 
 
 Our goal is to infer about the true parameter value (the true occupancy proportion). 
 Prior distribution: This quantifies in probabilistic terms our personal beliefs about the true occupancy rate. 
