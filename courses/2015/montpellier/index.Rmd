@@ -11,6 +11,7 @@ This training course is aimed towards the conservation professionals who need to
 
 * [About the course]({{ site.baseurl }}/courses/2015/montpellier/about-the-course.html)
 * [What to do before the course]({{ site.baseurl }}/courses/2015/montpellier/how-to-prepare.html)
+* [R quickstart]({{ site.baseurl }}/courses/2015/montpellier/quickstart.html)
 
 {% comment %}
 
