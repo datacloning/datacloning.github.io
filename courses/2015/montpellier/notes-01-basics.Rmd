@@ -404,9 +404,14 @@ What do the data at hand tell us?
 Bayesian approach does not quite answer that question but answers a different question: Given these data, how do I change my **beliefs**? 
 
 Our goal is to infer about the true parameter value (the true occupancy proportion). 
-Prior distribution: This quantifies in probabilistic terms our personal beliefs about the true occupancy rate. 
+Prior distribution, $\pi(\theta)$: This quantifies in probabilistic terms our personal beliefs about the true occupancy rate. 
 
-We may believe that it is most likely to be 0.7. Then we consider distribution with mode at 0.7. We cannot determine the entire distribution from such information. But that is what a Bayesian inference demands. It is a very difficult task but is a necessary task if you want to use the Bayesian approach. 
+We may believe that it is most likely to be 0.7. 
+Then we consider a distribution with mode at 0.7. 
+We cannot determine the entire distribution from such information. 
+But that is what a Bayesian inference demands. 
+It is a very difficult task but is a necessary task if you want 
+to use the Bayesian approach. 
 
 Posterior distribution: This quantifies the beliefs as modified by the data. The mathematical formulation is as follows:
 
@@ -415,374 +420,184 @@ $$\pi(\theta \mid y) = \frac{L(\theta;y) \pi(\theta)}{ \int L(\theta;y) \pi(\the
 $\pi(\theta)$ is the prior distribution.
 
 
-> ### Shiny apps to illustrate the following features
-> 
-> * Beta priors (including Uniform and Jeffrey's prior):
->   - Different priors, same data lead to different posteriors.
->   - Same prior, different data lead to different posteriors. 
->   - As the sample size increases, the posterior is invariant to the prior 
+## Shiny apps to illustrate Bayesian analysis
+ 
+App name | html | raw 
+-------- | ---- | ---------
+Bayesian, Beta prior      | [html](./app-01-beta-prior.html) | [raw](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-beta-prior.Rmd)
+Bayesian, Normal prior      | [html](./app-01-normal-prior.html) | [raw](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-normal-prior.Rmd)
+Bayesian, bimodal prior      | [html](./app-01-bimodal-prior.html) | [raw](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-bimodal-prior.Rmd)
+
+> Beta priors, including Uniform (Beta(1, 1))
+> and Jeffrey's prior (Beta(0.5, 0.5)) we can see that:
+>
+> * different priors, same data lead to different posteriors,
+> * same prior, different data lead to different posteriors, 
+> * as the sample size increases, the posterior is invariant to the prior 
 >     (eventually degenerate at the true value).
-> * Normal prior:
->   - check the effects of probability vs. log scale on the prior and posterior.
-> * Bimodal Normal mixture prior:
->   - check how a bimodal prior changes the posterior.
 
-Here the code for the Beta priors:
-
-```r
-## Bayesian posterior calculations
-y0 <- sim_fun(100, p)
-y <- y0[1:10]
-pval <- seq(0.001, 0.999, by = 0.0005)
-## beta(0.5,0.5) is the Jeffrey's prior
-## beta(1,1) is Uniform prior
-fPri <- function(p, shape1=0.5, shape2=0.5)
-    dbeta(p, shape1, shape2)
-fLik <- function(p, y)
-    prod(dbinom(y, size = 1, prob = p))
-Lik <- sapply(pval, fLik, y=y[1:input$n])
-Pri <- sapply(pval, fPri, 0.5, 0.5) # change the prior here
-Pos <- Lik * Pri
-M <- cbind(Pri=Pri/max(Pri),
-    Lik=Lik/max(Lik),
-    Pos=Pos/max(Pos))
-Col <- c("#cccccc", "#3498db", "#f39c12")
-matplot(pval, M, type = "l", 
-    col=Col, lwd=2, lty=1,
-    ylab = "Density", 
-    xlab=ifelse(input$scale == "logit", "logit(p)","p"),
-    sub=paste0("Mean = ", round(mean(y[1:input$n]), 2), " (", 
-        sum(1-y[1:input$n]), " 0s & ", sum(y[1:input$n]), " 1s)"),
-    main = paste("Posterior mean =", round(sum(pval * M[,"Pos"]), 2)))
-abline(v = input$p, lwd = 2, col = "#c7254e")
-abline(v = sum(pval * Pos/sum(Pos)), lwd = 2, col = "#18bc9c")
-legend("topleft",lty=1, lwd=2, col=Col, bty="n",
-   legend=c("Prior","Likelihood","Posterior"))
-```
-
-
-### Non-informative priors (Objective Bayesian analysis)
+## Non-informative priors (objective Bayesian analysis)
 
 It is clear that priors have an effect on the Bayesian inference. And, they should have an effect. However, this subjectivity is bothersome to many scientists. There is an approach that is euphemistically called an objective Bayesian approach. In this approach, we try to come up with priors that have least influence on the inference (e.g. Bernardo, 1980). There is no unique definition of what we mean by non-informative priors. Various priors have been suggested in the literature. The most commonly used non-informative priors are: Uniform priors and the large variance priors. Other priors are nearly impossible to specify for the complex models that ecologists are faced with. 
 
 Do these priors affect the inference? 
 
-The answer is that ''they most certainly do''. There is nothing wrong with the priors affecting the inference as long as the researchers can justify their priors. 
+The answer is that ``they most certainly do''. There is nothing wrong with the priors affecting the inference as long as the researchers can justify their priors. 
 
-> Uniform prior and its effect: prob scale
+> Use the apps with Beta, Normal, and bimodal priors and check 
+> the effects of probability vs. 
+> logit scale on the prior and posterior.
+> It is obvious that we get different answers for the same data.
 >
-> Log-normal prior and its effect: normal prior on logit scale
->
-> Jeffrey's prior and its effect: not affected
->
-> for same data you get different answers
+> Only Jeffrey's prior is not affected.
 
-Fundamentally there is no such thing as 'objective' Bayesian inference. Those who want to use Bayesian inference should simply accept that the inferences are affected by the choice of the priors. 
+Fundamentally there is no such thing as `objective' Bayesian inference. Those who want to use Bayesian inference should simply accept that the inferences are affected by the choice of the priors. 
 
+## Data cloning: How to trick Bayesians into giving Frequentist answers?
 
+Difference between Frequentist and Bayesian inferential statements:
+summarize the philosophical differences between the inferential statements made by a Frequentist and a Bayesian in the context of occupancy model. 
 
-### Data cloning: How to trick Bayesians into giving Frequentist answers?
+If the sample size is large, the numerical differences between the Frequentist and Bayesian answers vanish. However, their interpretation is different. 
 
-> Difference between Frequentist and Bayesian inferential statements:
->
-> Summarize the philosophical differences between the inferential statements made 
-> by a Frequentist and a Bayesian in the context of occupancy model. 
+## A brief theory of data cloning
 
-Add here: not increasing n but copy the data, see what happens (should be the same as more n)
---> another app for DC (show MLE as well)
+Imagine a hypothetical situation where an experiment is repeated by $k$ different observers,
+and all $k$ experiments happen to result in exactly the same set of observations, $y^{(k)} = \left(y,y,\ldots,y\right)$.
+The likelihood function based on the combination of the data from these $k$ experiments
+is $L(\theta, y^{\left(k\right)}) = \left[L\left(\theta, y\right)\right]^k$.
+The location of the maximum of $L(\theta,y^{(k)})$ exactly equals the
+location of the maximum of the function $L\left(\theta, y\right)$,
+and the Fisher information matrix based on this likelihood is $k$ times the Fisher information matrix
+based on $L\left(\theta, y\right)$.
 
+One can use MCMC methods to calculate the posterior distribution of the model parameters ($\theta$)
+conditional on the data. Under regularity conditions, if $k$ is large, the posterior distribution
+corresponding to $k$ clones of the observations is approximately normal with mean $\hat{\theta}$
+and variance $1/k$ times the inverse of the Fisher information matrix. When $k$ is large, the mean of this
+posterior distribution is the maximum likelihood estimate and $k$ times the posterior variance is the
+corresponding asymptotic variance of the maximum likelihood estimate if the parameter space is continuous.
 
-### Data cloning for Frequentist predictive distribution:
+Data cloning is a computational algorithm to compute maximum likelihood estimates and the
+inverse of the Fisher information matrix, and is related to simulated annealing. 
+By using data cloning, the statistical accuracy of the estimator remains
+a function of the sample size and not of the number of cloned copies. Data cloning does not
+improve the statistical accuracy of the estimator by artificially increasing the sample size.
+The data cloning procedure avoids the analytical or numerical evaluation of high dimensional integrals,
+numerical optimization of the likelihood function, and numerical
+computation of the curvature of the likelihood function.
 
-MORAL: If the sample size is large, the numerical differences between the Frequentist and Bayesian answers vanish. However, their interpretation is different. 
+Use the following Shiny app to see what happens when
+we clone the data instead of increasing sample size:
 
-### What have we learnt?
+App name | html | raw 
+-------- | ---- | ---------
+Data cloning      | [html](./app-01-data-cloning.html) | [raw](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-data-cloning.Rmd)
 
-* Data generation
-* Likelihood (Analytical, Graphical and also in JAGS)
-* Frequentist inference 
-* Bayesian inference 
-* Data cloning to get MLE and confidence intervals 
+## MCMC
 
-***
-
-### Continuous observations
-
-> Peter: 
-> Can you come up with an ecological situation where the response is continuous? 
-> And, we want to do prediction of the unobserved data? 
-
-Let us look at the likelihood function and all the other things we did so far when the observations are continuous. We will have exactly the same programs but with Normal distribution substituted for the Bernoulli distribution. 
-
-Prediction of the unobserved data:
-
-This is where there is substantial difference between the frequentist method and Bayesian method.
-
-> #### R commands:
-> True predictive distribution: This will be under the true parameter values. 
-
-Can we get a reasonable approximation of this distribution? 
-
-1. Estimated predictive distribution: This will change from one sample to the other. 
-2. Frequentist predictive distribution: 
-3. Bayesian predictive distribution: 
-
-What do we mean by: Is the prediction interval correct? 
-
-Coverage probability: 
-Estimated predictive distribution has smaller than nominal coverage.
-Frequentist and Bayesian predictive distributions are wider and hence tend to have better coverage. 
-Obviously, the Bayesian predictive coverage depends on the prior distribution. For some priors, one gets really good coverage and some can have really bad coverage. 
-Frequentist predictive coverage is also not guaranteed to have good coverage. 
-As the sample size increases, both Bayesian and Frequentist predictive distributions converge to the true predictive distribution. 
-
-
-> (This will illustrate how to extend the standard model file to accommodate data 
-> cloning dclone with dcdim command as well as init values). We also remind them 
-> to check the results with different priors to make sure the MCMC is not stuck.
-
-### DAGs
+### Conventional maximum likelihood estimation
 
 ```r
-library(diagram)
-
-## Bernoulli
-par(mar = c(1, 1, 1, 1))
-openplotmat(main = "Bernoulli")
-pos <- coordinates(3)
-straightarrow(from = pos[2, ], to = pos[1, ])
-straightarrow(from = pos[3, ], to = pos[2, ])
-textrect(pos[1,], 0.05, 0.05, lab="Y", shadow.size=0, box.col="#ecf0f1")
-textellipse(pos[2,], 0.05, 0.05, lab="p", shadow.size=0)
-textdiamond(pos[3,], 0.05, 0.05, lab=expression(pi[p]), shadow.size=0)
-
-## Bernoulli-Bernoulli
-par(mar = c(1, 1, 1, 1))
-openplotmat(main = "Bernoulli-Bernoulli")
-pos <- coordinates(c(3,3))
-straightarrow(from = pos[2, ], to = pos[1, ])
-straightarrow(from = pos[3, ], to = pos[2, ])
-straightarrow(from = pos[1, ], to = pos[4, ])
-straightarrow(from = pos[6, ], to = pos[5, ])
-straightarrow(from = pos[5, ], to = pos[4, ])
-textellipse(pos[1,], 0.05, 0.05, lab="Y", shadow.size=0)
-textellipse(pos[2,], 0.05, 0.05, lab=expression(phi), shadow.size=0)
-textdiamond(pos[3,], 0.05, 0.05, lab=expression(pi[phi]), shadow.size=0)
-textrect(pos[4,], 0.05, 0.05, lab="W", shadow.size=0, box.col="#ecf0f1")
-textellipse(pos[5,], 0.05, 0.05, lab="p", shadow.size=0)
-textdiamond(pos[6,], 0.05, 0.05, lab=expression(pi[p]), shadow.size=0)
-
-## Binomial-Poisson
-par(mar = c(1, 1, 1, 1))
-openplotmat(main = "Binomial-Poisson")
-pos <- coordinates(c(3,3))
-straightarrow(from = pos[2, ], to = pos[1, ])
-straightarrow(from = pos[3, ], to = pos[2, ])
-straightarrow(from = pos[1, ], to = pos[4, ])
-straightarrow(from = pos[6, ], to = pos[5, ])
-straightarrow(from = pos[5, ], to = pos[4, ])
-textellipse(pos[1,], 0.05, 0.05, lab="N", shadow.size=0)
-textellipse(pos[2,], 0.05, 0.05, lab=expression(lambda), shadow.size=0)
-textdiamond(pos[3,], 0.05, 0.05, lab=expression(pi[lambda]), shadow.size=0)
-textrect(pos[4,], 0.05, 0.05, lab="Y", shadow.size=0, box.col="#ecf0f1")
-textellipse(pos[5,], 0.05, 0.05, lab="p", shadow.size=0)
-textdiamond(pos[6,], 0.05, 0.05, lab=expression(pi[p]), shadow.size=0)
-
-## Normal-Normal
-
-## Binomial-Lognormal
-
-## Poisson-Lognormal
-
-## Gompertz/Ricker
-
-```
-
-
-***
-
-## Sandbox
-
-$$(y \mid X = x) \sim h(y; X = x, \theta_{1})$$
-
-$$X \sim g(x; \theta_{2})$$
-
-$$\theta = (\theta_{1}, \theta_{2})$$
-
-$$L(\theta;y) = \int h(y \mid x; \theta_{1}) g(x; \theta_{2}) dx$$
-
-Posterior distribution:
-
-$$\pi(\theta \mid y) = \frac{L(\theta;y) \pi(\theta)}{ \int L(\theta;y) \pi(\theta) d\theta }$$
-
-$\pi(\theta)$ is the prior distribution.
-
-Normal&ndash;Normal model:
-
-$$Y_{ij} \mid \mu_{ij} \sim Normal(\mu_{ij}, \sigma^2)$$
-
-$$i=1,\ldots,n; j=1,\ldots,m_{n}$$
-
-$$\mu_{ij} = X_{ij}^{T}\theta + \epsilon_{i}$$
-
-$$\epsilon_{i} \sim Normal(0, \tau^2)$$
-
-```r
-"model {
-    for (ij in 1:nm) {                #### <- likelihood
-        Y[ij] ~ dnorm(mu[ij], 1/sigma^2)
-        mu[ij] <- inprod(X[ij,], theta) + e[gr[ij]]
-    }
-    for (i in 1:n) {
-        e[i] ~ dnorm(0, 1/tau^2)
-    }
-    for (k in 1:np) {                 #### <- priors
-        theta[k] ~ dnorm(0, 0.001)
-    }
-    sigma ~ dlnorm(0, 0.001)
-    tau ~ dlnorm(0, 0.001)
-}"
-```
-
-```r
-library(rjags) 
-library(dclone)
-set.seed(1234)
-theta <- c(1, -1)
-sigma <- 0.6
-tau <- 0.3
-n <- 50 # number of clusters
-m <- 10 # number of repeats within each cluster
-nm <- n * m # total number of observations
-gr <- rep(1:n, each=m) # group membership defining clusters
-x <- rnorm(nm) # covariate
-X <- model.matrix(~x) # design matrix
-e <- rnorm(n, 0, tau) # random effect
-mu <- drop(X %*% theta) + e[gr] # mean
-Y <- rnorm(nm, mu, sigma) # outcome
-
-model <- custommodel(c("model {
-    for (ij in 1:nm) {                #### <- likelihood
-        Y[ij] ~ dnorm(mu[ij], 1/sigma^2)
-        mu[ij] <- inprod(X[ij,], theta) + e[gr[ij]]
-    }
-    for (i in 1:n) {
-        e[i] ~ dnorm(0, 1/tau^2)
-    }
-    for (k in 1:np) {                 #### <- priors
-        theta[k] ~ dnorm(0, 0.001)
-    }
-    sigma ~ dlnorm(0, 0.001)
-    tau ~ dlnorm(0, 0.001)
-}"))
-
-dat <- list(Y=Y, X=X, nm=nm, n=n, np=ncol(X), gr=gr)
-str(dat)
-
-m <- jags.fit(dat, c("theta", "sigma", "tau"), model, n.update=2000) 
+m <- glm(formula = y ~ 1, family=binomial("logit"))
 summary(m)
-pairs(m)
+coef(m)
+exp(coef(m)) / (1 + exp(coef(m)))
+plogis(coef(m))
+mean(y)
 ```
 
-DC:
-
-$$y^{(K)} = (y,\ldots,y)$$
-
-$$L(\theta;y^{K}) = L(\theta;y)^{K}$$
-
-$$\pi_{K}(\theta \mid y) = \frac{[L(\theta;y)]^{K} \pi(\theta)}{ \int [L(\theta;y)]^{K} \pi(\theta) d\theta }$$
-
-$$\pi_{K}(\theta \mid y) \sim MVN(\hat{\theta}, \frac{1}{K} I^{-1}(\hat{\theta}))$$
+### Bayesian model in JAGS
 
 ```r
-str(dclone(dat, n.clones=2, unchanged="np", multiply=c("nm", "n")))
-mk <- dc.fit(dat, c("theta", "sigma", "tau"), model, n.update=2000,
-    n.clones=c(1,2,4,8), unchanged="np", multiply=c("nm", "n"))
-op <- par(mar=0.6*c(5, 4, 4, 2) + 0.1, cex=0.5)
-plot(dctable(mk), position=c(-100, -100))
-par(op)
-```
-
-## PDF transformation trick with KDE
-
-## analytic results for Logit-Normal
-
-The problem is this: X is a random variable say Normal(2,4). I can plot histogram of 1000 draws, and have the PDF
-
-```r
-hist(rnorm(1000, 2, 2), freq=FALSE)
-curve(dnorm(x, 2, 2), add=TRUE, col=2)
-```
-
-Now what is the PDF of inverse_logit(X)?
-
-```r
-dlogitnorm <- function(x, mean = 0, sd = 1, log = FALSE) {
-    if (log) {
-        log(1/(x*(1-x))) + dnorm(qlogis(x), mean, sd, TRUE)
-    } else {
-        (1/(x*(1-x))) * dnorm(qlogis(x), mean, sd)
+library(dclone)
+library(rjags)
+model <- custommodel("model {
+    for (i in 1:n) {
+        #Y[i] ~ dbin(p, 1) # Binomial(N,p)
+        Y[i] ~ dbern(p) # Bernoulli(p)
     }
-}
-hist(plogis(rnorm(1000, 2, 2)), freq=FALSE)
-curve(dlogitnorm(x, 2, 2), from=0, to=1, add=TRUE, col=2)
+    p ~ dunif(0.001, 0.999)
+}")
+dat <- list(Y = y, n = n)
+fit <- jags.fit(data = dat, params = "p", model = model)
+summary(fit)
+plot(fit)
 ```
 
-Let's approximate the result using KDE
+![MCMC trace plot and density](./images-01/mcmc-trace.png)
+
+### Data cloning
+
+To make sure that both locations and klones are independent
+(i.i.d.), it is safest to include and extra dimension
+and the corresponding loop.
 
 ```r
-x <- rnorm(10000, 2, 2)
-dr <- density(x)
-hist(x, freq=FALSE)
-curve(dnorm(x, 2, 2), add=TRUE, col=2)
-lines(dr, col=4)
+model <- custommodel("model {
+    for (k in 1:K) {
+        for (i in 1:n) {
+            Y[i,k] ~ dbin(p, 1)
+        }
+    }
+    p ~ dunif(0.001, 0.999)
+}")
+dat <- list(Y = dcdim(data.matrix(y)), n = n, K = 1)
+dcfit <- dc.fit(data = dat, params = "p", model = model,
+    n.clones = c(1,2,4,8), unchanged = "n", multiply = "K")
+summary(dcfit)
+plot(dcfit)
+dctable(dcfit)
+plot(dctable(dcfit))
+dcdiag(dcfit)
+plot(dcdiag(dcfit))
 ```
 
-On the probability scale we get:
+![DC diagnostics](./images-01/dcdiag.png)
+
+#### Modification 1
+
+If locations are treated as i.i.d., it is possible to
+replicate the vector, so that length
+becomes `n * K`.
 
 ```r
-dp <- dr
-dp$dx <- diff(dp$x)
-dp$dx <- c(dp$dx[1], dp$dx)
-dp$gx <- plogis(dp$x)
-dp$dgx <- diff(dp$gx)
-dp$dgx <- c(dp$dgx[1], dp$dgx)
-dp$gy <- dp$dx * dp$y / dp$dgx
-
-hist(plogis(x), freq=FALSE)
-curve(dlogitnorm(x, 2, 2), from=0, to=1, add=TRUE, col=2)
-lines(dp$gx, dp$gy, col=4)
+model <- custommodel("model {
+    for (i in 1:n) {
+        Y[i] ~ dbin(p, 1)
+    }
+    p ~ dunif(0.001, 0.999)
+}")
+dat <- list(Y = y, n = n)
+dcfit <- dc.fit(data = dat, params = "p", model = model,
+    n.clones = c(1,2,4,8), multiply = "n")
 ```
 
+#### Modification 2
 
-## Beta
-
-The problem is this: X is a random variable say Beta(0.5,1). I can plot histogram of 1000 draws, and have the PDF
+If locations are treated as i.i.d., one can
+increase the size of the Binomial
+distribution. Note, however, that this trick
+does not work for hierarchical models,
+only in this simple case.
 
 ```r
-hist(rbeta(1000, 0.5, 1), freq=FALSE)
-curve(dbeta(x, 0.5, 1), add=TRUE, col=2)
+model <- custommodel("model {
+    for (i in 1:n) {
+        Y[i] ~ dbin(p, K)
+    }
+    p ~ dunif(0.001, 0.999)
+}")
+dat <- list(Y = y, n = n, K = 1)
+dcfit <- dc.fit(data = dat, params = "p", model = model,
+    n.clones = c(1,2,4,8), unchanged = "n", multiply = "K")
 ```
 
-Now what is the PDF of logit(X)?
+## What have we learnt?
 
-```r
-x <- rbeta(10^6, 0.5, 1)
-hist(qlogis(x), freq=FALSE)
-lines(density(qlogis(x)), col=4)
-```
-
-## Statistical distributions
-
-Normal
-Bernoulli
-Binomial
-Poisson
-Lognormal
-Gamma
-Beta
-
-n
-seed
-
+* Data generation,
+* likelihood (analytical, graphical and also in JAGS),
+* frequentist inference ,
+* bayesian inference ,
+* data cloning to get MLE and confidence intervals .
 
