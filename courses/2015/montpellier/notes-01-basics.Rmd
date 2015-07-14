@@ -1,5 +1,5 @@
 ---
-title: "Maximum Likelihood Estimation"
+title: "Statistical concepts and paradigms"
 author: "Peter Solymos and Subhash Lele"
 date: "August 1, 2015 -- Montpellier, France -- ICCB/ECCB Congress"
 output: pdf_document
@@ -14,7 +14,7 @@ course:
   next: notes-02-hmods
 ---
 
-### Introduction
+## Introduction
 
 Science, as we envision it, is an interplay between inductive and deductive processes. Francis Bacon, the father of what is known as the scientific method, emphasizes the roles of observations, alternative explanations and tests to choose among various explanations. Bacon saw science as inductive process, moving from the particular to the general (Susser, 1986). 
 
@@ -34,7 +34,7 @@ We will discuss the differences in the two approaches to quantify uncertainty in
 
 We also do not intend to give a detailed tutorial on the basics of statistical inference. There are many standard reference books for such introduction. For a mathematical and theoretical introduction see Casella and Berger and for more elementary but useful introduction, see e.g. Bolker (2000?).
 
-### A simple example
+## A simple example
 
 Let us start with a simple occupancy model. We will use this model to introduce various important concepts that will be used throughout the course. We will use it also to introduce some basic commands for analyzing data using the R package dclone. 
 
@@ -44,7 +44,7 @@ In conservation biology, one of the first things we want to do is monitor the cu
 2. Take a simple random sample of size $n$ from these. 
 3. Visit these sites and find out if it is occupied by the species or not. 
 
-### Assumptions
+## Assumptions
 
 It is critical that we state the assumptions underlying the statistical model. 
 In practice, however, we may or may not be able to know whether all the 
@@ -70,18 +70,25 @@ $$L(p; y_{1}, y_{2}, \ldots, y_{n}) = \prod_{i=1}^{n} p^{y_{i}} (1-p)^{1-y_{i}}$
 
 We take product because observations are assumed to be independent of each other. 
 
-### Important properties of likelihood
+## Important properties of likelihood
 
-* Likelihood is a function of the parameter. 
-* Data are fixed. 
-* Likelihood is _not_ a probability of the parameter taking a specific value. It represents the following quantity: If the parameter is $$p=p^{\ast}$$, then the probability of observing the data at hand is $$L(\tilde{p}; y_{1}, y_{2}, \ldots, y_{n}) = \prod_{i=1}^{n} \tilde{p}^{y_{i}} (1-\tilde{p})^{1-y_{i}}$$. We can vary the parameter value and get a function as represented below:
+> * Likelihood is a function of the parameter. 
+> * Data are fixed. 
+> * Likelihood is _not_ a probability of the parameter taking a 
+>   specific value. It represents the following quantity: 
+>   If the parameter is $$p=p^{\ast}$$, then the probability 
+>   of observing the data at hand is $$L(\tilde{p}; y_{1}, y_{2}, \ldots, y_{n}) = \prod_{i=1}^{n} \tilde{p}^{y_{i}} (1-\tilde{p})^{1-y_{i}}$$. 
+
+To demonstrate this we simulate a single data set and 
+vary the parameter value and get a function as represented below:
 
 ```r
 ## random numbers from Binomial distribution
 ## Binomial with size=1 is a Bernoulli distribution
 ## p value set as 0.3
+p <- 0.3
 set.seed(1234) # set random seed for reproducibility
-(y <- rbinom(n = 1000, size = 1, p = 0.3))
+(y <- rbinom(n = 1000, size = 1, p = p))
 y1 <- y[1:10] # take only the 1st 10 elements of y
 
 ## pt is our p value that we want the Likelihood to be calculated for
@@ -99,6 +106,8 @@ pt <- seq(0, 1, by = 0.01)
 ## by fixing the data y1
 L <- sapply(pt, function(z) prod(dbinom(y1, size = 1, prob = z)))
 ```
+
+Now that we calculated the likelihood function, let us plot it:
 
 ```r
 op <- par(las=1) # always horizontal axis, store old settings in op
@@ -123,7 +132,12 @@ abline(v = p, lwd = 2, col = flatly$red) # true value
 abline(v = pt[which.max(L)], lwd = 2, col = flatly$success) # ML extimate
 ```
 
-### As we change the data, the likelihood function changes
+> As we change the data, the likelihood function changes.
+
+The following code is to demonstrate how the
+likelihood function changes when we change the data
+that was simulated under the same parameter values.
+We keep everything else (e.g. sample size) the same.
 
 ```r
 ## function f has a single argument, n: sample size
@@ -136,20 +150,24 @@ f <- function(n) {
 plot(0, type = "n", main = "n constant, y changes",
      ylim = c(0, 1), xlim = c(0, 1),
      xlab = "pt", ylab = "L / max(L)")
-## we simulate an n=25 data set 100 times and 
+## we simulate an n=25 data set 10 times and 
 ## plot the scaled likelihood function [L / max(L)]
 tmp <- replicate(100, 
-    lines(pt+runif(1,-0.01,0.01), f(25), 
+    lines(pt, f(25), 
     col = flatly$info))
 abline(v = p, lwd = 2, col = flatly$red)
 ```
 
-### As we increase the sample size, the likelihood becomes concentrated around the true value. 
+> As we increase the sample size, 
+> the likelihood becomes concentrated around the true value. 
+
+This property of the maximum likelihood estimator is called
+*consistency*.
 
 ```r
 ## try different sample sizes, data is fixed
 ## so samples can be nested
-nvals <- seq(100, length(y), by = round(length(y)/10))
+nvals <- c(10, 100, 250, 500, 1000)
 ## scaled likelihood function using different sample sizes
 Lm <- sapply(nvals, 
     function(n) {
@@ -160,12 +178,16 @@ Lm <- sapply(nvals,
 ## plot the results
 matplot(pt, Lm, type = "l", 
     lty = 1, ylab = "L / max(L)", main = "n increases",
-    col=dcpal_grbu(length(nvals)))
+    col = unlist(flatly)[3:7])
 abline(v = p, lwd = 2, col = flatly$red)
+text(apply(Lm, 2, function(z) pt[which.max(z)]), 
+    0.5+ 0.1*c(0:4), paste("n =", nvals), 
+    col = unlist(flatly)[3:7])
 ```
 
-* Likelihood value represents the support in the data for a particular parameter value. This is intrinsically a relative concept. How much more support do we have for this parameter value vs. another parameter value. 
-* Likelihood ratio is a more fundamental concept than the likelihood function itself. Law of the likelihood (Hacking, Royall): 
+The likelihood value represents the support in the data for a 
+particular parameter value. This is intrinsically a relative concept. 
+How much more support do we have for this parameter value vs. another parameter value. The **likelihood ratio** is a more fundamental concept than the likelihood function itself. Law of the likelihood (Hacking, Royall).
 
 We can now summarize the goals of statistical inference:
 
@@ -173,10 +195,13 @@ We can now summarize the goals of statistical inference:
 2. Given these data, how do we change our beliefs?
 3. Given these data, what decision do we make?
 
-> ### Check out the Shiny app
->
-> Play around with the app to see how
-> sample size affects the likelihood function.
+Check out these Shiny apps: play around with the app to see how
+sample size affects the likelihood function:
+
+App name | html | raw 
+-------- | ---- | ---------
+Distributions      | [html](./app-01-distr.html) | [raw](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-distr.Rmd)
+MLE      | [html](./app-01-mle.html) | [raw](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2015/montpellier/app-01-mle.Rmd)
 
 ### The maximum likelihood estimator
 
