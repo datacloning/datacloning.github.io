@@ -1,10 +1,18 @@
 ---
-title: 'Hierarchical models for conservation biologists made easy'
-layout: default
-subtitle: 'Shiny apps'
+title: "Apps"
+author: "Peter Solymos and Subhash Lele"
+date: "August 1, 2015 -- Montpellier, France -- ICCB/ECCB Congress"
+output: pdf_document
+layout: course
+course:
+  year: 2015
+  location: Montpellier
+  title: "Hierarchical Models Made Easy &mdash; August 1, 2015 &mdash; Montpellier, France &mdash; ICCB/ECCB Congress"
+  lecture: Apps
+  previous: notes-04-misc
 ---
 
-### How to run the apps
+## How to run the apps
 
 [Shiny](http://shiny.rstudio.com/) apps can be run from within 
 [RStudio](http://www.rstudio.com/) by opening the 
@@ -22,7 +30,7 @@ and the app will run through RStudio's built-in web local server.
 
 The **html** link leads to a web page that shows the R code used in the app.
 
-### Apps from lecture 1
+## Apps from lecture 1
 
 App name | html | raw 
 -------- | ---- | ---------
