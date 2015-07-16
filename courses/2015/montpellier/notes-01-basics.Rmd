@@ -529,7 +529,7 @@ plot(fit)
 
 ### Data cloning
 
-To make sure that both locations and klones are independent
+To make sure that both locations and clones are independent
 (i.i.d.), it is safest to include and extra dimension
 and the corresponding loop.
 
