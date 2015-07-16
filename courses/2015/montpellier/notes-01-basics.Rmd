@@ -550,6 +550,12 @@ The answer is that ``they most certainly do''. There is nothing wrong with the p
 
 Fundamentally there is no such thing as `objective' Bayesian inference. Those who want to use Bayesian inference should simply accept that the inferences are affected by the choice of the priors. 
 
+In certain cases (when conjugate prior distributions are used)
+one can interpret the prior as a set of [pseudo-observations](https://en.wikipedia.org/wiki/Conjugate_prior#Pseudo-observations).
+This means that for example in the Bernoulli model and a Beta($a$, $b$)
+prior distribution, the number of pseudo observations is
+$a + b - 2$.
+
 ## Data cloning: How to trick Bayesians into giving Frequentist answers?
 
 Difference between Frequentist and Bayesian inferential statements:
