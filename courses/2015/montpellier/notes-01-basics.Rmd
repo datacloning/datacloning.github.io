@@ -250,7 +250,7 @@ tolerance threshold (`tol` argument in `optimize`).
 
 ```r
 n <- 100
-p <- 0.5
+p <- 0.3
 y <- sim_fun(n, p)
 optimize(nll_fun, interval = c(0, 1), y = y)
 ```
@@ -326,7 +326,7 @@ lines are not visible:
 
 ```r
 hist(res, col = flatly$palered, border = flatly$pre_border,
-    xlim = c(0, 1))
+    xlim = c(0, 1), main = "Sampling distribution")
 rug(res+runif(B, -0.01, 0.01), col = flatly$info, lwd = 2)
 ## sampling distribution based sumarry statistics
 abline(v = mean(res), lwd = 2, col = flatly$success)
@@ -385,8 +385,105 @@ for (i in 1:B) {
 Let us compare the true CI with the estimated CIs:
 
 ```r
-cbind(true = ci0, asy = ci1, pb = ci2, npb = ci3)
+rbind(true = ci0, asy = ci1, pb = ci2, npb = ci3)
 ```
+
+## Coverage
+
+We repeat the above experiments multiple times:
+generate the data, estimate the 95 percent confidence intervals,
+and check if the interval contains the true value.
+If the true value is contained between the confidence limits
+at least 95 percent of the cases, se say the coverage
+of the estimator is nominal. Here is the code:
+
+```r
+R <- 100
+ci_res <- list()
+for (j in 1:R) {
+    cat("run", j, "of", R, "\n")
+    flush.console()
+    ## our data
+    y <- sim_fun(n, p)
+    ## asymptotic CI
+    est <- optimize(nll_fun, interval = c(0, 1), y = y)$minimum
+    ci1 <- qnorm(a, mean = est,
+        sd = sqrt(est * (1-est) / n))
+    ## parametric bootstrap
+    pbres <- numeric(B)
+    for (i in 1:B) {
+        yb <- sim_fun(n, est)
+        pbres[i] <- optimize(nll_fun, 
+            interval = c(0, 1), y = yb)$minimum
+    }
+    ci2 <- quantile(pbres, a)
+    ## non-parametric bootstrap
+    npbres <- numeric(B)
+    for (i in 1:B) {
+        yb <- sample(y, replace = TRUE)
+        npbres[i] <- optimize(nll_fun, 
+            interval = c(0, 1), y = yb)$minimum
+    }
+    ci3 <- quantile(npbres, a)
+    ## store the results
+    ci_res[[j]] <- rbind(asy = ci1, pb = ci2, npb = ci3)
+}
+```
+
+Calculating coverage for the 3 different methods of
+obtaining the 95% confidence intervals:
+
+```r
+## a single run
+ci_res[[1]]
+## compare with true p value
+ci_res[[1]] - p
+## we expect lower CL to be negative
+## and upper CL to be positive
+sign(ci_res[[1]] - p)
+## so row sum is 0 if the true value is within CI
+coverage <- t(sapply(ci_res, function(z) rowSums(sign(z - p))))
+## turn non-0 valies into 1
+coverage[coverage != 0] <- 1
+## take the complement
+coverage <- 1 - coverage
+colMeans(coverage)
+```
+
+Visualizing the results:
+
+```r
+op <- par(mfrow = c(3,1), mar = c(4, 4, 2, 1) + 0.1)
+
+plot(0, type = "n", xlim = c(1, R), ylim = c(0, 1),
+    main = "Coverage: asymptotic", xlab = "", ylab = "p")
+segments(1:R, sapply(ci_res, "[", 1, 1),
+    1:R, sapply(ci_res, "[", 1, 2),
+    lwd = 2, 
+    col = ifelse(coverage[,1] == 1, flatly$success, flatly$warning))
+abline(h = p, col = flatly$red)
+
+plot(0, type = "n", xlim = c(1, R), ylim = c(0, 1),
+    main = "Coverage: parametric bootstrap", xlab = "", ylab = "p")
+segments(1:R, sapply(ci_res, "[", 2, 1),
+    1:R, sapply(ci_res, "[", 2, 2),
+    lwd = 2, 
+    col = ifelse(coverage[,2] == 1, flatly$success, flatly$warning))
+abline(h = p, col = flatly$red)
+
+plot(0, type = "n", xlim = c(1, R), ylim = c(0, 1),
+    main = "Coverage: non-parametric bootstrap", 
+    xlab = "Replicates", ylab = "p")
+segments(1:R, sapply(ci_res, "[", 3, 1),
+    1:R, sapply(ci_res, "[", 3, 2),
+    lwd = 2, 
+    col = ifelse(coverage[,3] == 1, flatly$success, flatly$warning))
+abline(h = p, col = flatly$red)
+
+par(op)
+```
+
+![Coverage](./images-01/coverage.png)
 
 ## Summary
 
