@@ -126,7 +126,10 @@ Parallel computations for can be utilized
 to cut down computing times.
 
 On Windows, the only option is through
-clusters:
+clusters (the cluster object `cl` initialized
+using the `makeCluster` function and alikes).
+On other platforms, forking can be used 
+(`cl <- 3`) besides clusters.
 
 ### Bayesian analysis
 
