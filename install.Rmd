@@ -89,3 +89,9 @@ library(devtools)
 install_github("datacloning/dclone")
 ```
 
+<ul class="pager">
+<li class="previous"><a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.course.previous }}.html"><i class="fa fa-caret-left"></i> Intro</a></li>
+<li class="next"><a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.course.next }}.html">Usage <i class="fa fa-caret-right"></i></a></li>
+</ul>
+
+

@@ -188,3 +188,9 @@ stopCluster(cl)
 ```
 
 Easy!
+
+<ul class="pager">
+<li class="previous"><a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.course.previous }}.html"><i class="fa fa-caret-left"></i> Install</a></li>
+<li class="next"><a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.course.next }}.html">Next <i class="fa fa-caret-right"></i></a></li>
+</ul>
+
