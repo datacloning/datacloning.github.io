@@ -55,6 +55,10 @@ for users who are not familiar with Bayesian methodology.
 This paper demonstrates the implementation of the data cloning algorithm, and presents a case study on
 how to write high level functions for specific modeling problems.
 
+<ul class="pager">
+<li class="next"><a href="{{ site.baseurl }}/install.html">Install <i class="fa fa-caret-right"></i></a></li>
+</ul>
+
 ## References
 
 [^Lele2007]: Lele, S.R., B. Dennis and F. Lutscher, 2007. Data cloning: easy maximum likelihood estimation for complex ecological models using Bayesian Markov chain Monte Carlo methods. *Ecology Letters* **10**, 551&ndash;563. <i class="fa fa-file-pdf-o"></i>&nbsp;[PDF](http://www.math.ualberta.ca/~slele/publications/Lele%20Dennis%20Lutscher%20data%20cloning%20Ecology%20Letters%2020071.pdf)
@@ -63,6 +67,3 @@ how to write high level functions for specific modeling problems.
 
 [^Solymos2010]: S&oacute;lymos, P., 2010. dclone: Data Cloning in R. *The R Journal* **2(2)**, 29&ndash;37. <i class="fa fa-file-pdf-o"></i>&nbsp;[PDF](http://journal.r-project.org/archive/2010-2/RJournal_2010-2_Solymos.pdf)
 
-<ul class="pager">
-<li class="next"><a href="{{ site.baseurl }}/install.html">Install <i class="fa fa-caret-right"></i></a></li>
-</ul>
