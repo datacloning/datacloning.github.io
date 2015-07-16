@@ -1,13 +1,190 @@
 ---
-title: "Using the dclone package"
+title: "Usage"
 output: html_document
 layout: default
 ---
 
-## Basic usage
+Consider a simple Bernoulli model, $$Y_{i} \sim Binomial(1, p)$$,
+ $$i=1, 2, \ldots, n$$. 
+The data generation corresponding to this model looks like
+as follows:
 
-Describe usage
+```r
+set.seed(4321) # set random seed for reproducibility
+n <- 25 # sample size
+p <- 0.3 # true parameter value
+y <- rbinom(n = n, size = 1, prob = p)
+```
+
+## Conventional maximum likelihood estimation
+
+Maximum likelihood estimation can be done
+using the `glm` function in R:
+
+```r
+m <- glm(formula = y ~ 1, family=binomial("logit"))
+
+summary(m)
+coef(m)
+exp(coef(m)) / (1 + exp(coef(m)))
+plogis(coef(m))
+mean(y)
+```
+
+## Bayesian analysis in JAGS
+
+```r
+library(dclone)
+library(rjags)
+
+## model spacification
+model <- custommodel("model {
+    for (i in 1:n) {
+        #Y[i] ~ dbin(p, 1) # Binomial(N,p)
+        Y[i] ~ dbern(p) # Bernoulli(p)
+    }
+    p ~ dunif(0.001, 0.999)
+}")
+
+## data
+dat <- list(Y = y, n = n)
+
+## Bayesian MCMC results
+fit <- jags.fit(data = dat, params = "p", model = model)
+
+summary(fit)
+plot(fit)
+```
+
+### Data cloning based maximum likelihood estimation
+
+To make sure that both locations and clones are independent
+(i.i.d.), it is safest to include and extra dimension
+and the corresponding loop:
+
+```r
+## dclone-ified model specification
+model <- custommodel("model {
+    for (k in 1:K) {
+        for (i in 1:n) {
+            Y[i,k] ~ dbin(p, 1)
+        }
+    }
+    p ~ dunif(0.001, 0.999)
+}")
+
+## dclone-ified data specification
+dat <- list(Y = dcdim(data.matrix(y)), n = n, K = 1)
+
+## data cloning based MCMC results
+dcfit <- dc.fit(data = dat, params = "p", model = model,
+    n.clones = c(1,2,4,8), unchanged = "n", multiply = "K")
+
+summary(dcfit)
+plot(dcfit)
+
+coef(dcfit) # MLE
+dcsd(dcfit) # asymptotic SEs
+vcov(dcfit) # inverse Fisher information matrix
+confint(dcfit) # asymptotic confidence interval
+```
+
+Data cloning based diagnostics can be used to spot
+identifiability issues (which is not the case here):
+
+```r
+dctable(dcfit)
+plot(dctable(dcfit))
+dcdiag(dcfit)
+plot(dcdiag(dcfit))
+```
+
+### Modification
+
+If locations are treated as i.i.d., it is possible to
+replicate the vector, so that length
+becomes `n * K`.
+
+```r
+model <- custommodel("model {
+    for (i in 1:n) {
+        Y[i] ~ dbin(p, 1)
+    }
+    p ~ dunif(0.001, 0.999)
+}")
+dat <- list(Y = y, n = n)
+dcfit <- dc.fit(data = dat, params = "p", model = model,
+    n.clones = c(1,2,4,8), multiply = "n")
+```
 
 ## High performance computing
 
-HPC comes here
+Cloning the data increases the size of the
+DAG (directed acyclic graph). This means
+increasing computation times. 
+Parallel computations for can be utilized
+to cut down computing times.
+
+On Windows, the only option is through
+clusters:
+
+### Bayesian analysis
+
+```r
+## model spacification
+model <- custommodel("model {
+    for (i in 1:n) {
+        #Y[i] ~ dbin(p, 1) # Binomial(N,p)
+        Y[i] ~ dbern(p) # Bernoulli(p)
+    }
+    p ~ dunif(0.001, 0.999)
+}")
+
+## data
+dat <- list(Y = y, n = n)
+
+## Bayesian MCMC results
+cl <- makeCluster(3)
+pfit <- jags.parfit(cl, data = dat, params = "p", model = model)
+stopCluster(cl)
+```
+
+```r
+## dclone-ified model specification
+model <- custommodel("model {
+    for (k in 1:K) {
+        for (i in 1:n) {
+            Y[i,k] ~ dbin(p, 1)
+        }
+    }
+    p ~ dunif(0.001, 0.999)
+}")
+
+## dclone-ified data specification
+dat <- list(Y = dcdim(data.matrix(y)), n = n, K = 1)
+
+## data cloning based MCMC results
+cl <- makeCluster(3)
+dcpfit <- dc.parfit(cl, data = dat, params = "p", model = model,
+    n.clones = c(1,2,4,8), unchanged = "n", multiply = "K",
+    n.chains = 3, partype = "parchains")
+stopCluster(cl)
+```
+
+```r
+model <- custommodel("model {
+    for (i in 1:n) {
+        Y[i] ~ dbin(p, 1)
+    }
+    p ~ dunif(0.001, 0.999)
+}")
+dat <- list(Y = y, n = n)
+
+cl <- makeCluster(3)
+dcpfit <- dc.parfit(cl, data = dat, params = "p", model = model,
+    n.clones = c(1,2,4,8), multiply = "n",
+    n.chains = 3, partype = "parchains")
+stopCluster(cl)
+```
+
+Easy!
