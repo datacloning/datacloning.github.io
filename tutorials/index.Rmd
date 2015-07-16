@@ -6,19 +6,19 @@ layout: default
 
 ## R code from S&oacute;lymos 2010
 
-<p><a class="btn btn-success" href="{{ site.baseurl }}/tutorials/RJournal_2010-2_Solymos.html">Take me there</a></p>
+<p><a class="btn btn-primary btn-sm" href="{{ site.baseurl }}/tutorials/RJournal_2010-2_Solymos.html">Take me there</a></p>
 
 {% comment %}
 ## Implementing GLM with data cloning
 
-<p><a class="btn btn-success" href="{{ site.baseurl }}/tutorials/">Take me there</a></p>
+<p><a class="btn btn-primary btn-sm" href="{{ site.baseurl }}/tutorials/">Take me there</a></p>
 
 ## Parallel MCMC with data cloning
 
-<p><a class="btn btn-success" href="{{ site.baseurl }}/tutorials/">Take me there</a></p>
+<p><a class="btn btn-primary btn-sm" href="{{ site.baseurl }}/tutorials/">Take me there</a></p>
 
 ## A short data cloning tutorial
 
-<p><a class="btn btn-success" href="{{ site.baseurl }}/tutorials/">Take me there</a></p>
+<p><a class="btn btn-primary btn-sm" href="{{ site.baseurl }}/tutorials/">Take me there</a></p>
 {% endcomment %}
 
