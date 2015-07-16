@@ -694,7 +694,7 @@ dcfit <- dc.fit(data = dat, params = "p", model = model,
 
 * Data generation,
 * likelihood (analytical, graphical and also in JAGS),
-* frequentist inference ,
-* bayesian inference ,
-* data cloning to get MLE and confidence intervals .
+* frequentist inference,
+* Bayesian inference,
+* data cloning to get MLE and confidence intervals.
 
