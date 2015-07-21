@@ -141,7 +141,7 @@ plot(fit)
 pairs(fit)
 ```
 
-![Likelihood surface](./images-02/occupancy-surface.png)
+![MCMC output](./images-02/jags-pairs.png)
 
 > ### Bayesian inference
 > 
