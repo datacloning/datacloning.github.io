@@ -219,9 +219,18 @@ dcfit <- dc.fit(data = dat, params = c("p", "phi"),
 
 ### Can we do something about this non-identifiability?
 
-Suppose we go to the same location more than once. Then sometimes we will observe the species and sometimes we will not. These changes may help us learn about the detection error process.
+Suppose we go to the same location more than once, say $T$ times. Then sometimes we will observe the species and sometimes we will not. These changes may help us learn about the detection error process.
 
-> *FIXME* math for MV occ comes here
+The occupancy model with replicate visits is:
+
+True status: $$ Y_i \sim Bernoulli(\varphi) $$.
+
+Observed status: $$ (W_{i,t} \mid Y_i = y_i) \sim Bernoulli(p^{y_i} (1 - p)^{1 - y_i}) $$.
+
+The likelihood function is:
+
+$$\begin{align} L(p, \varphi; w_{1,1}, \ldots, w_{n,T}) & = \prod_{i=1}^{n} \prod_{t=1}^{T} P(W_{i,t} = w_{i,t}; p, \varphi) \\ & = \prod_{i=1}^{n} \prod_{t=1}^{T} (p \varphi)^{w_{i,t}} (1 - p \varphi)^{1 - w_{i,t}} \end{align}$$
+
 
 #### Assumptions
 
