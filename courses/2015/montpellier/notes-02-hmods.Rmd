@@ -117,10 +117,74 @@ Sometimes there are no structural issues but the observed data combination is su
 
 For models with more than two parameters, it is very difficult to plot the likelihood function. It is nearly impossible to diagnose non-identifiability and non-estimability of the parameters. Data cloning method provides a very simple approach to diagnose non-estimability for general hierarchical models. 
 
--------- here ---------
+### Bayesian model in JAGS
 
 ```r
-R commands:
+library(dclone)
+library(rjags)
+model <- custommodel("model {
+    for (i in 1:n) {
+        Y[i] ~ dbern(p)
+        W[i] ~ dbern(Y[i] * phi)
+    }
+    p ~ dunif(0.001, 0.999)
+    phi ~ dunif(0.001, 0.999)
+}")
+dat <- list(W = w, n = n)
+ini <- list(Y = w)
+fit <- jags.fit(data = dat, params = c("p", "phi"), 
+    model = model, inits = ini)
+summary(fit)
+plot(fit)
+pairs(fit)
+```
+
+![Likelihood surface](./images-02/occupancy-surface.png)
+
+### Data cloning
+
+To make sure that both locations and klones are independent
+(i.i.d.), it is safest to include and extra dimension
+and the corresponding loop.
+
+```r
+library(dclone)
+library(rjags)
+model <- custommodel("model {
+    for (k in 1:K) {
+        for (i in 1:n) {
+            Y[i,k] ~ dbin(p, 1)
+        }
+    }
+    p ~ dunif(0.001, 0.999)
+}")
+dat <- list(Y = dcdim(data.matrix(y)), n = n, K = 1)
+dcfit <- dc.fit(data = dat, params = "p", model = model,
+    n.clones = c(1,2,4,8), unchanged = "n", multiply = "K")
+summary(dcfit)
+plot(dcfit)
+dctable(dcfit)
+plot(dctable(dcfit))
+dcdiag(dcfit)
+plot(dcdiag(dcfit))
+```
+
+#### Modification 1
+
+If locations are treated as i.i.d., it is possible to
+replicate the vector, so that length
+becomes `n * K`.
+
+```r
+model <- custommodel("model {
+    for (i in 1:n) {
+        Y[i] ~ dbin(p, 1)
+    }
+    p ~ dunif(0.001, 0.999)
+}")
+dat <- list(Y = y, n = n)
+dcfit <- dc.fit(data = dat, params = "p", model = model,
+    n.clones = c(1,2,4,8), multiply = "n")
 ```
 
 We can skip all the mathematical details in the calculation of the likelihood function and use JAGS and MCMC to do almost all of the above analysis.
