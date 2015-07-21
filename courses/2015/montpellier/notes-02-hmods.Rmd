@@ -45,13 +45,13 @@ Observed status: $$ (W_i \mid Y_i = y_i) \sim Bernoulli(p^{y_i} (1 - p)^{1 - y_i
 
 An important thing to note here is that we only observe $W$'s and not the true statuses ($Y$) which are unknown. We can use the standard probability rules to compute:
 
-$$\begin{align} P(W_i = 1) = P(W_i = 1 \mid Y_i = 1) P(Y_i = 1) + P(W_i \\= 1 \mid Y_i = 0) P(Y_i = 0) \\= p \varphi + 0 \cdot (1 - \varphi) \\= p \varphi \end{align}$$
+$$\begin{align} P(W_i = 1) & = P(W_i = 1 \mid Y_i = 1) P(Y_i = 1) + P(W_i = 1 \mid Y_i = 0) P(Y_i = 0) \\ & = p \varphi + 0 \cdot (1 - \varphi) \\ & = p \varphi \end{align}$$
 
-$$\begin{align} P(W_i = 0) = P(W_i = 0 \mid Y_i = 1) P(Y_i = 1) + P(W_i \\= 0 \mid Y_i = 0) P(Y_i = 0) \\= 1 - p \varphi \end{align}$$
+$$\begin{align} P(W_i = 0) & = P(W_i = 0 \mid Y_i = 1) P(Y_i = 1) + P(W_i = 0 \mid Y_i = 0) P(Y_i = 0) \\ & = 1 - p \varphi \end{align}$$
 
 This is called the marginal distribution of $W$. We can write down the likelihood function as a function of parameters $(p, \varphi)$.
 
-$$\begin{align} L(p, \varphi; w_{1}, w_{2}, \ldots, w_{n}) = \prod_{i=1}^{n} P(W_i = w_i; p, \varphi) \\= \prod_{i=1}^{n} (p \varphi)^{w_i} (1 - p \varphi)^{1 - w_i} \end{align}$$
+$$\begin{align} L(p, \varphi; w_{1}, w_{2}, \ldots, w_{n}) & = \prod_{i=1}^{n} P(W_i = w_i; p, \varphi) \\ & = \prod_{i=1}^{n} (p \varphi)^{w_i} (1 - p \varphi)^{1 - w_i} \end{align}$$
 
 > #### Cautionary note
 >
