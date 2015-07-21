@@ -53,28 +53,75 @@ This is called the marginal distribution of $W$. We can write down the likelihoo
 
 $$\begin{align} L(p, \varphi; w_{1}, w_{2}, \ldots, w_{n}) & = \prod_{i=1}^{n} P(W_i = w_i; p, \varphi) \\ & = \prod_{i=1}^{n} (p \varphi)^{w_i} (1 - p \varphi)^{1 - w_i} \end{align}$$
 
-> #### Cautionary note
+> ### Cautionary note
 >
 > Just because one can write down the likelihood function, 
 > it does not mean one can estimate the parameters. 
 
 This is a simple situation with two parameters and hence we can plot the likelihood function as a contour plot. 
-R commands:
-Data generation
+
+R code for data generation:
+
+```r
+set.seed(1234)
+n <- 100
+p <- 0.6
+phi <- 0.4
+y <- rbinom(n = n, size = 1, prob = p)
+w <- rbinom(n = n, size = y, prob = phi)
+table(Y = y, W = w)
+```
+
 Given the data, plot the likelihood contours.
-We can see that the likelihood function looks like a mountain with a ridge tracing a curve corresponding to the product . 
-Likelihood function does not have a unique maximum. All values along this curve have equal support in the data. We can estimate the product but not the individual components of the product. 
-The placement of the curve depends on the data. So there is information in the data only about the product but not the components.
-When the likelihood function attains maximum at more than one parameter combination, we call the parameters non-estimable. There are various reasons for such non-estimability (Reference: Campbell and Lele, 2013 and a couple of references from that paper). It 
 
-Structural problems with the model: might be that the structure of the problem is such that no matter what you cannot estimate the parameters. This is called non-identifiability.
-No structural issues but observed data combination is such that likelihood is problematic: Non-estimability. An example will be collinear covariates in regression. 
+```r
+## setting up the grid for p and phi
+grid <- expand.grid(p = seq(0, 1, by = 0.01),
+    phi = seq(0, 1, by = 0.01), 
+    L = NA)
+## the likelihood function
+L_fun <- function(w, p, phi) {
+    prod((p * phi)^w * (1 - p * phi)^(1 - w))
+}
+## calculating the likelihood for the grid
+for (i in 1:nrow(grid)) {
+    grid$L[i] <- L_fun(w = w, p = grid$p[i], phi = grid$phi[i])
+}
+## plot the likelihood surface
+dcpal_reds <- colorRampPalette(c("#f9f2f4", "#c7254e"))
+image(matrix(grid$L, sqrt(nrow(grid))), 
+    xlab = "p", ylab = expression(varphi),
+    col = dcpal_reds(12))
+abline(h = phi, v = p, col = "#f9f2f4", lwd = 3)
+abline(h = phi, v = p, col = "#c7254e", lwd = 1)
+curve((p * phi) / x, 0, 1, add = TRUE, 
+    col = "#18bc9c", lwd = 2)
+```
 
-Consequences of non-identifiability: Management decisions can be based only on identifiable components of the model. 
+![Likelihood surface](./images-02/occupancy-surface.png)
+
+We can see that the likelihood function looks like a mountain with a ridge tracing a curve corresponding to the product $p \varphi = c$.
+
+* Likelihood function does not have a unique maximum. All values along this curve have equal support in the data. We can estimate the product but not the individual components of the product. 
+* The placement of the curve depends on the data. So there is information in the data only about the product but not the components.
+
+When the likelihood function attains maximum at more than one parameter combination, we call the parameters non-estimable. There are various reasons for such non-estimability (Reference: Campbell and Lele, 2013 and a couple of references from that paper).
+
+Structural problems with the model: it might be that the structure of the problem is such that no matter what, you cannot estimate the parameters. This is called *non-identifiability*.
+
+Sometimes there are no structural issues but the observed data combination is such that the likelihood is problematic. This is called *non-estimability*. An example will be collinear covariates in regression. 
+
+> Consequences of *non-identifiability*: 
+> management decisions can be based only on identifiable 
+> components of the model. 
 
 For models with more than two parameters, it is very difficult to plot the likelihood function. It is nearly impossible to diagnose non-identifiability and non-estimability of the parameters. Data cloning method provides a very simple approach to diagnose non-estimability for general hierarchical models. 
 
+-------- here ---------
+
+```r
 R commands:
+```
 
 We can skip all the mathematical details in the calculation of the likelihood function and use JAGS and MCMC to do almost all of the above analysis.
 
