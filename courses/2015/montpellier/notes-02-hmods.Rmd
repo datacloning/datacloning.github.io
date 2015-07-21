@@ -14,4 +14,188 @@ course:
   next: notes-03-pva
 ---
 
-**FIXME**
+## Introduction
+
+We are now familiar with the basic concepts of statistical inference and the two philosophies that are commonly adopted to make the inferential statements. In this lecture, we will look at making inferential statements about realistic and hence complex ecological models. In the rest of the course, we will write the description of the model but will not discuss the philosophical aspects in detail. We will mostly use a graphical model and its JAGS version. We will provide *tools* to obtain either Bayesian or Frequentist inferential statements. We will discuss pros and cons of these inferential statements. The choice of the inferential statement will be left to the scientist. 
+
+## Occupancy models with detection error
+
+Let us continue with the simple occupancy model we used previously. Most applied ecologists are aware that the occupancy and abundance surveys have some level of detection error. Even if the species is present, for various reasons we may not observe its presence. Similarly we may not be able to count all the individuals that are present at a location. Let us look at how to model such a situation. We will discuss the model and then show how it can be looked upon as a hierarchical model. 
+
+### Notation
+
+* $W_i$: this denotes the *observed* status at the location $i$, 
+  can be 0 or 1,
+* $Y_i$: this denotes the true status at the location $i$,
+  can be 0 or 1; this status is *unknown*.
+
+### Assumptions
+
+1. The observed status depends on the true status. If there is no dependence between the two variables, obviously we cannot do any inference.
+2. There are no ``phantom'' individuals. That is, if the true status is 0, we will observe 0 with probability 1.
+3. True status at one location is independent of status of other locations. 
+4. Observation at one location is not affected by what we observed anywhere else (or, at other times at that location). Surveys are independent of each other. 
+
+We can extend the Bernoulli model from 
+[Lecture 1](./notes-01-basics.html) as follows:
+
+True status: $$ Y_i \sim Bernoulli(\varphi) $$.
+
+Observed status: $$ (W_i \mid Y_i = y_i) \sim Bernoulli(p^{y_i} (1 - p)^{1 - y_i}) $$.
+
+An important thing to note here is that we only observe ’s and not the true statuses are unknown. We can use the standard probability rules to compute:
+
+This is called the marginal distribution of . We can write down the likelihood function as a function of parameters .
+
+
+Cautionary note: Just because one can write down the likelihood function, it does not mean one can estimate the parameters. 
+This is a simple situation with two parameters and hence we can plot the likelihood function as a contour plot. 
+R commands:
+Data generation
+Given the data, plot the likelihood contours.
+We can see that the likelihood function looks like a mountain with a ridge tracing a curve corresponding to the product . 
+Likelihood function does not have a unique maximum. All values along this curve have equal support in the data. We can estimate the product but not the individual components of the product. 
+The placement of the curve depends on the data. So there is information in the data only about the product but not the components.
+When the likelihood function attains maximum at more than one parameter combination, we call the parameters non-estimable. There are various reasons for such non-estimability (Reference: Campbell and Lele, 2013 and a couple of references from that paper). It 
+
+Structural problems with the model: might be that the structure of the problem is such that no matter what you cannot estimate the parameters. This is called non-identifiability.
+No structural issues but observed data combination is such that likelihood is problematic: Non-estimability. An example will be collinear covariates in regression. 
+
+Consequences of non-identifiability: Management decisions can be based only on identifiable components of the model. 
+
+For models with more than two parameters, it is very difficult to plot the likelihood function. It is nearly impossible to diagnose non-identifiability and non-estimability of the parameters. Data cloning method provides a very simple approach to diagnose non-estimability for general hierarchical models. 
+
+R commands:
+
+We can skip all the mathematical details in the calculation of the likelihood function and use JAGS and MCMC to do almost all of the above analysis.
+
+Model file
+Bayesian inference: Observe what happens to convergence diagnostics. 
+Data cloning inference: Observe what happens to the standard errors as we increase the number of clones. It does not converge to 0 as it did before. This indicates non-estimabilty of the parameters. 
+
+Can we do something about this non-identifiability:
+
+Suppose we go to the same location more than once. Then sometimes we will observe the species and sometimes we will not. These changes may help us learn about the detection error process.
+
+Assumptions:
+Close population assumption
+Independence survey assumption
+
+R commands:
+
+JAGS model
+Bayesian inference: Effect of priors on the estimation and prediction of the occupancy proportion
+Frequentist inference: Identifiability check, independence from the specification of the prior check, confidence intervals and predictions for the occupancy proportion.
+
+Generalization to take into account covariates:
+
+JAGS model and then they can do the rest of the analysis using the programs. We will not spend time on it. 
+
+Abundance surveys:
+
+We can easily generalize this to model abundance surveys. The N-mixture model is the simplest (though unrealistic in practice). 
+
+Assumptions:
+(Replicate surveys, independent, close population)
+
+Specification of the hierarchical model:
+
+True abundance model:  for 
+Observation model: for  
+
+We will not write down the likelihood function analytically but use the computer to do the analysis instead. 
+R commands:
+JAGS model
+Bayesian inference
+Frequentist inference
+
+As before it is easy to include covariates in the models. There are various extensions and modifications proposed to this basic model. See Lele et al., Solymos et al, Solymos and Lele, Dail and Madsen. (Here we can advertise our work on single survey method and the poster.)
+
+Continuous case with continuous measurement error (Neyman-Scott problem):
+
+Some historical comments: Fisher and Pearson arguments about MOM and MLE; Fisher and Neyman arguments about testing and p-values. This is an example where Fisher is wrong about consistency and efficiency of the MLE. 
+
+Motivation: 
+Animal breeding example (Linear mixed models): Consider the model underlying one way analysis of variance. 
+
+    and 
+
+
+There are two offsprings per individual. We want to know something about the genetic potential of the individuals so that we can turn some into hamburgers and some can have fun as studs/dams. 
+ 
+Parameters: These are the unknown quantities that we want to learn about from the data. 
+In this model, the parameters are . 
+Number of parameters: (n+2)
+Number of observations: 2n
+
+Question: It is easy to write down the likelihood function. What happens if we compute MLE for these parameters? These are familiar quantities from ANOVA, except for the estimate of the variance. 
+
+
+
+
+One of the most important results from Neyman and Scott (1949) is that as the sample size increases . It is almost obvious that we cannot estimate  consistently (although it is an unbiased estimator). 
+
+
+Moral of the story:
+Increasing the sample size does not guarantee good estimators. What is important is that the information in the sample about the parameter should converge to infinity.
+
+In this model, the number of parameters is increasing at the same rate as the sample size (the information). Hence we have limited information about any particular parameter. We are spending the information profligately. 
+
+This kind of situation is not unusual in practice. 
+
+Logistic regression and multi-center clinical studies: Each hospital has only a few patients and we want to combine information across the hospitals. 
+
+Combining data across large geographic areas in abundance surveys: Random effect for the area and the effect of the covariates in the Poisson regression.
+
+What can we do?
+
+We need more information but more data are not going to give us more information. 
+In mathematics the solution always exists: ASSUME!
+These assumptions should, in effect, reduce the number of parameters. Hopefully we can reduce them to the level that information increases sufficiently faster than the number of parameters. Usually we make assumptions so that the final number of parameters is unchanging with the sample size but this is not necessary. 
+
+Smoothness assumptions: 
+Regression assumption:  
+Random effects assumption:
+
+Warning: This has NOTHING to do with the Bayesian thinking. These are simply modeling assumptions. The effect of these assumptions (e.g. distribution of the latent variable) does not go away as we increase the sample size. On the other hand, as we have seen repeatedly, the effect of the prior (which is also an assumption) vanishes as the information in the data increases. 
+
+There is no such thing as ‘Bayesian model’ or ‘Frequentist model’. There are stochastic models; there are deterministic models; there are descriptive models. Some Bayesians claim that specification of the prior on the parameters is on the same level as specifying a stochastic model for the data. Hence they consider all hierarchical models as ‘Bayesian models’. Some historical lesson might be useful here. 
+
+We do not agree with this. As we have pointed out, the effect of the modeling assumption does not vanish as we increase the sample size, whereas the effect of the prior does. 
+
+Unknown quantities in the stochastic models:
+We have come across two different types of unknown quantities in the hierarchical models: Latent variables and Parameters. 
+Parameters: These are quantities in the model that can be estimated with perfect certainty as the information in the data increases to infinity.
+Latent variables: No amount of data can determine these with certainty. The uncertainty does not go to zero. 
+
+Analogy with estimation and prediction in time series or regression:  If we have large amount of data (and, the model is correct), then the standard error for the parameter estimates goes to zero but the prediction error does not. Latent variables in the hierarchical models are similar to the prediction of unobserved time points. 
+
+Imposing a distributional assumption is qualitatively same as imposing regression model. This is not a ‘prior distribution’ of any kind. This is a misleading terminology commonly used in the Bayesian literature. 
+
+Prior distributions are smoothness assumptions on the parameters and their effect goes to zero as the information increases. 
+
+R commands (for parameter estimation)
+
+Model file
+Bayesian inference
+Frequentist inference
+
+Prediction of latent variables:
+
+Estimated predictive distribution:
+
+Bayesian predictive distribution:
+
+Frequentist predictive distribution:
+
+R commands for prediction using ‘dclone’:
+
+May be we can show that the coverage differences. They can play with different prior distributions on the parameters and see how they affect the coverage. 
+
+What have we learnt?
+Hierarchical models: (Linear mixed models, measurement error)
+Latent variables versus parameters:
+Estimation and inference for the parameters:
+Prediction and inference (coverage) for the latent variables: 
+
+
