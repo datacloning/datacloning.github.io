@@ -117,6 +117,8 @@ Sometimes there are no structural issues but the observed data combination is su
 
 For models with more than two parameters, it is very difficult to plot the likelihood function. It is nearly impossible to diagnose non-identifiability and non-estimability of the parameters. Data cloning method provides a very simple approach to diagnose non-estimability for general hierarchical models. 
 
+We can skip all the mathematical details in the calculation of the likelihood function and use JAGS and MCMC to do almost all of the above analysis.
+
 ### Bayesian model in JAGS
 
 ```r
@@ -141,6 +143,10 @@ pairs(fit)
 
 ![Likelihood surface](./images-02/occupancy-surface.png)
 
+> ### Bayesian inference
+> 
+> Observe what happens to convergence diagnostics. 
+
 ### Data cloning
 
 To make sure that both locations and klones are independent
@@ -153,23 +159,33 @@ library(rjags)
 model <- custommodel("model {
     for (k in 1:K) {
         for (i in 1:n) {
-            Y[i,k] ~ dbin(p, 1)
+            Y[i,k] ~ dbern(p)
+            W[i,k] ~ dbern(Y[i,k] * phi)
         }
     }
     p ~ dunif(0.001, 0.999)
+    phi ~ dunif(0.001, 0.999)
 }")
-dat <- list(Y = dcdim(data.matrix(y)), n = n, K = 1)
-dcfit <- dc.fit(data = dat, params = "p", model = model,
-    n.clones = c(1,2,4,8), unchanged = "n", multiply = "K")
+dat <- list(W = dcdim(data.matrix(w)), n = n, K = 1)
+ini <- list(Y = dcdim(data.matrix(w)))
+ifun <- function(model, n.clones) {
+    dclone(list(Y = dcdim(data.matrix(w))),
+        n.clones)
+}
+dcfit <- dc.fit(data = dat, params = c("p", "phi"), 
+    model = model, inits = ini,
+    n.clones = c(1,2,4,8), unchanged = "n", multiply = "K",
+    initsfun = ifun)
 summary(dcfit)
 plot(dcfit)
 dctable(dcfit)
 plot(dctable(dcfit))
 dcdiag(dcfit)
 plot(dcdiag(dcfit))
+pairs(dcfit)
 ```
 
-#### Modification 1
+#### Modification
 
 If locations are treated as i.i.d., it is possible to
 replicate the vector, so that length
@@ -178,28 +194,42 @@ becomes `n * K`.
 ```r
 model <- custommodel("model {
     for (i in 1:n) {
-        Y[i] ~ dbin(p, 1)
+        Y[i] ~ dbern(p)
+        W[i] ~ dbern(Y[i] * phi)
     }
     p ~ dunif(0.001, 0.999)
+    phi ~ dunif(0.001, 0.999)
 }")
-dat <- list(Y = y, n = n)
-dcfit <- dc.fit(data = dat, params = "p", model = model,
-    n.clones = c(1,2,4,8), multiply = "n")
+dat <- list(W = w, n = n)
+ini <- list(Y = w)
+ifun <- function(model, n.clones) {
+    dclone(list(Y = w), n.clones)
+}
+dcfit <- dc.fit(data = dat, params = c("p", "phi"), 
+    model = model, inits = ini,
+    n.clones = c(1,2,4,8), multiply = "n",
+    initsfun = ifun)
 ```
 
-We can skip all the mathematical details in the calculation of the likelihood function and use JAGS and MCMC to do almost all of the above analysis.
+> ### Data cloning inference
+>
+> Observe what happens to the standard errors as we increase the 
+> number of clones. It does not converge to 0 as it did before. 
+> This indicates non-estimabilty of the parameters. 
 
-Model file
-Bayesian inference: Observe what happens to convergence diagnostics. 
-Data cloning inference: Observe what happens to the standard errors as we increase the number of clones. It does not converge to 0 as it did before. This indicates non-estimabilty of the parameters. 
-
-Can we do something about this non-identifiability:
+### Can we do something about this non-identifiability?
 
 Suppose we go to the same location more than once. Then sometimes we will observe the species and sometimes we will not. These changes may help us learn about the detection error process.
 
-Assumptions:
-Close population assumption
-Independence survey assumption
+> *FIXME* math for MV occ comes here
+
+#### Assumptions
+
+1. Closed population assumption: there is colonization or
+  extinction, that is the true status remains the same
+  over the visits.
+2. Independent survey assumption: replicate visits are
+  independent of each other.
 
 R commands:
 
@@ -211,27 +241,31 @@ Generalization to take into account covariates:
 
 JAGS model and then they can do the rest of the analysis using the programs. We will not spend time on it. 
 
-Abundance surveys:
+## Abundance surveys
 
 We can easily generalize this to model abundance surveys. The N-mixture model is the simplest (though unrealistic in practice). 
 
-Assumptions:
+### Assumptions
+
 (Replicate surveys, independent, close population)
 
-Specification of the hierarchical model:
+### Specification of the hierarchical model
 
 True abundance model:  for 
 Observation model: for  
 
 We will not write down the likelihood function analytically but use the computer to do the analysis instead. 
+
+```r
 R commands:
 JAGS model
 Bayesian inference
 Frequentist inference
+```
 
 As before it is easy to include covariates in the models. There are various extensions and modifications proposed to this basic model. See Lele et al., Solymos et al, Solymos and Lele, Dail and Madsen. (Here we can advertise our work on single survey method and the poster.)
 
-Continuous case with continuous measurement error (Neyman-Scott problem):
+## Continuous case with continuous measurement error (Neyman-Scott problem)
 
 Some historical comments: Fisher and Pearson arguments about MOM and MLE; Fisher and Neyman arguments about testing and p-values. This is an example where Fisher is wrong about consistency and efficiency of the MLE. 
 
@@ -279,7 +313,7 @@ Random effects assumption:
 
 Warning: This has NOTHING to do with the Bayesian thinking. These are simply modeling assumptions. The effect of these assumptions (e.g. distribution of the latent variable) does not go away as we increase the sample size. On the other hand, as we have seen repeatedly, the effect of the prior (which is also an assumption) vanishes as the information in the data increases. 
 
-There is no such thing as ‘Bayesian model’ or ‘Frequentist model’. There are stochastic models; there are deterministic models; there are descriptive models. Some Bayesians claim that specification of the prior on the parameters is on the same level as specifying a stochastic model for the data. Hence they consider all hierarchical models as ‘Bayesian models’. Some historical lesson might be useful here. 
+There is no such thing as ``Bayesian model'' or ``Frequentist model''. There are stochastic models; there are deterministic models; there are descriptive models. Some Bayesians claim that specification of the prior on the parameters is on the same level as specifying a stochastic model for the data. Hence they consider all hierarchical models as ``Bayesian models''. Some historical lesson might be useful here. 
 
 We do not agree with this. As we have pointed out, the effect of the modeling assumption does not vanish as we increase the sample size, whereas the effect of the prior does. 
 
@@ -308,7 +342,7 @@ Bayesian predictive distribution:
 
 Frequentist predictive distribution:
 
-R commands for prediction using ‘dclone’:
+R commands for prediction using dclone:
 
 May be we can show that the coverage differences. They can play with different prior distributions on the parameters and see how they affect the coverage. 
 
