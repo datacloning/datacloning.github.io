@@ -334,6 +334,8 @@ plot(fit)
 pairs(fit)
 ```
 
+![MCMC output 2](./images-02/jags-pairs-2.png)
+
 ### Bayesian inference
 
 Effect of priors on the estimation and prediction of the occupancy proportion:
