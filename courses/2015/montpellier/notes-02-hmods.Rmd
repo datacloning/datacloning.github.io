@@ -90,10 +90,10 @@ for (i in 1:nrow(grid)) {
 dcpal_reds <- colorRampPalette(c("#f9f2f4", "#c7254e"))
 L_mat <- matrix(grid$L, sqrt(nrow(grid)))
 image(L_mat, 
-    xlab = "p", ylab = expression(varphi),
+    ylab = "p", xlab = expression(varphi),
     col = dcpal_reds(12))
-abline(h = phi, v = p, col = "#f9f2f4", lwd = 3)
-abline(h = phi, v = p, col = "#c7254e", lwd = 1)
+abline(v = phi, h = p, col = "#f9f2f4", lwd = 3)
+abline(v = phi, h = p, col = "#c7254e", lwd = 1)
 curve((p * phi) / x, 0, 1, add = TRUE, 
     col = "#18bc9c", lwd = 2)
 ```
@@ -258,7 +258,7 @@ R code for data generation:
 ```r
 set.seed(1234)
 n <- 50
-T <- 10
+T <- 5
 p <- 0.6
 phi <- 0.4
 y <- rbinom(n = n, size = 1, prob = p)
@@ -276,7 +276,10 @@ grid <- expand.grid(p = seq(0, 1, by = 0.01),
     L = NA)
 ## the likelihood function
 L_fun <- function(w, p, phi) {
-    prod((p * phi)^w * (1 - p * phi)^(1 - w))
+    wdot <- rowSums(w)
+    T <- ncol(w)
+    prod(phi * (choose(T, wdot) * p^wdot * (1 - p)^(T - wdot)) + 
+        (1 - phi) * (wdot == 0))
 }
 ## calculating the likelihood for the grid
 for (i in 1:nrow(grid)) {
@@ -286,17 +289,14 @@ for (i in 1:nrow(grid)) {
 dcpal_reds <- colorRampPalette(c("#f9f2f4", "#c7254e"))
 L_mat <- matrix(grid$L, sqrt(nrow(grid)))
 image(L_mat, 
-    xlab = "p", ylab = expression(varphi),
+    ylab = "p", xlab = expression(varphi),
     col = dcpal_reds(12))
-abline(h = phi, v = p, col = "#f9f2f4", lwd = 3)
-abline(h = phi, v = p, col = "#c7254e", lwd = 1)
-curve((p * phi) / x, 0, 1, add = TRUE, 
-    col = "#18bc9c", lwd = 2)
+abline(v = phi, h = p, col = "#f9f2f4", lwd = 3)
+abline(v = phi, h = p, col = "#c7254e", lwd = 1)
 ```
 
 ![Likelihood surface 2](./images-02/occupancy-surface-2.png)
 
-We can see that the likelihood function looks like a mountain with a ridge tracing a curve corresponding to the product $p \varphi = c$.
 
 ```r
 library(rgl)
@@ -307,7 +307,7 @@ dcpal_grbu <- colorRampPalette(c("#18bc9c", "#3498db"))
 Col <- rev(dcpal_grbu(12))[cut(L_mat, breaks = 12)]
 persp3d(L_mat / max(L_mat), col = Col,
     theta=50, phi=25, expand=0.75, ticktype="detailed",
-    xlab = "p", ylab = "phi", zlab = "L")
+    ylab = "p", xlab = "phi", zlab = "L")
 ```
 
 ### Bayesian model in JAGS
