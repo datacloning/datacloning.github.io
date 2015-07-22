@@ -89,7 +89,8 @@ for (i in 1:nrow(grid)) {
 }
 ## plot the likelihood surface
 dcpal_reds <- colorRampPalette(c("#f9f2f4", "#c7254e"))
-image(matrix(grid$L, sqrt(nrow(grid))), 
+L_mat <- matrix(grid$L, sqrt(nrow(grid)))
+image(L_mat, 
     xlab = "p", ylab = expression(varphi),
     col = dcpal_reds(12))
 abline(h = phi, v = p, col = "#f9f2f4", lwd = 3)
@@ -102,10 +103,21 @@ curve((p * phi) / x, 0, 1, add = TRUE,
 
 We can see that the likelihood function looks like a mountain with a ridge tracing a curve corresponding to the product $p \varphi = c$.
 
+```r
+library(rgl)
+open3d()
+bg3d("white")
+material3d(col = "black")
+Col <- dcpal_reds(12)[cut(L_mat, breaks = 12)]
+persp3d(L_mat / max(L_mat), col = Col,
+    theta=50, phi=25, expand=0.75, ticktype="detailed",
+    xlab = "p", ylab = "phi", zlab = "L")
+```
+
 * Likelihood function does not have a unique maximum. All values along this curve have equal support in the data. We can estimate the product but not the individual components of the product. 
 * The placement of the curve depends on the data. So there is information in the data only about the product but not the components.
 
-When the likelihood function attains maximum at more than one parameter combination, we call the parameters non-estimable. There are various reasons for such non-estimability (Reference: Campbell and Lele, 2013 and a couple of references from that paper).
+When the likelihood function attains maximum at more than one parameter combination, we call the parameters *non-estimable*. There are various reasons for such non-estimability (Reference: Campbell and Lele, 2013 and a couple of references from that paper).
 
 Structural problems with the model: it might be that the structure of the problem is such that no matter what, you cannot estimate the parameters. This is called *non-identifiability*.
 
@@ -232,7 +244,7 @@ The likelihood function is:
 $$\begin{align} L(p, \varphi; w_{1,1}, \ldots, w_{n,T}) & = \prod_{i=1}^{n} \prod_{t=1}^{T} P(W_{i,t} = w_{i,t}; p, \varphi) \\ & = \prod_{i=1}^{n} \prod_{t=1}^{T} (p \varphi)^{w_{i,t}} (1 - p \varphi)^{1 - w_{i,t}} \end{align}$$
 
 
-#### Assumptions
+### Assumptions
 
 1. Closed population assumption: there is colonization or
   extinction, that is the true status remains the same
