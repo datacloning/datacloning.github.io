@@ -417,7 +417,7 @@ theta <- c(0.2, -0.5)
 p <- exp(theta[1] + theta[2] * z) / (1 + exp(theta[1] + theta[2] * z))
 phi <- exp(beta[1] + beta[2] * x) / (1 + exp(beta[1] + beta[2] * x))
 #p <- plogis(model.matrix(~z) %*% theta)
-#phi <- plogis(model.matrix(~x) %*% eta)
+#phi <- plogis(model.matrix(~x) %*% beta)
 y <- rbinom(n = n, size = 1, prob = phi)
 w <- rbinom(n = n, size = y, prob = p)
 table(Y = y, W = w)
@@ -503,7 +503,7 @@ We can easily generalize this to model abundance surveys. The N-mixture model is
 ### Specification of the hierarchical model
 
 * True abundance model:  $$ N_i \sim Poisson(\lambda) $$ for locations $i=1,2, \ldots, n$. 
-* Observation model: $$ (Y_i \mid N_i) \sim Binomial(N_i, p) $$ for visits $t=1,2, \ldots, T$.
+* Observation model: $$ (Y_{i,t} \mid N_i) \sim Binomial(N_i, p) $$ for visits $t=1,2, \ldots, T$.
 
 ```r
 set.seed(1234)
@@ -535,8 +535,10 @@ model <- custommodel("model {
 dat <- list(Y = Y, n = n, T = T)
 ini <- list(N = apply(Y, 1, max) + 1)
 fit <- jags.fit(data = dat, params = c("p", "lambda"), 
+    n.update = 10000,
     model = model, inits = ini)
 summary(fit)
+gelman.diag(fit)
 plot(fit)
 pairs(fit)
 ```
@@ -560,6 +562,62 @@ pairs(dcfit)
 ```
 
 As before it is easy to include covariates in the models. There are various extensions and modifications proposed to this basic model. See Lele et al., Solymos et al, Solymos and Lele, Dail and Madsen. (Here we can advertise our work on single survey method and the poster.)
+
+Single visit abundance model with covariates:
+
+```r
+set.seed(1234)
+n <- 200
+x <- rnorm(n)
+z <- rnorm(n)
+beta <- c(0.9, 0.5)
+theta <- c(0.8, -0.5)
+Z <- model.matrix(~z)
+X <- model.matrix(~x)
+p <- plogis(Z %*% theta)
+lambda <- exp(X %*% beta)
+N <- rpois(n = n, lambda = lambda)
+Y <- rbinom(n = n, size = N, prob = p)
+table(N = N, Y = Y)
+## naive abundance parameter estimates
+m <- glm(Y ~ x, family = poisson("log"))
+coef(m)
+```
+
+```r
+model <- custommodel("model {
+    for (i in 1:n) {
+        N[i] ~ dpois(lambda[i])
+        Y[i] ~ dbin(p[i], N[i])
+        log(lambda[i]) <- inprod(X[i,], beta)
+        logit(p[i]) <- inprod(Z[i,], theta)
+    }
+    for (j in 1:px) {
+        beta[j] ~ dnorm(naive[j], 0.1)
+    }
+    for (j in 1:pz) {
+        theta[j] ~ dnorm(0, 0.01)
+    }
+}")
+dat <- list(Y = Y, n = n, X = X, Z = Z, 
+    px = ncol(X), pz = ncol(Z), naive = coef(m))
+ini <- list(N = Y + 1)
+fit <- jags.fit(data = dat, params = c("beta", "theta"), 
+    n.update = 5000,
+    model = model, inits = ini)
+## DC
+ifun <- function(model, n.clones) {
+    dclone(list(N = Y + 1), n.clones)
+}
+dcfit <- dc.fit(data = dat, 
+    params = c("beta", "theta"), model = model,
+    inits = ini, initsfun = ifun,
+    n.clones = c(1, 2, 4, 8), 
+    n.update = 5000,
+    unchanged = "T", multiply = "n")
+```
+
+## Negative-Binomial abundance model
 
 ## Continuous case with continuous measurement error (Neyman-Scott problem)
 
