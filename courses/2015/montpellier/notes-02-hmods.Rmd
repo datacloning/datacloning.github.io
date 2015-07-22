@@ -582,6 +582,10 @@ table(N = N, Y = Y)
 ## naive abundance parameter estimates
 m <- glm(Y ~ x, family = poisson("log"))
 coef(m)
+
+library(detect)
+md <- svabu(Y ~ x | z, zeroinfl = FALSE)
+coef(md)
 ```
 
 ```r
@@ -613,8 +617,43 @@ dcfit <- dc.fit(data = dat,
     params = c("beta", "theta"), model = model,
     inits = ini, initsfun = ifun,
     n.clones = c(1, 2, 4, 8), 
+#    n.update = 5000,
+    unchanged = c("px", "pz", "naive"), multiply = "n")
+```
+
+## Learning with DC
+
+```r
+model <- custommodel("model {
+    for (i in 1:n) {
+        N[i] ~ dpois(lambda[i])
+        Y[i] ~ dbin(p[i], N[i])
+        log(lambda[i]) <- inprod(X[i,], beta)
+        logit(p[i]) <- inprod(Z[i,], theta)
+    }
+
+    cf[1:(px + pz)] ~ dmnorm(pr[,1], pr[,2:(px + pz + 1)])
+    beta <- cf[1:px]
+    theta <- cf[(px + 1):(px + pz)]
+}")
+dat <- list(Y = Y, n = n, X = X, Z = Z, 
+    px = ncol(X), pz = ncol(Z), 
+    pr = unname(cbind(c(coef(m), rep(0, ncol(Z))),
+        diag(0.01, ncol(X) + ncol(Z)))))
+ini <- list(N = Y + 1)
+ifun <- function(model, n.clones) {
+    dclone(list(N = Y + 1), n.clones)
+}
+ufun <- function(model, n.clones) {
+    cbind(coef(model), solve(vcov(model)))
+}
+dcfit <- dc.fit(data = dat, 
+    params = c("beta", "theta"), model = model,
+    inits = ini, initsfun = ifun, 
+    update = "pr", updatefun = ufun,
+    n.clones = c(1, 2, 4, 8), 
     n.update = 5000,
-    unchanged = "T", multiply = "n")
+    unchanged = c("px", "pz", "pr"), multiply = "n")
 ```
 
 ## Negative-Binomial abundance model
