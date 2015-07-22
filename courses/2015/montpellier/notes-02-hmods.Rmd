@@ -241,7 +241,7 @@ $$ W_{i,t}  \mid Y_i = 0 $$ equals 0 with probability 1.
 
 The likelihood function is:
 
-$$L(p, \varphi; w_{1,1}, \ldots, w_{n,T})  = \prod_{i=1}^{n} \left[ \varphi \left( \binom{Y}{w_{i \cdot}} p^{w_{i \cdot} (1 - p)^{T - w_{i \cdot}}} \right) + (1 - \varphi) I(w_{i \cdot} = 0)\right]$$
+$$L(p, \varphi; w_{1,1}, \ldots, w_{n,T})  = \prod_{i=1}^{n} \left[ \varphi \left( \binom{Y}{w_{i \cdot}} p^{w_{i \cdot}} (1 - p)^{T - w_{i \cdot}} \right) + (1 - \varphi) I(w_{i \cdot} = 0)\right]$$
 
 where $$ w_{i \cdot} = \sum^{t=1}_{T} w_{i,t}$$ and $$I( w_{i \cdot} = 0 )$$ is an indicator function that is equal to one if $$w_{i \cdot} = 0$$. 
 
