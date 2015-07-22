@@ -39,9 +39,8 @@ Let us continue with the simple occupancy model we used previously. Most applied
 We can extend the Bernoulli model from 
 [Lecture 1](./notes-01-basics.html) as follows:
 
-True status: $$ Y_i \sim Bernoulli(\varphi) $$.
-
-Observed status: $$ (W_i \mid Y_i = y_i) \sim Bernoulli(p^{y_i} (1 - p)^{1 - y_i}) $$.
+* True status: $$ Y_i \sim Bernoulli(\varphi) $$.
+* Observed status: $$ (W_i \mid Y_i = y_i) \sim Bernoulli(p^{y_i} (1 - p)^{1 - y_i}) $$.
 
 An important thing to note here is that we only observe $W$'s and not the true statuses ($Y$) which are unknown. We can use the standard probability rules to compute:
 
@@ -108,7 +107,8 @@ library(rgl)
 open3d()
 bg3d("white")
 material3d(col = "black")
-Col <- dcpal_reds(12)[cut(L_mat, breaks = 12)]
+dcpal_grbu <- colorRampPalette(c("#18bc9c", "#3498db"))
+Col <- rev(dcpal_grbu(12))[cut(L_mat, breaks = 12)]
 persp3d(L_mat / max(L_mat), col = Col,
     theta=50, phi=25, expand=0.75, ticktype="detailed",
     xlab = "p", ylab = "phi", zlab = "L")
@@ -235,13 +235,15 @@ Suppose we go to the same location more than once, say $T$ times. Then sometimes
 
 The occupancy model with replicate visits is:
 
-True status: $$ Y_i \sim Bernoulli(\varphi) $$.
-
-Observed status: $$ (W_{i,t} \mid Y_i = y_i) \sim Bernoulli(p^{y_i} (1 - p)^{1 - y_i}) $$.
+* True status: $$ Y_i \sim Bernoulli(\varphi) $$.
+* Observed status: $$ (W_{i,t} \mid Y_i = 1) \sim Bernoulli(p) $$ and
+$$ W_{i,t}  \mid Y_i = 0 $$ equals 0 with probability 1.
 
 The likelihood function is:
 
-$$\begin{align} L(p, \varphi; w_{1,1}, \ldots, w_{n,T}) & = \prod_{i=1}^{n} \prod_{t=1}^{T} P(W_{i,t} = w_{i,t}; p, \varphi) \\ & = \prod_{i=1}^{n} \prod_{t=1}^{T} (p \varphi)^{w_{i,t}} (1 - p \varphi)^{1 - w_{i,t}} \end{align}$$
+$$\begin{align} L(p, \varphi; w_{1,1}, \ldots, w_{n,T})  = \prod_{i=1}^{n} \left[ \varphi \left( \left( \binom{Y}{w_{i \cdot}} p \right) \right) \right]$$
+
+$$ \prod_{t=1}^{T} P(W_{i,t} = w_{i,t}; p, \varphi) \\ & = \prod_{i=1}^{n} \prod_{t=1}^{T} (p \varphi)^{w_{i,t}} (1 - p \varphi)^{1 - w_{i,t}} \end{align}$$
 
 
 ### Assumptions
@@ -251,6 +253,87 @@ $$\begin{align} L(p, \varphi; w_{1,1}, \ldots, w_{n,T}) & = \prod_{i=1}^{n} \pro
   over the visits.
 2. Independent survey assumption: replicate visits are
   independent of each other.
+
+R code for data generation:
+
+```r
+set.seed(1234)
+n <- 50
+T <- 10
+p <- 0.6
+phi <- 0.4
+y <- rbinom(n = n, size = 1, prob = p)
+w <- matrix(NA, n, T)
+for (t in 1:T)
+    w[,t] <- rbinom(n = n, size = y, prob = phi)
+```
+
+Given the data, plot the likelihood contours.
+
+```r
+## setting up the grid for p and phi
+grid <- expand.grid(p = seq(0, 1, by = 0.01),
+    phi = seq(0, 1, by = 0.01), 
+    L = NA)
+## the likelihood function
+L_fun <- function(w, p, phi) {
+    prod((p * phi)^w * (1 - p * phi)^(1 - w))
+}
+## calculating the likelihood for the grid
+for (i in 1:nrow(grid)) {
+    grid$L[i] <- L_fun(w = w, p = grid$p[i], phi = grid$phi[i])
+}
+## plot the likelihood surface
+dcpal_reds <- colorRampPalette(c("#f9f2f4", "#c7254e"))
+L_mat <- matrix(grid$L, sqrt(nrow(grid)))
+image(L_mat, 
+    xlab = "p", ylab = expression(varphi),
+    col = dcpal_reds(12))
+abline(h = phi, v = p, col = "#f9f2f4", lwd = 3)
+abline(h = phi, v = p, col = "#c7254e", lwd = 1)
+curve((p * phi) / x, 0, 1, add = TRUE, 
+    col = "#18bc9c", lwd = 2)
+```
+
+![Likelihood surface 2](./images-02/occupancy-surface-2.png)
+
+We can see that the likelihood function looks like a mountain with a ridge tracing a curve corresponding to the product $p \varphi = c$.
+
+```r
+library(rgl)
+open3d()
+bg3d("white")
+material3d(col = "black")
+dcpal_grbu <- colorRampPalette(c("#18bc9c", "#3498db"))
+Col <- rev(dcpal_grbu(12))[cut(L_mat, breaks = 12)]
+persp3d(L_mat / max(L_mat), col = Col,
+    theta=50, phi=25, expand=0.75, ticktype="detailed",
+    xlab = "p", ylab = "phi", zlab = "L")
+```
+
+### Bayesian model in JAGS
+
+```r
+library(dclone)
+library(rjags)
+model <- custommodel("model {
+    for (i in 1:n) {
+        Y[i] ~ dbern(p)
+        for (t in 1:T) {}
+            W[i,t] ~ dbern(Y[i] * phi)
+        }
+    }
+    p ~ dunif(0.001, 0.999)
+    phi ~ dunif(0.001, 0.999)
+}")
+dat <- list(W = w, n = n, T = T)
+ini <- list(Y = w)
+fit <- jags.fit(data = dat, params = c("p", "phi"), 
+    model = model, inits = ini)
+summary(fit)
+plot(fit)
+pairs(fit)
+```
 
 R commands:
 
