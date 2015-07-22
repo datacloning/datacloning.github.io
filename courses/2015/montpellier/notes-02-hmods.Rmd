@@ -475,7 +475,8 @@ dat <- list(W = w, n = n, K = 1,
     naive = coef(naive), penalty = 0.5)
 dcfit <- dc.fit(data = dat, 
     params = c("beta", "theta"), model = model,
-    n.clones = c(1, 10), n.iter = 2000,
+    n.clones = c(1, 10, 100), 
+    n.update = 5000, n.iter = 2000,
     unchanged = c("W", "n", "X", "Z", "naive", "penalty"), 
     multiply = "K")
 summary(dcfit)
