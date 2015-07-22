@@ -62,12 +62,12 @@ This is a simple situation with two parameters and hence we can plot the likelih
 R code for data generation:
 
 ```r
-set.seed(1234)
+set.seed(4321)
 n <- 100
 p <- 0.6
 phi <- 0.4
-y <- rbinom(n = n, size = 1, prob = p)
-w <- rbinom(n = n, size = y, prob = phi)
+y <- rbinom(n = n, size = 1, prob = phi)
+w <- rbinom(n = n, size = y, prob = p)
 table(Y = y, W = w)
 ```
 
@@ -90,10 +90,10 @@ for (i in 1:nrow(grid)) {
 dcpal_reds <- colorRampPalette(c("#f9f2f4", "#c7254e"))
 L_mat <- matrix(grid$L, sqrt(nrow(grid)))
 image(L_mat, 
-    ylab = "p", xlab = expression(varphi),
+    xlab = "p", ylab = expression(varphi),
     col = dcpal_reds(12))
-abline(v = phi, h = p, col = "#f9f2f4", lwd = 3)
-abline(v = phi, h = p, col = "#c7254e", lwd = 1)
+abline(h = phi, v = p, col = "#f9f2f4", lwd = 3)
+abline(h = phi, v = p, col = "#c7254e", lwd = 1)
 curve((p * phi) / x, 0, 1, add = TRUE, 
     col = "#18bc9c", lwd = 2)
 ```
@@ -261,10 +261,10 @@ n <- 50
 T <- 5
 p <- 0.6
 phi <- 0.4
-y <- rbinom(n = n, size = 1, prob = p)
+y <- rbinom(n = n, size = 1, prob = phi)
 w <- matrix(NA, n, T)
 for (t in 1:T)
-    w[,t] <- rbinom(n = n, size = y, prob = phi)
+    w[,t] <- rbinom(n = n, size = y, prob = p)
 ```
 
 Given the data, plot the likelihood contours.
@@ -289,10 +289,10 @@ for (i in 1:nrow(grid)) {
 dcpal_reds <- colorRampPalette(c("#f9f2f4", "#c7254e"))
 L_mat <- matrix(grid$L, sqrt(nrow(grid)))
 image(L_mat, 
-    ylab = "p", xlab = expression(varphi),
+    xlab = "p", ylab = expression(varphi),
     col = dcpal_reds(12))
-abline(v = phi, h = p, col = "#f9f2f4", lwd = 3)
-abline(v = phi, h = p, col = "#c7254e", lwd = 1)
+abline(h = phi, v = p, col = "#f9f2f4", lwd = 3)
+abline(h = phi, v = p, col = "#c7254e", lwd = 1)
 ```
 
 ![Likelihood surface 2](./images-02/occupancy-surface-2.png)
@@ -496,20 +496,55 @@ We can easily generalize this to model abundance surveys. The N-mixture model is
 
 ### Assumptions
 
-(Replicate surveys, independent, close population)
+* Replicate surveys, 
+* independence, 
+* closed population.
 
 ### Specification of the hierarchical model
 
-True abundance model:  for 
-Observation model: for  
-
-We will not write down the likelihood function analytically but use the computer to do the analysis instead. 
+* True abundance model:  $$ N_i \sim Poisson(\lambda) $$ for locations $i=1,2, \ldots, n$. 
+* Observation model: $$ (Y_i \mid N_i) \sim Binomial(N_i, p) $$ for visits $t=1,2, \ldots, T$.
 
 ```r
-R commands:
-JAGS model
-Bayesian inference
-Frequentist inference
+set.seed(1234)
+n <- 200
+T <- 1
+p <- 0.6
+lambda <- 4.2
+N <- rpois(n = n, lambda = lambda)
+Y <- matrix(NA, n, T)
+for (t in 1:T) {
+    Y[,t] <- rbinom(n = n, size = N, prob = pp)
+}
+w <- rbinom(n = n, size = y, prob = phi)
+table(Y = y, W = w)
+```
+
+Given the data, plot the likelihood contours.
+
+```r
+## setting up the grid for p and phi
+grid <- expand.grid(p = seq(0, 1, by = 0.01),
+    phi = seq(0, 1, by = 0.01), 
+    L = NA)
+## the likelihood function
+L_fun <- function(w, p, phi) {
+    prod((p * phi)^w * (1 - p * phi)^(1 - w))
+}
+## calculating the likelihood for the grid
+for (i in 1:nrow(grid)) {
+    grid$L[i] <- L_fun(w = w, p = grid$p[i], phi = grid$phi[i])
+}
+## plot the likelihood surface
+dcpal_reds <- colorRampPalette(c("#f9f2f4", "#c7254e"))
+L_mat <- matrix(grid$L, sqrt(nrow(grid)))
+image(L_mat, 
+    ylab = "p", xlab = expression(varphi),
+    col = dcpal_reds(12))
+abline(v = phi, h = p, col = "#f9f2f4", lwd = 3)
+abline(v = phi, h = p, col = "#c7254e", lwd = 1)
+curve((p * phi) / x, 0, 1, add = TRUE, 
+    col = "#18bc9c", lwd = 2)
 ```
 
 As before it is easy to include covariates in the models. There are various extensions and modifications proposed to this basic model. See Lele et al., Solymos et al, Solymos and Lele, Dail and Madsen. (Here we can advertise our work on single survey method and the poster.)
