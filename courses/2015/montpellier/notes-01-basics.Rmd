@@ -693,7 +693,8 @@ model <- custommodel("model {
 }")
 dat <- list(Y = y, n = n, K = 1)
 dcfit <- dc.fit(data = dat, params = "p", model = model,
-    n.clones = c(1,2,4,8), unchanged = "n", multiply = "K")
+    n.clones = c(1,2,4,8), 
+    unchanged = c("n", "Y"), multiply = "K")
 ```
 
 ## What have we learnt?

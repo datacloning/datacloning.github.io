@@ -318,7 +318,7 @@ library(rjags)
 model <- custommodel("model {
     for (i in 1:n) {
         Y[i] ~ dbern(p)
-        for (t in 1:T) {}
+        for (t in 1:T) {
             W[i,t] ~ dbern(Y[i] * phi)
         }
     }
@@ -326,7 +326,7 @@ model <- custommodel("model {
     phi ~ dunif(0.001, 0.999)
 }")
 dat <- list(W = w, n = n, T = T)
-ini <- list(Y = w)
+ini <- list(Y = ifelse(rowSums(w) > 0, 1, 0))
 fit <- jags.fit(data = dat, params = c("p", "phi"), 
     model = model, inits = ini)
 summary(fit)
@@ -334,15 +334,129 @@ plot(fit)
 pairs(fit)
 ```
 
-R commands:
+### Bayesian inference
 
-JAGS model
-Bayesian inference: Effect of priors on the estimation and prediction of the occupancy proportion
+Effect of priors on the estimation and prediction of the occupancy proportion:
+
+```r
+model <- custommodel("model {
+    for (i in 1:n) {
+        Y[i] ~ dbern(p)
+        for (t in 1:T) {
+            W[i,t] ~ dbern(Y[i] * phi)
+        }
+    }
+    p <- ilogit(logit_p)
+    phi <- ilogit(logit_phi)
+    logit_p ~ dnorm(-2, 0.01)
+    logit_phi ~ dnorm(2, 0.01)
+}")
+dat <- list(W = w, n = n, T = T)
+ini <- list(Y = ifelse(rowSums(w) > 0, 1, 0))
+fit2 <- jags.fit(data = dat, params = c("p", "phi"), 
+    model = model, inits = ini)
+summary(fit2)
+plot(fit2)
+pairs(fit2)
+```
+
+### Data cloning
+
 Frequentist inference: Identifiability check, independence from the specification of the prior check, confidence intervals and predictions for the occupancy proportion.
 
-Generalization to take into account covariates:
+```r
+library(dclone)
+library(rjags)
+model <- custommodel("model {
+    for (i in 1:n) {
+        Y[i] ~ dbern(p)
+        for (t in 1:T) {
+            W[i,t] ~ dbern(Y[i] * phi)
+        }
+    }
+    p ~ dunif(0.001, 0.999)
+    phi ~ dunif(0.001, 0.999)
+}")
+dat <- list(W = w, n = n, T = T)
+ini <- list(Y = ifelse(rowSums(w) > 0, 1, 0))
+ifun <- function(model, n.clones) {
+    dclone(list(Y = ifelse(rowSums(w) > 0, 1, 0)), n.clones)
+}
+dcfit <- dc.fit(data = dat, params = c("p", "phi"), 
+    model = model, inits = ini,
+    n.clones = c(1,2,4,8), multiply = "n", unchanged = "T",
+    initsfun = ifun)
+summary(dcfit)
+plot(dcfit)
+dctable(dcfit)
+plot(dctable(dcfit))
+dcdiag(dcfit)
+plot(dcdiag(dcfit))
+pairs(dcfit)
+```
 
-JAGS model and then they can do the rest of the analysis using the programs. We will not spend time on it. 
+### Generalization to take into account covariates
+
+$p$ and $\varphi$ can be a function of independent variables
+with values varying across the $n$ location, for example:
+
+* $$\p_i = \frac{exp(\theta_0 + \theta_1 x_i)}{1 + exp(\theta_0 + \theta_1 x_i)}$$.
+* $$\varphi_i = \frac{exp(\beta_0 + \beta_1 x_i)}{1 + exp(\beta_0 + \beta_1 x_i)}$$,
+
+R code for data generation:
+
+```r
+set.seed(1234)
+n <- 1000
+x <- rnorm(n)
+z <- rnorm(n)
+beta <- c(0, 1)
+theta <- c(0.2, -0.5)
+p <- exp(theta[1] + theta[2] * z) / (1 + exp(theta[1] + theta[2] * z))
+phi <- exp(beta[1] + beta[2] * x) / (1 + exp(beta[1] + beta[2] * x))
+#p <- plogis(model.matrix(~z) %*% theta)
+#phi <- plogis(model.matrix(~x) %*% eta)
+y <- rbinom(n = n, size = 1, prob = phi)
+w <- rbinom(n = n, size = y, prob = p)
+table(Y = y, W = w)
+```
+
+```r
+naive <- glm(w ~ x, family = binomial("logit"))
+summary(naive)
+library(detect)
+m <- svocc(w ~ x | z)
+summary(m)
+```
+
+```r
+model <- custommodel("model {
+    for (i in 1:n) {
+        W[i] ~ dbin(p[i] * phi[i], K)
+        logit(p[i]) <- inprod(Z[i,], theta)
+        logit(phi[i]) <- inprod(X[i,], beta)
+    }
+    beta[1] ~ dnorm(0, 0.001)
+    beta[2] ~ dnorm(0, 0.001)
+    theta[1] ~ dnorm(0, 0.001)
+    theta[2] ~ dnorm(0, 0.001)
+}")
+dat <- list(W = w, n = n, K = 1, 
+    X = model.matrix(~x), Z = model.matrix(~z))
+dcfit <- dc.fit(data = dat, 
+    params = c("beta", "theta"), model = model,
+    n.clones = c(1, 10), n.iter = 2000,
+    unchanged = c("W", "n", "X", "Z"), multiply = "K")
+summary(dcfit)
+plot(dcfit)
+dctable(dcfit)
+plot(dctable(dcfit))
+dcdiag(dcfit)
+plot(dcdiag(dcfit))
+pairs(dcfit)
+```
+
+For a quasi-Bayesian approach, see [here](https://github.com/psolymos/detect/tree/master/extras/revisitingSV#quasi-bayesian-single-visit-occupancy-model) how to utilize the naive estimator to stabilize single visit based estimates.
 
 ## Abundance surveys
 
