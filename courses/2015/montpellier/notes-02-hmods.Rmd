@@ -400,7 +400,7 @@ pairs(dcfit)
 $p$ and $\varphi$ can be a function of independent variables
 with values varying across the $n$ location, for example:
 
-* $$\p_i = \frac{exp(\theta_0 + \theta_1 x_i)}{1 + exp(\theta_0 + \theta_1 x_i)}$$.
+* $$p_i = \frac{exp(\theta_0 + \theta_1 x_i)}{1 + exp(\theta_0 + \theta_1 x_i)}$$.
 * $$\varphi_i = \frac{exp(\beta_0 + \beta_1 x_i)}{1 + exp(\beta_0 + \beta_1 x_i)}$$,
 
 R code for data generation:
@@ -456,7 +456,36 @@ plot(dcdiag(dcfit))
 pairs(dcfit)
 ```
 
-For a quasi-Bayesian approach, see [here](https://github.com/psolymos/detect/tree/master/extras/revisitingSV#quasi-bayesian-single-visit-occupancy-model) how to utilize the naive estimator to stabilize single visit based estimates.
+For a quasi-Bayesian approach, see [here](https://github.com/psolymos/detect/tree/master/extras/revisitingSV#quasi-bayesian-single-visit-occupancy-model) how to utilize the naive estimator to stabilize single visit based estimates:
+
+```r
+model <- custommodel("model {
+    for (i in 1:n) {
+        W[i] ~ dbin(p[i] * phi[i], K)
+        logit(p[i]) <- inprod(Z[i,], theta)
+        logit(phi[i]) <- inprod(X[i,], beta)
+    }
+    beta[1] ~ dnorm(naive[1], penalty)
+    beta[2] ~ dnorm(naive[2], penalty)
+    theta[1] ~ dnorm(0, 0.001)
+    theta[2] ~ dnorm(0, 0.001)
+}")
+dat <- list(W = w, n = n, K = 1, 
+    X = model.matrix(~x), Z = model.matrix(~z),
+    naive = coef(naive), penalty = 0.5)
+dcfit <- dc.fit(data = dat, 
+    params = c("beta", "theta"), model = model,
+    n.clones = c(1, 10), n.iter = 2000,
+    unchanged = c("W", "n", "X", "Z", "naive", "penalty"), 
+    multiply = "K")
+summary(dcfit)
+plot(dcfit)
+dctable(dcfit)
+plot(dctable(dcfit))
+dcdiag(dcfit)
+plot(dcdiag(dcfit))
+pairs(dcfit)
+```
 
 ## Abundance surveys
 
