@@ -402,7 +402,7 @@ pairs(dcfit)
 $p$ and $\varphi$ can be a function of independent variables
 with values varying across the $n$ location, for example:
 
-* $$p_i = \frac{exp(\theta_0 + \theta_1 x_i)}{1 + exp(\theta_0 + \theta_1 x_i)}$$.
+* $$p_i = \frac{exp(\theta_0 + \theta_1 z_i)}{1 + exp(\theta_0 + \theta_1 z_i)}$$.
 * $$\varphi_i = \frac{exp(\beta_0 + \beta_1 x_i)}{1 + exp(\beta_0 + \beta_1 x_i)}$$,
 
 R code for data generation:
