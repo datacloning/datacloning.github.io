@@ -4,4 +4,4 @@
 
 This training course is aimed towards the conservation professionals who need to understand and feel comfortable with modern statistical and computational tools used to address pressing conservation issues. By presenting both Bayesian and Likelihood based approaches, the participants will be able to go beyond the rhetorics of philosophy of statistics and use the tools with full understanding of their assumptions and implications.
 
-http://datacloning.github.io/courses/2015/montpellier/
+http://datacloning.org/courses/2015/montpellier/
