@@ -35,6 +35,7 @@
                 {% if page.course.pdf %}
 			    <a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.course.pdf }}" class="btn btn-primary btn-sm"><i class="fa fa-file-pdf-o"></i> pdf</a>
     		    {% endif %}
+			    <a href="https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/notes-{{ page.course.file }}.Rmd" class="btn btn-primary btn-sm"><i class="fa fa-code"></i> Source</a>
     		    <div class="btn-group">
       			  <a href="#" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
 		          <i class="fa fa-download"></i> Download
