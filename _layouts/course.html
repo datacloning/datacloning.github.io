@@ -43,7 +43,7 @@
       			  <ul class="dropdown-menu">
         			<li><a href="{{ page.url }}" download><i class="fa fa-file-text-o"></i> html</a></li>
         			{% if page.course.pdf %}
-        			<li><a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/notes-{{ page.course.file }}.pdf" download><i class="fa fa-file-pdf-o"></i> pdf</a></li>
+        			<li><a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.course.pdf }}" download><i class="fa fa-file-pdf-o"></i> pdf</a></li>
         			{% endif %}
         			<li><a href="https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/notes-{{ page.course.file }}.Rmd" download><i class="fa fa-file-code-o"></i> Rmd</a></li>
        			  </ul>

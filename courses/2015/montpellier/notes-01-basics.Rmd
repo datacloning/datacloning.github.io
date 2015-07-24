@@ -13,7 +13,7 @@ course:
   previous: quickstart
   next: notes-02-hmods
   slides: slides-01-basics.html
-  pdf: slides-01-basics.pdf
+  pdf: notes-01-basics.pdf
 ---
 
 ## Introduction
