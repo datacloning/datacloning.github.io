@@ -4,10 +4,11 @@ author: "Peter Solymos and Subhash Lele"
 output: pdf_document
 layout: course
 course:
-  year: 2015
   location: Montpellier
+  year: 2015
   title: "Hierarchical Models Made Easy &mdash; August 1, 2015 &mdash; Montpellier, France &mdash; ICCB/ECCB Congress"
   lecture: How to
+  file: how-to-prepare
   previous: about-the-course
   next: quickstart
 ---
