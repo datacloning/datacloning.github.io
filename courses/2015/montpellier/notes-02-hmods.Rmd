@@ -9,7 +9,7 @@ course:
   year: 2015
   title: "Hierarchical Models Made Easy &mdash; August 1, 2015 &mdash; Montpellier, France &mdash; ICCB/ECCB Congress"
   lecture: Hierarchical models
-  file: 02-hmods
+  file: notes-02-hmods
   previous: notes-01-basics
   next: notes-03-pva
   slides: slides-01-basics.html
