@@ -21,7 +21,7 @@ layout: default
 > See the [issues]({{ site.baseurl }}/issues.html) 
 > section for more information.
 
-> ### <i class="fa fa-question-circle"></i> Does data cloning makes MCMC runs longer?
+> ### <i class="fa fa-question-circle"></i> Does data cloning make MCMC runs longer?
 >
 > Yes it does. There are ways to cut down computing times,
 > for example using high performance practices discussed 
