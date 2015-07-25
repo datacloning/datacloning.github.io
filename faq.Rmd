@@ -21,3 +21,17 @@ layout: default
 > See the [issues]({{ site.baseurl }}/issues.html) 
 > section for more information.
 
+> ### <i class="fa fa-question-circle"></i> Does data cloning makes MCMC runs longer?
+>
+> Yes it does. There are ways to cut down computing times,
+> for example using high performance practices discussed 
+> [here]({{ site.baseurl }}/usage.html#high-performance-computing). 
+
+> ### <i class="fa fa-question-circle"></i> What is the benefit of using data cloning over the Bayesian approach?
+>
+> 1. Results are invariant to the choice of the prior.
+> 2. Identifiability diagnostics comes with the results.
+> 3. Full suite of frequentist approaches can be used,
+>   for example conditional-, pseudo-, composite-likelihood.
+
+
