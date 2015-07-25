@@ -82,3 +82,13 @@ Congratulations! Now your computer is ready for the course.
 
 If you still have problems, contact [Péter Sólymos](http://peter.solymos.org#about).
 
+### Optional: install `shiny` for running apps in RStudio
+
+We will play around with [Shiny](http://shiny.rstudio.com/) apps
+that can be run from within [RStudio](http://www.rstudio.com/).
+If you want to be able to run apps from within RStudio, make sure to
+install the `shiny` [R](http://www.r-project.org) package:
+
+```r
+install.packages("shiny")
+```
