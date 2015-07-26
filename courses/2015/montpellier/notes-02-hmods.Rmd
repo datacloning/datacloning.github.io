@@ -750,13 +750,14 @@ Prior distributions are smoothness assumptions on the parameters and their effec
 ```r
 set.seed(1234)
 n <- 100
+m <- 1
 mu <- 2.5
 sigma_sq <- 0.2^2
-eps <- rnorm(n * 2, mean = 0, sd = sqrt(sigma_sq))
+eps <- rnorm(n * m, mean = 0, sd = sqrt(sigma_sq))
 tau_sq <- 0.5^2
-alpha <- rep(rnorm(n, mean = 0, sd = sqrt(tau_sq)), 2)
+alpha <- rnorm(n, mean = 0, sd = sqrt(tau_sq))
 Y <- mu + alpha + eps
-dim(Y) <- c(n, 2)
+dim(Y) <- c(n, m)
 summary(Y)
 ```
 
@@ -764,7 +765,7 @@ summary(Y)
 library(dclone)
 model <- custommodel("model {
     for (i in 1:n) {
-        for (j in 1:2) {
+        for (j in 1:m) {
             Y[i,j] ~ dnorm(mu + alpha[i], 1 / sigma_sq)
         }
         alpha[i] ~ dnorm(0, 0.001)
@@ -773,9 +774,9 @@ model <- custommodel("model {
     sigma_sq <- exp(log_sigma)^2
     mu ~ dnorm(0, 001)
 }")
-dat <- list(Y = Y, n = n)
+dat <- list(Y = Y, n = n, m = m)
 fit <- jags.fit(data = dat, params = c("mu", "sigma_sq","alpha"), 
-    model = model, n.update = 30000)
+    model = model, n.update = 5000)
 summary(fit[,c("mu","sigma_sq")])
 plot(fit[,c("mu","sigma_sq")])
 pairs(fit[,c("mu","sigma_sq")])
@@ -786,7 +787,7 @@ plot(fit[,c("alpha[1]","alpha[100]")])
 ```r
 model <- custommodel("model {
     for (i in 1:n) {
-        for (j in 1:2) {
+        for (j in 1:m) {
             Y[i,j] ~ dnorm(mu + alpha[i], 1 / sigma_sq)
         }
         alpha[i] ~ dnorm(0, 1 / tau_sq)
@@ -795,9 +796,12 @@ model <- custommodel("model {
     sigma_sq <- exp(log_sigma)^2
     mu ~ dnorm(0, 001)
     log_tau ~ dnorm(0, 0.001)
-    tau_sq <- exp(log_sigma)^2
+    tau_sq <- exp(log_tau)^2
 }")
-dat <- list(Y = Y, n = n)
+dat <- list(Y = Y, n = n, m = m)
+#fit <- jags.fit(data = dat, 
+#    params = c("mu", "sigma_sq", "tau_sq"), 
+#    model = model)
 fit <- jags.fit(data = dat, 
     params = c("mu", "sigma_sq", "tau_sq", "alpha"), 
     model = model, n.update = 5000)
@@ -812,7 +816,7 @@ plot(alpha[1:n], coef(fit)[grep("alpha", varnames(fit))])
 ```r
 model <- custommodel("model {
     for (k in 1:K) {
-        for (i in 1:n) {
+        for (i in 1:m) {
             for (j in 1:2) {
                 Y[i,j,k] ~ dnorm(mu + alpha[i,k], 1 / sigma_sq)
             }
@@ -823,10 +827,11 @@ model <- custommodel("model {
     sigma_sq <- exp(log_sigma)^2
     mu ~ dnorm(0, 001)
     log_tau ~ dnorm(0, 0.001)
-    tau_sq <- exp(log_sigma)^2
+    tau_sq <- exp(log_tau)^2
     sum <- sigma_sq + tau_sq
 }")
-dat <- list(Y = dcdim(array(Y, c(n, 2, 1))), n = n, K = 1)
+dat <- list(Y = dcdim(array(Y, c(n, m, 1))), n = n, 
+    m = m, K = 1)
 str(dat)
 dcfit1 <- dc.fit(data = dat, 
     params = c("mu", "sigma_sq", "tau_sq"), 
@@ -850,14 +855,14 @@ pairs(dcfit2)
 
 ```r
 library(lme4)
-g <- rep(1:n, 2)
+g <- rep(1:n, m)
 Yvec <- as.numeric(Y)
 mod.lm <- lmer(Yvec ~ 1 + (1|g))
 summary(mod.lm)
 plot(alpha[1:n], ranef(mod.lm)$g[,1])
 ```
 
-## Binoial GLMM
+## Binomial GLMM
 
 ### The model
 
@@ -1018,3 +1023,10 @@ May be we can show that the coverage differences. They can play with different p
 > * Estimation and inference for the parameters.
 > * Prediction and inference (coverage) for the latent variables.
 
+
+TODO:
+
+- check N-N, insert code where relevant
+- m=1, m=2, m=10 cases: plots
+- check lambda.max results
+- do alpha prediction interval (Bayes, DC, lme4?)
