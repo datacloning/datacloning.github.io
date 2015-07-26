@@ -886,9 +886,9 @@ plot(alpha[1:n], ranef(mod.lm)$g[,1])
 
 ### The model
 
-$$Y_{ij} \sim Bernoulli(p_{ij})$$
-$i=1 \ldots n$ observations, $j=1 \ldots m$ clusters of obs, 2 obs per cluster
-$$logit(p_{ij}) = \beta_{0} + \beta_{1} X_{ij} + \alpha_{j}$$
+$$Y_{ij} \sim Bernoulli(p_{ij})$$,
+$i=1, 2, \ldots, n$ observations, $j=1, 2, \ldots, m$ clusters of obs, 2 obs per cluster,
+$$logit(p_{ij}) = \beta_{0} + \beta_{1} X_{ij} + \alpha_{j}$$,
 $$\alpha_{j} \sim Normal(0, \sigma^2)$$
 
 ### The problem
