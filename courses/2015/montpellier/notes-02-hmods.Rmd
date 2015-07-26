@@ -772,3 +772,225 @@ May be we can show that the coverage differences. They can play with different p
 > * Prediction and inference (coverage) for the latent variables.
 
 
+```r
+set.seed(1234)
+n <- 100
+mu <- 2.5
+sigma_sq <- 0.2^2
+eps <- rnorm(n * 2, mean = 0, sd = sqrt(sigma_sq))
+tau_sq <- 0.5^2
+alpha <- rep(rnorm(n, mean = 0, sd = sqrt(tau_sq)), 2)
+Y <- mu + alpha + eps
+dim(Y) <- c(n, 2)
+summary(Y)
+```
+
+```r
+library(dclone)
+model <- custommodel("model {
+    for (i in 1:n) {
+        for (j in 1:2) {
+            Y[i,j] ~ dnorm(mu + alpha[i], 1 / sigma_sq)
+        }
+        alpha[i] ~ dnorm(0, 0.001)
+    }
+    log_sigma ~ dnorm(0, 0.001)
+    sigma_sq <- exp(log_sigma)^2
+    mu ~ dnorm(0, 001)
+}")
+dat <- list(Y = Y, n = n)
+fit <- jags.fit(data = dat, params = c("mu", "sigma_sq","alpha"), 
+    model = model, n.update = 30000)
+summary(fit[,c("mu","sigma_sq")])
+plot(fit[,c("mu","sigma_sq")])
+pairs(fit[,c("mu","sigma_sq")])
+
+plot(fit[,c("alpha[1]","alpha[100]")])
+```
+
+```r
+model <- custommodel("model {
+    for (i in 1:n) {
+        for (j in 1:2) {
+            Y[i,j] ~ dnorm(mu + alpha[i], 1 / sigma_sq)
+        }
+        alpha[i] ~ dnorm(0, 1 / tau_sq)
+    }
+    log_sigma ~ dnorm(0, 0.001)
+    sigma_sq <- exp(log_sigma)^2
+    mu ~ dnorm(0, 001)
+    log_tau ~ dnorm(0, 0.001)
+    tau_sq <- exp(log_sigma)^2
+}")
+dat <- list(Y = Y, n = n)
+fit <- jags.fit(data = dat, 
+    params = c("mu", "sigma_sq", "tau_sq", "alpha"), 
+    model = model, n.update = 5000)
+summary(fit[,c("mu","sigma_sq", "tau_sq")])
+plot(fit[,c("mu","sigma_sq", "tau_sq")])
+pairs(fit[,c("mu","sigma_sq", "tau_sq")])
+
+plot(fit[,c("alpha[1]","alpha[100]")])
+plot(alpha[1:n], coef(fit)[grep("alpha", varnames(fit))])
+```
+
+```r
+model <- custommodel("model {
+    for (k in 1:K) {
+        for (i in 1:n) {
+            for (j in 1:2) {
+                Y[i,j,k] ~ dnorm(mu + alpha[i,k], 1 / sigma_sq)
+            }
+            alpha[i,k] ~ dnorm(0, 1 / tau_sq)
+        }
+    }
+    log_sigma ~ dnorm(0, 0.001)
+    sigma_sq <- exp(log_sigma)^2
+    mu ~ dnorm(0, 001)
+    log_tau ~ dnorm(0, 0.001)
+    tau_sq <- exp(log_sigma)^2
+    sum <- sigma_sq + tau_sq
+}")
+dat <- list(Y = dcdim(array(Y, c(n, 2, 1))), n = n, K = 1)
+str(dat)
+dcfit1 <- dc.fit(data = dat, 
+    params = c("mu", "sigma_sq", "tau_sq"), 
+    model = model, n.iter = 1000,
+    n.clones = c(1, 10, 25, 50),
+    unchanged = "n", multiply = "K")
+dcfit2 <- dc.fit(data = dat, 
+    params = c("mu", "sum"), 
+    model = model, n.iter = 1000,
+    n.clones = c(1, 10, 25, 50),
+    unchanged = "n", multiply = "K")
+dcdiag(dcfit1)
+dcdiag(dcfit2)
+plot(dcfit1[,c("sigma_sq", "tau_sq")])
+pairs(dcfit1[,c("sigma_sq", "tau_sq")])
+cov2cor(vcov(dcfit1))
+cov2cor(vcov(dcfit2))
+pairs(dcfit1)
+pairs(dcfit2)
+```
+
+## The model
+
+$$Y_{ij} \sim Bernoulli(p_{ij})$$
+$i=1 \ldots n$ observations, $j=1 \ldots m$ clusters of obs, 2 obs per cluster
+$$logit(p_{ij}) = \beta_{0} + \beta_{1} X_{ij} + \alpha_{j}$$
+$$\alpha_{j} \sim Normal(0, \sigma^2)
+
+## GLMM example
+
+In these Neyman-Scott type problems, there are two types of asymptotics: 
+
+* increase the number of clusters or 
+* increase the number of observations in a cluster (keeping the number of clusters constant). 
+
+Of course, one can have both clusters and cluster size going to infinity but that is quite simple, unrealistic.
+
+The first asymptotics leads to MLE for $\sigma^2$ that is consistent.  
+The second type of asymptotics does not lead to consistent MLE of $\sigma^2$. 
+That was precisely the point in Kiefer and Wolfowitz[^KW].
+
+[^KW]: Kiefer, J. and Wolfowitz, J., 1956. 
+Consistency of the maximum likelihood estimator in the presence of infinitely many incidental parameters. *Ann. Math. Statist.*, **27**, 887&ndash;906. [PDF from Project Euclid](http://projecteuclid.org/euclid.aoms/1177728066)
+
+The second type of asymptotics where observations within a cluster 
+increases but not the number of clusters, there are only fixed effects 
+corresponding to $\alpha_{j}$. In this asymptotics, the information about $\sigma^2$ 
+is not increasing and hence one cannot obtain consistent estimator.
+
+## Data cloning model
+
+### Data generation
+
+```r
+library(dclone)
+set.seed(150467)
+I=500
+m=2
+n <- I*m
+n
+beta <- c(2, -1)
+sigma <- 1
+x <- runif(n, min=0, max=1)
+X <- model.matrix(~ x)
+U <- rnorm(I, 0, sigma)
+g <- sort(rep(1:I,2))
+alpha <- U[g]
+eta<- exp(alpha + drop(X %*% beta))
+lambda <- eta / (1 + eta)
+Y <- rbinom(n, 1, lambda)
+100*sum(Y)/n
+```
+
+### DC for clusters
+
+```r
+glmm.model.mlogit2 <- function(){
+    for (k in 1:ncl) {
+        for (i in 1:I){
+            alpha[i,k] ~ dnorm(0, tau)
+            for (j in 1:m){
+                Y[j,i,k] ~ dbin(p[j,i,k], 1)
+                logit(p[j,i,k]) <- alpha[i,k] + beta[1] + beta[2] * X[j,i]
+            }
+        }
+    }
+    for (j in 1:np){
+        beta[j] ~ dnorm(0, 0.01)
+    }
+    tau~dgamma(0.001, 0.001)
+    sigma2 <- 1 / tau
+}
+```
+
+### DC for replicates within clusters
+
+```r
+glmm.model.mlogit3 <- function(){
+    for (i in 1:I){
+        alpha[i] ~ dnorm(0, tau)
+        for (j in 1:m){
+            Y[j,i] ~ dbin(p[j,i], 1)
+            logit(p[j,i]) <- alpha[i] + beta[1] + beta[2] * X[j,i]
+        }
+    }
+    for (j in 1:np){
+        beta[j] ~ dnorm(0, 0.01)
+    }
+    tau~dgamma(0.001, 0.001)
+    sigma2 <- 1 / tau
+}
+
+Y2 <- dcdim(array(Y, c(m, I, 1)))
+x2 <- matrix(x, m, I)
+dat2 <- list(Y=Y2, X=x2, I=I, m=m, np=2, ncl=1)
+
+Y3 <- matrix(Y, m, I)
+x3 <- matrix(x, m, I)
+dat3 <- list(Y=Y3, X=x3, I=I, m=m, np=2)
+
+cl <- makeSOCKcluster(6)
+ncl <- c(1,2,5,10)
+mod2 <- dc.parfit(cl, dat2, c("beta", "sigma2"), glmm.model.mlogit2, 
+    n.clones = ncl, multiply="ncl", unchanged=c("I", "m", "np", "X"), n.update=2000, n.iter=1000)
+mod3 <- dc.parfit(cl, dat3, c("beta", "sigma2"), glmm.model.mlogit3, 
+    n.clones = ncl, multiply="m", unchanged=c("I", "np"), n.update=2000, n.iter=1000)
+stopCluster(cl)
+
+summary(mod2)
+dcdiag(mod2)
+
+summary(mod3)
+dcdiag(mod3)
+
+library(lme4)
+mod.lm <- lmer(Y ~ x + (1|g), family = binomial(link=logit), nAGQ=60,
+doFit=TRUE)
+summary(mod.lm)
+
+cbind(c(beta, sigma2=sigma^2), est=coef(mod2), se=dcsd(mod2))
+```
+
