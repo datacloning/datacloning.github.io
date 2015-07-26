@@ -692,44 +692,53 @@ $$\hat{\sigma}_{\varepsilon}^2 = \frac{1}{2n} \sum_{i=1}^{n} \sum_{j=1}^{2} (Y_{
 One of the most important results from Neyman and Scott (1949) is that as the sample size increases, $$\hat{\sigma}_{\varepsilon}^2 \rightarrow \sigma_{\varepsilon}^2 / 2$$. It is almost obvious that we cannot estimate  consistently (although it is an unbiased estimator). 
 
 
-Moral of the story:
-Increasing the sample size does not guarantee good estimators. What is important is that the information in the sample about the parameter should converge to infinity.
+> ### Moral of the story
+>
+> Increasing the sample size does not guarantee good estimators. 
+> What is important is that the information in the sample about 
+> the parameter should converge to infinity.
 
-In this model, the number of parameters is increasing at the same rate as the sample size (the information). Hence we have limited information about any particular parameter. We are spending the information profligately. 
+In this model, the number of parameters is increasing at the same rate as the sample size (the information). Hence we have limited information about any particular parameter. We are spending the information profligately. This kind of situation is **not unusual in practice**. 
 
-This kind of situation is not unusual in practice. 
+* *Logistic regression and multi-center clinical studies*:
+  Each hospital has only a few patients and we want to combine 
+  information across the hospitals. 
+* *Combining data across large geographic areas in abundance surveys*:
+  Random effect for the area and the effect of the covariates in 
+  the Poisson regression.
 
-Logistic regression and multi-center clinical studies: Each hospital has only a few patients and we want to combine information across the hospitals. 
+> ### What can we do?
+>
+> We need more information but more data are not going to give us more information. 
+>
+> In mathematics the solution always exists: *assume*!
 
-Combining data across large geographic areas in abundance surveys: Random effect for the area and the effect of the covariates in the Poisson regression.
-
-What can we do?
-
-We need more information but more data are not going to give us more information. 
-In mathematics the solution always exists: ASSUME!
 These assumptions should, in effect, reduce the number of parameters. Hopefully we can reduce them to the level that information increases sufficiently faster than the number of parameters. Usually we make assumptions so that the final number of parameters is unchanging with the sample size but this is not necessary. 
 
-Smoothness assumptions: 
-Regression assumption:  
-Random effects assumption:
+Smoothness assumptions:
 
-Warning: This has NOTHING to do with the Bayesian thinking. These are simply modeling assumptions. The effect of these assumptions (e.g. distribution of the latent variable) does not go away as we increase the sample size. On the other hand, as we have seen repeatedly, the effect of the prior (which is also an assumption) vanishes as the information in the data increases. 
+* regression assumption,
+* random effects assumption.
 
-There is no such thing as ``Bayesian model'' or ``Frequentist model''. There are stochastic models; there are deterministic models; there are descriptive models. Some Bayesians claim that specification of the prior on the parameters is on the same level as specifying a stochastic model for the data. Hence they consider all hierarchical models as ``Bayesian models''. Some historical lesson might be useful here. 
+<p class="text-warning">Warning</p>: This has *nothing* to do with the Bayesian thinking. These are simply modeling assumptions. The effect of these assumptions (e.g. distribution of the latent variable) does not go away as we increase the sample size. On the other hand, as we have seen repeatedly, the effect of the prior (which is also an assumption) vanishes as the information in the data increases. 
+
+There is no such thing as "Bayesian model" or "Frequentist model". There are stochastic models; there are deterministic models; there are descriptive models. Some Bayesians claim that specification of the prior on the parameters is on the same level as specifying a stochastic model for the data. Hence they consider all hierarchical models as "Bayesian models". Some historical lesson might be useful here. 
 
 We do not agree with this. As we have pointed out, the effect of the modeling assumption does not vanish as we increase the sample size, whereas the effect of the prior does. 
 
 Unknown quantities in the stochastic models:
-We have come across two different types of unknown quantities in the hierarchical models: Latent variables and Parameters. 
-Parameters: These are quantities in the model that can be estimated with perfect certainty as the information in the data increases to infinity.
-Latent variables: No amount of data can determine these with certainty. The uncertainty does not go to zero. 
+We have come across two different types of unknown quantities in the hierarchical models: **latent variables** and **parameters**. 
+
+* *Parameters*: These are quantities in the model that can be estimated with perfect certainty as the information in the data increases to infinity.
+* *Latent variables*: No amount of data can determine these with certainty. The uncertainty does not go to zero. 
 
 Analogy with estimation and prediction in time series or regression:  If we have large amount of data (and, the model is correct), then the standard error for the parameter estimates goes to zero but the prediction error does not. Latent variables in the hierarchical models are similar to the prediction of unobserved time points. 
 
-Imposing a distributional assumption is qualitatively same as imposing regression model. This is not a ‘prior distribution’ of any kind. This is a misleading terminology commonly used in the Bayesian literature. 
+Imposing a distributional assumption is qualitatively same as imposing regression model. This is not a 'prior distribution' of any kind. This is a misleading terminology commonly used in the Bayesian literature. 
 
 Prior distributions are smoothness assumptions on the parameters and their effect goes to zero as the information increases. 
 
+```r
 R commands (for parameter estimation)
 
 Model file
@@ -745,13 +754,14 @@ Bayesian predictive distribution:
 Frequentist predictive distribution:
 
 R commands for prediction using dclone:
-
+```
 May be we can show that the coverage differences. They can play with different prior distributions on the parameters and see how they affect the coverage. 
 
-What have we learnt?
-Hierarchical models: (Linear mixed models, measurement error)
-Latent variables versus parameters:
-Estimation and inference for the parameters:
-Prediction and inference (coverage) for the latent variables: 
+> ## What have we learnt?
+>
+> * Hierarchical models: Linear mixed models, measurement error.
+> * Latent variables versus parameters.
+> * Estimation and inference for the parameters.
+> * Prediction and inference (coverage) for the latent variables.
 
 
