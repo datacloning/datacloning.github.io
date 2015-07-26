@@ -746,11 +746,12 @@ Imposing a distributional assumption is qualitatively same as imposing regressio
 Prior distributions are smoothness assumptions on the parameters and their effect goes to zero as the information increases. 
 
 
+#### Data generation
 
 ```r
 set.seed(1234)
 n <- 100
-m <- 1
+m <- 2
 mu <- 2.5
 sigma_sq <- 0.2^2
 eps <- rnorm(n * m, mean = 0, sd = sqrt(sigma_sq))
@@ -776,7 +777,7 @@ model <- custommodel("model {
 }")
 dat <- list(Y = Y, n = n, m = m)
 fit <- jags.fit(data = dat, params = c("mu", "sigma_sq","alpha"), 
-    model = model, n.update = 5000)
+    model = model, n.update = 30000)
 summary(fit[,c("mu","sigma_sq")])
 plot(fit[,c("mu","sigma_sq")])
 pairs(fit[,c("mu","sigma_sq")])
@@ -785,6 +786,7 @@ plot(fit[,c("alpha[1]","alpha[100]")])
 ```
 
 ```r
+library(dclone)
 model <- custommodel("model {
     for (i in 1:n) {
         for (j in 1:m) {
@@ -799,12 +801,9 @@ model <- custommodel("model {
     tau_sq <- exp(log_tau)^2
 }")
 dat <- list(Y = Y, n = n, m = m)
-#fit <- jags.fit(data = dat, 
-#    params = c("mu", "sigma_sq", "tau_sq"), 
-#    model = model)
 fit <- jags.fit(data = dat, 
     params = c("mu", "sigma_sq", "tau_sq", "alpha"), 
-    model = model, n.update = 5000)
+    model = model, n.update = 30000)
 summary(fit[,c("mu","sigma_sq", "tau_sq")])
 plot(fit[,c("mu","sigma_sq", "tau_sq")])
 pairs(fit[,c("mu","sigma_sq", "tau_sq")])
@@ -816,8 +815,8 @@ plot(alpha[1:n], coef(fit)[grep("alpha", varnames(fit))])
 ```r
 model <- custommodel("model {
     for (k in 1:K) {
-        for (i in 1:m) {
-            for (j in 1:2) {
+        for (i in 1:n) {
+            for (j in 1:m) {
                 Y[i,j,k] ~ dnorm(mu + alpha[i,k], 1 / sigma_sq)
             }
             alpha[i,k] ~ dnorm(0, 1 / tau_sq)
@@ -833,16 +832,17 @@ model <- custommodel("model {
 dat <- list(Y = dcdim(array(Y, c(n, m, 1))), n = n, 
     m = m, K = 1)
 str(dat)
+K <- c(1, 10, 25, 50)
 dcfit1 <- dc.fit(data = dat, 
     params = c("mu", "sigma_sq", "tau_sq"), 
     model = model, n.iter = 1000,
-    n.clones = c(1, 10, 25, 50),
-    unchanged = "n", multiply = "K")
+    n.clones = K,
+    unchanged = c("n", "m"), multiply = "K")
 dcfit2 <- dc.fit(data = dat, 
     params = c("mu", "sum"), 
     model = model, n.iter = 1000,
-    n.clones = c(1, 10, 25, 50),
-    unchanged = "n", multiply = "K")
+    n.clones = K,
+    unchanged = c("n", "m"), multiply = "K")
 dcdiag(dcfit1)
 dcdiag(dcfit2)
 plot(dcfit1[,c("sigma_sq", "tau_sq")])
@@ -851,6 +851,12 @@ cov2cor(vcov(dcfit1))
 cov2cor(vcov(dcfit2))
 pairs(dcfit1)
 pairs(dcfit2)
+
+plot(dctable(dcfit1))
+plot(dctable(dcfit2))
+coef(dcfit1)
+coef(dcfit2)
+c(sigma_sq, tau_sq, sigma_sq + tau_sq)
 ```
 
 ```r
@@ -861,6 +867,90 @@ mod.lm <- lmer(Yvec ~ 1 + (1|g))
 summary(mod.lm)
 plot(alpha[1:n], ranef(mod.lm)$g[,1])
 ```
+
+* Run things with `m = 1`, check diagnostics, estimates
+* Run things with `m = 2`, check diagnostics, estimates
+
+How do we predict $\alpha_i$ based on data cloning?
+`alpha` is now a vector of length `K`. We need
+a separate run for prediction:
+
+```r
+model <- custommodel("model {
+    for (i in 1:n) {
+        for (j in 1:m) {
+            Y[i,j] ~ dnorm(mu + alpha[i], 1 / sigma_sq)
+        }
+        alpha[i] ~ dnorm(0, 1 / tau_sq)
+    }
+    param[1:3] ~ dmnorm(cf[1:3], V[1:3,1:3])
+    mu <- param[1]
+    log_sigma <- param[2]
+    sigma_sq <- exp(log_sigma)^2
+    log_tau <- param[3]
+    tau_sq <- exp(log_tau)^2
+}")
+dat <- list(Y = Y, n = n, m = m,
+    cf = coef(dcfit1), V = solve(vcov(dcfit1)))
+pred <- jags.fit(data = dat, 
+    params = c("alpha"), 
+    model = model)
+
+alpha_b <- cbind(est=coef(fit)[grep("alpha", varnames(fit))],
+    t(quantile(fit[,grep("alpha", varnames(fit))], 
+    probs = c(0.025, 0.975))))
+alpha_dc <- cbind(est=coef(pred),
+    t(quantile(pred, probs = c(0.025, 0.975))))
+head(alpha_b)
+head(alpha_dc)
+
+plot(1:n, alpha[order(alpha)], type = "l", 
+    ylim = range(alpha, alpha_b, alpha_dc))
+points(1:n - 0.2, alpha_b[order(alpha),1], 
+    col = 2, pch = 19, cex = 0.5)
+segments(x0 = 1:n - 0.2, x1 = 1:n - 0.2,
+    y0 = alpha_b[order(alpha),2], 
+    y1 = alpha_b[order(alpha),3], col = 2)
+points(1:n + 0.2, alpha_dc[order(alpha),1], 
+    col=4, pch = 19, cex = 0.5)
+segments(x0 = 1:n + 0.2, x1 = 1:n + 0.2,
+    y0 = alpha_dc[order(alpha),2], 
+    y1 = alpha_dc[order(alpha),3], col = 4)
+
+model <- custommodel("model {
+    for (i in 1:n) {
+        for (j in 1:m) {
+            Y[i,j] ~ dnorm(mu + alpha[i], 1 / sigma_sq)
+        }
+        alpha[i] ~ dnorm(0, 1 / tau_sq)
+    }
+    sigma_sq ~ dunif(0.001, 5)
+    mu ~ dnorm(10, 1)
+    tau_sq ~ dgamma(0.01, 0.01)
+}")
+dat <- list(Y = Y, n = n, m = m)
+fit2 <- jags.fit(data = dat, 
+    params = c("mu", "sigma_sq", "tau_sq", "alpha"), 
+    model = model, n.update = 30000)
+alpha_b2 <- cbind(est=coef(fit2)[grep("alpha", varnames(fit))],
+    t(quantile(fit2[,grep("alpha", varnames(fit))], 
+    probs = c(0.025, 0.975))))
+
+plot(1:n, alpha[order(alpha)], type = "l", 
+    ylim = range(alpha, alpha_b, alpha_dc))
+points(1:n - 0.2, alpha_b[order(alpha),1], 
+    col = 2, pch = 19, cex = 0.5)
+segments(x0 = 1:n - 0.2, x1 = 1:n - 0.2,
+    y0 = alpha_b[order(alpha),2], 
+    y1 = alpha_b[order(alpha),3], col = 2)
+points(1:n + 0.2, alpha_b2[order(alpha),1], 
+    col=3, pch = 19, cex = 0.5)
+segments(x0 = 1:n + 0.2, x1 = 1:n + 0.2,
+    y0 = alpha_b2[order(alpha),2], 
+    y1 = alpha_b2[order(alpha),3], col = 3)
+
+```
+
 
 ## Binomial GLMM
 
@@ -1000,19 +1090,33 @@ Frequentist predictive distribution:
 
 R commands for prediction using dclone:
 
-> glmm.pred <- function() {
-+ for (i in 1:n) {
-+ Y[i] ~ dpois(lambda[i])
-+ lambda[i] <- exp(mu[i])
-+ mu[i] <- alpha[i] +
-+ inprod(X[i,], beta[1,])
-+ alpha[i] ~ dnorm(0, tau)
-+ }
-+ tmp[1:(np+1)] ~ dmnorm(param[], prec[,])
-+ beta[1,1:np] <- tmp[1:np]
-+ sigma <- tmp[(np+1)]
-+ tau <- 1 / pow(sigma, 2)
-+ }
+set.seed(1234)
+n <- 200
+beta <- c(1, -1)
+sigma_sq <- 0.5
+x <- rnorm(n)
+X <- model.matrix(~x)
+alpha <- rnorm(n, mean = 0, sd = sqrt(sigma_sq))
+lambda <- exp(alpha + X %*% beta)
+Y <- rpois(n, lambda = lambda)
+table(Y)
+model <- custommodel("model {
+    for (i in 1:n) {
+        Y[i] ~ dpois(lambda[i])
+        lambda[i] <- exp(mu[i])
+        mu[i] <- alpha[i] + inprod(X[i,], beta)
+        alpha[i] ~ dnorm(0, 1 / sigma_sq)
+    }
+    for (j in 1:px) {
+        beta[j] ~ dnorm(0, 0.001)
+    }
+    log_sigma ~ dnorm(0, 0.001)
+    sigma_sq <- exp(log_sigma)^2
+}")
+dat <- list(Y = Y, X = X, n = n, px = ncol(X))
+fit <- jags.fit(data = dat, 
+    params = c("beta", "sigma_sq"), 
+    model = model)
 ```
 May be we can show that the coverage differences. They can play with different prior distributions on the parameters and see how they affect the coverage. 
 
@@ -1027,6 +1131,5 @@ May be we can show that the coverage differences. They can play with different p
 TODO:
 
 - check N-N, insert code where relevant
-- m=1, m=2, m=10 cases: plots
-- check lambda.max results
++ m=1, m=2: plots, cor, lam.max
 - do alpha prediction interval (Bayes, DC, lme4?)
