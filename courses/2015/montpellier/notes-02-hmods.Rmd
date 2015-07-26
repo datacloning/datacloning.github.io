@@ -720,7 +720,13 @@ Smoothness assumptions:
 * regression assumption,
 * random effects assumption.
 
-<p class="text-warning">Warning</p>: This has *nothing* to do with the Bayesian thinking. These are simply modeling assumptions. The effect of these assumptions (e.g. distribution of the latent variable) does not go away as we increase the sample size. On the other hand, as we have seen repeatedly, the effect of the prior (which is also an assumption) vanishes as the information in the data increases. 
+<div class="panel-heading">
+<i class="fa fa-warning"></i> Warning 
+</div>
+<div class="panel-body">
+This has nothing to do with the Bayesian thinking. These are simply modeling assumptions. The effect of these assumptions (e.g. distribution of the latent variable) does not go away as we increase the sample size. On the other hand, as we have seen repeatedly, the effect of the prior (which is also an assumption) vanishes as the information in the data increases. 
+</div>
+</div>
 
 There is no such thing as "Bayesian model" or "Frequentist model". There are stochastic models; there are deterministic models; there are descriptive models. Some Bayesians claim that specification of the prior on the parameters is on the same level as specifying a stochastic model for the data. Hence they consider all hierarchical models as "Bayesian models". Some historical lesson might be useful here. 
 
