@@ -900,9 +900,8 @@ In these Neyman-Scott type problems, there are two types of asymptotics:
 
 Of course, one can have both clusters and cluster size going to infinity but that is quite simple, unrealistic.
 
-The first asymptotics leads to MLE for $\sigma^2$ that is consistent.  
-The second type of asymptotics does not lead to consistent MLE of $\sigma^2$. 
-That was precisely the point in Kiefer and Wolfowitz[^KW].
+* The first asymptotics leads to MLE for $\sigma^2$ that is consistent.  
+* The second type of asymptotics does not lead to consistent MLE of $\sigma^2$. That was precisely the point in Kiefer and Wolfowitz[^KW].
 
 [^KW]: Kiefer, J. and Wolfowitz, J., 1956. Consistency of the maximum likelihood estimator in the presence of infinitely many incidental parameters. *Ann. Math. Statist.*, **27**, 887&ndash;906. [PDF from Project Euclid](http://projecteuclid.org/euclid.aoms/1177728066)
 
