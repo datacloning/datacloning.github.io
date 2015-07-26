@@ -667,7 +667,7 @@ Some historical comments: Fisher and Pearson arguments about MOM and MLE; Fisher
 Animal breeding example (Linear mixed models, LMM): Consider the model underlying one way analysis of variance (ANOVA). 
 
 $$ Y_{ij} = \mu + \alpha_i + \varepsilon_{ij} $$, $i = 1, 2, \ldots, n$ and $j = 1, 2$, 
-$$ \varepsilon_{ij} \sim Normal(0, \sigma_{\varepsilon}^2$$.
+$$ \varepsilon_{ij} \sim Normal(0, \sigma_{\varepsilon}^2)$$.
 
 There are two offsprings per individual. We want to know something about the genetic potential of the individuals so that we can turn some into hamburgers and some can have fun as studs/dams. 
 
@@ -689,7 +689,7 @@ $$\hat{\alpha}_{i} = \frac{1}{2} (Y_{i1} + Y_{i2})$$
 
 $$\hat{\sigma}_{\varepsilon}^2 = \frac{1}{2n} \sum_{i=1}^{n} \sum_{j=1}^{2} (Y_{ij} - \hat{\mu} - \hat{\alpha}_{i})^2$$
 
-One of the most important results from Neyman and Scott (1949) is that as the sample size increases, $$\hat{\sigma}_{\varepsilon}^2 \rightarrow \frac{\sigma_{\varepsilon}^2}{2}$$. It is almost obvious that we cannot estimate  consistently (although it is an unbiased estimator). 
+One of the most important results from Neyman and Scott (1949) is that as the sample size increases, $$\hat{\sigma}_{\varepsilon}^2 \rightarrow \sigma_{\varepsilon}^2 / 2$$. It is almost obvious that we cannot estimate  consistently (although it is an unbiased estimator). 
 
 
 Moral of the story:
