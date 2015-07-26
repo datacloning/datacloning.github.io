@@ -889,7 +889,7 @@ plot(alpha[1:n], ranef(mod.lm)$g[,1])
 $$Y_{ij} \sim Bernoulli(p_{ij})$$,
 $i=1, 2, \ldots, n$ observations, $j=1, 2, \ldots, m$ clusters of obs, 2 obs per cluster,
 $$logit(p_{ij}) = \beta_{0} + \beta_{1} X_{ij} + \alpha_{j}$$,
-$$\alpha_{j} \sim Normal(0, \sigma^2)$$
+$$\alpha_{j} \sim Normal(0, \sigma^2)$$.
 
 ### The problem
 
@@ -905,7 +905,7 @@ The second type of asymptotics does not lead to consistent MLE of $\sigma^2$.
 That was precisely the point in Kiefer and Wolfowitz[^KW].
 
 [^KW]: Kiefer, J. and Wolfowitz, J., 1956. 
-Consistency of the maximum likelihood estimator in the presence of infinitely many incidental parameters. *Ann. Math. Statist.*, **27**, 887&ndash;906. [PDF from Project Euclid](http://projecteuclid.org/euclid.aoms/1177728066)
+  Consistency of the maximum likelihood estimator in the presence of infinitely many incidental parameters. *Ann. Math. Statist.*, **27**, 887&ndash;906. [PDF from Project Euclid](http://projecteuclid.org/euclid.aoms/1177728066)
 
 The second type of asymptotics where observations within a cluster 
 increases but not the number of clusters, there are only fixed effects 
