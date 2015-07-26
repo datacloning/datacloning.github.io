@@ -873,14 +873,25 @@ pairs(dcfit1)
 pairs(dcfit2)
 ```
 
-## The model
+```r
+library(lme4)
+g <- rep(1:n, 2)
+Yvec <- as.numeric(Y)
+mod.lm <- lmer(Yvec ~ 1 + (1|g))
+summary(mod.lm)
+plot(alpha[1:n], ranef(mod.lm)$g[,1])
+```
+
+## GLMM example
+
+### The model
 
 $$Y_{ij} \sim Bernoulli(p_{ij})$$
 $i=1 \ldots n$ observations, $j=1 \ldots m$ clusters of obs, 2 obs per cluster
 $$logit(p_{ij}) = \beta_{0} + \beta_{1} X_{ij} + \alpha_{j}$$
-$$\alpha_{j} \sim Normal(0, \sigma^2)
+$$\alpha_{j} \sim Normal(0, \sigma^2)$$
 
-## GLMM example
+### The problem
 
 In these Neyman-Scott type problems, there are two types of asymptotics: 
 
@@ -900,8 +911,6 @@ The second type of asymptotics where observations within a cluster
 increases but not the number of clusters, there are only fixed effects 
 corresponding to $\alpha_{j}$. In this asymptotics, the information about $\sigma^2$ 
 is not increasing and hence one cannot obtain consistent estimator.
-
-## Data cloning model
 
 ### Data generation
 
