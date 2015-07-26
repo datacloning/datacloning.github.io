@@ -745,31 +745,6 @@ Imposing a distributional assumption is qualitatively same as imposing regressio
 
 Prior distributions are smoothness assumptions on the parameters and their effect goes to zero as the information increases. 
 
-```r
-R commands (for parameter estimation)
-
-Model file
-Bayesian inference
-Frequentist inference
-
-Prediction of latent variables:
-
-Estimated predictive distribution:
-
-Bayesian predictive distribution:
-
-Frequentist predictive distribution:
-
-R commands for prediction using dclone:
-```
-May be we can show that the coverage differences. They can play with different prior distributions on the parameters and see how they affect the coverage. 
-
-> ## What have we learnt?
->
-> * Hierarchical models: Linear mixed models, measurement error.
-> * Latent variables versus parameters.
-> * Estimation and inference for the parameters.
-> * Prediction and inference (coverage) for the latent variables.
 
 
 ```r
@@ -882,7 +857,7 @@ summary(mod.lm)
 plot(alpha[1:n], ranef(mod.lm)$g[,1])
 ```
 
-## GLMM example
+## Binoial GLMM
 
 ### The model
 
@@ -1000,4 +975,46 @@ summary(mod.lm)
 
 cbind(c(beta, sigma2=sigma^2), est=coef(mod2), se=dcsd(mod2))
 ```
+
+## Poisson GLMM
+
+```r
+R commands (for parameter estimation)
+
+Model file
+Bayesian inference
+Frequentist inference
+
+Prediction of latent variables:
+
+Estimated predictive distribution:
+
+Bayesian predictive distribution:
+
+Frequentist predictive distribution:
+
+R commands for prediction using dclone:
+
+> glmm.pred <- function() {
++ for (i in 1:n) {
++ Y[i] ~ dpois(lambda[i])
++ lambda[i] <- exp(mu[i])
++ mu[i] <- alpha[i] +
++ inprod(X[i,], beta[1,])
++ alpha[i] ~ dnorm(0, tau)
++ }
++ tmp[1:(np+1)] ~ dmnorm(param[], prec[,])
++ beta[1,1:np] <- tmp[1:np]
++ sigma <- tmp[(np+1)]
++ tau <- 1 / pow(sigma, 2)
++ }
+```
+May be we can show that the coverage differences. They can play with different prior distributions on the parameters and see how they affect the coverage. 
+
+> ## What have we learnt?
+>
+> * Hierarchical models: Linear mixed models, measurement error.
+> * Latent variables versus parameters.
+> * Estimation and inference for the parameters.
+> * Prediction and inference (coverage) for the latent variables.
 
