@@ -1073,25 +1073,15 @@ cbind(c(beta, sigma2=sigma^2), est=coef(mod2), se=dcsd(mod2))
 
 ## Poisson GLMM
 
+The model: $$ Y_{i} \sim Poisson(\lambda_{i})$$, $i = 1, 2, \ldots, n$,
+$$log(lambda_i) = \alpha_i + \tilde{X}^T \tilde{\beta}$$, and
+$$\alpha_i \sim Normal(0, \sigma^2)$$.
+
+### Data generation
+
 ```r
-R commands (for parameter estimation)
-
-Model file
-Bayesian inference
-Frequentist inference
-
-Prediction of latent variables:
-
-Estimated predictive distribution:
-
-Bayesian predictive distribution:
-
-Frequentist predictive distribution:
-
-R commands for prediction using dclone:
-
 set.seed(1234)
-n <- 200
+n <- 20
 beta <- c(1, -1)
 sigma_sq <- 0.5
 x <- rnorm(n)
@@ -1100,11 +1090,15 @@ alpha <- rnorm(n, mean = 0, sd = sqrt(sigma_sq))
 lambda <- exp(alpha + X %*% beta)
 Y <- rpois(n, lambda = lambda)
 table(Y)
+```
+
+### Bayesian analysis
+
+```
 model <- custommodel("model {
     for (i in 1:n) {
         Y[i] ~ dpois(lambda[i])
-        lambda[i] <- exp(mu[i])
-        mu[i] <- alpha[i] + inprod(X[i,], beta)
+        log(lambda[i]) <- alpha[i] + inprod(X[i,], beta)
         alpha[i] ~ dnorm(0, 1 / sigma_sq)
     }
     for (j in 1:px) {
@@ -1118,7 +1112,80 @@ fit <- jags.fit(data = dat,
     params = c("beta", "sigma_sq"), 
     model = model)
 ```
-May be we can show that the coverage differences. They can play with different prior distributions on the parameters and see how they affect the coverage. 
+
+### Data cloning
+
+```r
+dcfit <- dc.fit(data = dat, 
+    params = c("beta", "sigma_sq"), 
+    model = model, n.iter = 1000,
+    n.clones = c(1, 2, 4, 8),
+    unchanged = "px", multiply = "n")
+dcdiag(dcfit)
+coef(dcfit)
+```
+
+### Prediction
+
+```r
+model <- custommodel("model {
+    for (i in 1:n) {
+        Y[i] ~ dpois(lambda[i])
+        log(lambda[i]) <- alpha[i] + inprod(X[i,], beta)
+        alpha[i] ~ dnorm(0, 1 / sigma_sq)
+    }
+    for (j in 1:px) {
+        beta[j] ~ dnorm(0, 0.1)
+    }
+    log_sigma ~ dnorm(10, 1)
+    sigma_sq <- exp(log_sigma)^2
+}")
+dat <- list(Y = Y, X = X, n = n, px = ncol(X))
+pred1 <- jags.fit(data = dat, 
+    params = "alpha", 
+    model = model)
+model <- custommodel("model {
+    for (i in 1:n) {
+        Y[i] ~ dpois(lambda[i])
+        log(lambda[i]) <- alpha[i] + inprod(X[i,], beta)
+        alpha[i] ~ dnorm(0, 1 / sigma_sq)
+    }
+    param[1:(px + 1)] ~ dmnorm(cf[], V[,])
+    for (j in 1:px) {
+        beta[j] <- param[j]
+    }
+    log_sigma <- param[px + 1]
+    sigma_sq <- exp(log_sigma)^2
+}")
+dat <- list(Y = Y, X = X, n = n, px = ncol(X),
+    cf = coef(dcfit), V = solve(vcov(dcfit)))
+pred2 <- jags.fit(data = dat, 
+    params = "alpha", 
+    model = model)
+
+alpha_b <- cbind(est=coef(pred1),
+    t(quantile(pred1, probs = c(0.025, 0.975))))
+alpha_dc <- cbind(est=coef(pred2),
+    t(quantile(pred2, probs = c(0.025, 0.975))))
+
+plot(1:n, alpha[order(alpha)], type = "l", 
+    ylim = range(alpha, alpha_b, alpha_dc))
+points(1:n - 0.2, alpha_b[order(alpha),1], 
+    col = 2, pch = 19, cex = 0.5)
+segments(x0 = 1:n - 0.2, x1 = 1:n - 0.2,
+    y0 = alpha_b[order(alpha),2], 
+    y1 = alpha_b[order(alpha),3], col = 2)
+points(1:n + 0.2, alpha_dc[order(alpha),1], 
+    col=4, pch = 19, cex = 0.5)
+segments(x0 = 1:n + 0.2, x1 = 1:n + 0.2,
+    y0 = alpha_dc[order(alpha),2], 
+    y1 = alpha_dc[order(alpha),3], col = 4)
+
+table(rowSums(sign(alpha - alpha_b[,-1]))) / n
+table(rowSums(sign(alpha - alpha_dc[,-1]))) / n
+```
+
+Use different prior distributions on the parameters and see how they affect the coverage. 
 
 > ## What have we learnt?
 >
@@ -1127,9 +1194,3 @@ May be we can show that the coverage differences. They can play with different p
 > * Estimation and inference for the parameters.
 > * Prediction and inference (coverage) for the latent variables.
 
-
-TODO:
-
-- check N-N, insert code where relevant
-+ m=1, m=2: plots, cor, lam.max
-- do alpha prediction interval (Bayes, DC, lme4?)
