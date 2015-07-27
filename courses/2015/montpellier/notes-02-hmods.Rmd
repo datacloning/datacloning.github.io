@@ -1026,6 +1026,33 @@ dcfit1 <- dc.fit(data = dat,
     unchanged = "m", multiply = "n")
 ```
 
+Alternative data cloning approach:
+
+```r
+model <- custommodel("model {
+  for (k in 1:K) {
+    for (i in 1:n) {
+      for (j in 1:m) {
+        Y[i,j,k] ~ dbern(p[i,j,k])
+        logit(p[i,j,k]) <- alpha[i,k] + beta[1] + beta[2] * X[i,j]
+      }
+      alpha[i,k] ~ dnorm(0, 1 / sigma_sq)
+    }
+  }
+  beta[1] ~ dnorm(0, 0.01)
+  beta[2] ~ dnorm(0, 0.01)
+  sigma_sq ~ dgamma(0.001, 0.001)
+}")
+dat <- list(Y = dcdim(array(Y, c(n, m, 1))), 
+    X = matrix(x, n, m), 
+    n = n, m = m, K = 1)
+dcfit2 <- dc.fit(data = dat, 
+    params = c("beta", "sigma_sq"), 
+    model = model, n.iter = 1000,
+    n.clones = c(1, 2, 4, 8),
+    unchanged = c("n", "m", "X"), multiply = "K")
+```
+
 ### Cloning replicates within clusters
 
 Cloning goes with `m`, matrices transposed.
@@ -1046,38 +1073,11 @@ model <- custommodel("model {
 dat <- list(Y = t(Y), 
     X = t(matrix(x, n, m)), 
     n = n, m = m)
-dcfit2 <- dc.fit(data = dat, 
-    params = c("beta", "sigma_sq"), 
-    model = model, n.iter = 1000,
-    n.clones = c(1, 2, 4, 8),
-    unchanged = "n", multiply = "m")
-```
-
-## Cloning both clusters and replicates
-
-```r
-model <- custommodel("model {
-  for (k in 1:K) {
-    for (i in 1:n) {
-      for (j in 1:m) {
-        Y[i,j,k] ~ dbern(p[i,j,k])
-        logit(p[i,j,k]) <- alpha[i,k] + beta[1] + beta[2] * X[i,j]
-      }
-      alpha[i,k] ~ dnorm(0, 1 / sigma_sq)
-    }
-  }
-  beta[1] ~ dnorm(0, 0.01)
-  beta[2] ~ dnorm(0, 0.01)
-  sigma_sq ~ dgamma(0.001, 0.001)
-}")
-dat <- list(Y = dcdim(array(Y, c(n, m, 1))), 
-    X = matrix(x, n, m), 
-    n = n, m = m, K = 1)
 dcfit3 <- dc.fit(data = dat, 
     params = c("beta", "sigma_sq"), 
     model = model, n.iter = 1000,
     n.clones = c(1, 2, 4, 8),
-    unchanged = c("n", "m", "X"), multiply = "K")
+    unchanged = "n", multiply = "m")
 ```
 
 ### Compare the outcomes
