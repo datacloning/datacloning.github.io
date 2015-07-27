@@ -957,9 +957,10 @@ segments(x0 = 1:n + 0.2, x1 = 1:n + 0.2,
 ### The model
 
 $$Y_{ij} \sim Bernoulli(p_{ij})$$,
-$i=1, 2, \ldots, n$ observations, $j=1, 2, \ldots, m$ clusters of obs, 2 obs per cluster,
-$$logit(p_{ij}) = \beta_{0} + \beta_{1} X_{ij} + \alpha_{j}$$,
-$$\alpha_{j} \sim Normal(0, \sigma^2)$$.
+$i=1, 2, \ldots, n$ clusters, 
+$j=1, 2, \ldots, m$ observetions within clusters,
+$$logit(p_{ij}) = \beta_{0} + \beta_{1} X_{ij} + \alpha_{i}$$,
+$$\alpha_{i} \sim Normal(0, \sigma^2)$$.
 
 ### The problem
 
@@ -977,98 +978,114 @@ Of course, one can have both clusters and cluster size going to infinity but tha
 
 The second type of asymptotics where observations within a cluster 
 increases but not the number of clusters, there are only fixed effects 
-corresponding to $\alpha_{j}$. In this asymptotics, the information about $\sigma^2$ 
+corresponding to $\alpha_{i}$. In this asymptotics, the information about $\sigma^2$ 
 is not increasing and hence one cannot obtain consistent estimator.
 
 ### Data generation
 
 ```r
-library(dclone)
 set.seed(150467)
-I=500
-m=2
-n <- I*m
-n
-beta <- c(2, -1)
-sigma <- 1
-x <- runif(n, min=0, max=1)
-X <- model.matrix(~ x)
-U <- rnorm(I, 0, sigma)
-g <- sort(rep(1:I,2))
-alpha <- U[g]
-eta<- exp(alpha + drop(X %*% beta))
-lambda <- eta / (1 + eta)
-Y <- rbinom(n, 1, lambda)
-100*sum(Y)/n
+n <- 100
+m <- 2
+beta <- c(1.5, -1)
+sigma_sq <- 1
+x <- runif(n * m, min = 0, max = 1)
+g <- rep(1:n, each = 2)
+alpha <- rnorm(n, mean = 0, sd = sqrt(sigma_sq))[g]
+mu <- alpha + beta[1] + beta[2] * x
+p <- exp(mu) / (1 + exp(mu))
+Y <- rbinom(n * m, 1, p)
+dim(Y) <- c(n, m)
+summary(Y)
 ```
 
-### DC for clusters
+### Cloning clusters
+
+Cloning goes with `n`.
 
 ```r
-glmm.model.mlogit2 <- function(){
-    for (k in 1:ncl) {
-        for (i in 1:I){
-            alpha[i,k] ~ dnorm(0, tau)
-            for (j in 1:m){
-                Y[j,i,k] ~ dbin(p[j,i,k], 1)
-                logit(p[j,i,k]) <- alpha[i,k] + beta[1] + beta[2] * X[j,i]
-            }
+model <- custommodel("model {
+    for (i in 1:n) {
+        for (j in 1:m) {
+            Y[i,j] ~ dbern(p[i,j])
+            logit(p[i,j]) <- alpha[i] + beta[1] + beta[2] * X[i,j]
         }
+        alpha[i] ~ dnorm(0, 1 / sigma_sq)
     }
-    for (j in 1:np){
-        beta[j] ~ dnorm(0, 0.01)
-    }
-    tau~dgamma(0.001, 0.001)
-    sigma2 <- 1 / tau
-}
+    beta[1] ~ dnorm(0, 0.01)
+    beta[2] ~ dnorm(0, 0.01)
+    sigma_sq ~ dgamma(0.001, 0.001)
+}")
+dat <- list(Y = Y, 
+    X = matrix(x, n, m), 
+    n = n, m = m)
+dcfit1 <- dc.fit(data = dat, 
+    params = c("beta", "sigma_sq"), 
+    model = model, n.iter = 1000,
+    n.clones = c(1, 2, 4, 8),
+    unchanged = "m", multiply = "n")
 ```
 
-### DC for replicates within clusters
+### Cloning replicates within clusters
+
+Cloning goes with `m`, matrices transposed.
 
 ```r
-glmm.model.mlogit3 <- function(){
-    for (i in 1:I){
-        alpha[i] ~ dnorm(0, tau)
-        for (j in 1:m){
-            Y[j,i] ~ dbin(p[j,i], 1)
+model <- custommodel("model {
+    for (i in 1:n) {
+        for (j in 1:m) {
+            Y[j,i] ~ dbern(p[j,i])
             logit(p[j,i]) <- alpha[i] + beta[1] + beta[2] * X[j,i]
         }
+        alpha[i] ~ dnorm(0, 1 / sigma_sq)
     }
-    for (j in 1:np){
-        beta[j] ~ dnorm(0, 0.01)
+    beta[1] ~ dnorm(0, 0.01)
+    beta[2] ~ dnorm(0, 0.01)
+    sigma_sq ~ dgamma(0.001, 0.001)
+}")
+dat <- list(Y = t(Y), 
+    X = t(matrix(x, n, m)), 
+    n = n, m = m)
+dcfit2 <- dc.fit(data = dat, 
+    params = c("beta", "sigma_sq"), 
+    model = model, n.iter = 1000,
+    n.clones = c(1, 2, 4, 8),
+    unchanged = "n", multiply = "m")
+```
+
+## Cloning both clusters and replicates
+
+```r
+model <- custommodel("model {
+  for (k in 1:K) {
+    for (i in 1:n) {
+      for (j in 1:m) {
+        Y[i,j,k] ~ dbern(p[i,j,k])
+        logit(p[i,j,k]) <- alpha[i,k] + beta[1] + beta[2] * X[i,j]
+      }
+      alpha[i,k] ~ dnorm(0, 1 / sigma_sq)
     }
-    tau~dgamma(0.001, 0.001)
-    sigma2 <- 1 / tau
-}
+  }
+  beta[1] ~ dnorm(0, 0.01)
+  beta[2] ~ dnorm(0, 0.01)
+  sigma_sq ~ dgamma(0.001, 0.001)
+}")
+dat <- list(Y = dcdim(array(Y, c(n, m, 1))), 
+    X = matrix(x, n, m), 
+    n = n, m = m, K = 1)
+dcfit3 <- dc.fit(data = dat, 
+    params = c("beta", "sigma_sq"), 
+    model = model, n.iter = 1000,
+    n.clones = c(1, 2, 4, 8),
+    unchanged = c("n", "m", "X"), multiply = "K")
+```
 
-Y2 <- dcdim(array(Y, c(m, I, 1)))
-x2 <- matrix(x, m, I)
-dat2 <- list(Y=Y2, X=x2, I=I, m=m, np=2, ncl=1)
+### Compare the outcomes
 
-Y3 <- matrix(Y, m, I)
-x3 <- matrix(x, m, I)
-dat3 <- list(Y=Y3, X=x3, I=I, m=m, np=2)
-
-cl <- makeSOCKcluster(6)
-ncl <- c(1,2,5,10)
-mod2 <- dc.parfit(cl, dat2, c("beta", "sigma2"), glmm.model.mlogit2, 
-    n.clones = ncl, multiply="ncl", unchanged=c("I", "m", "np", "X"), n.update=2000, n.iter=1000)
-mod3 <- dc.parfit(cl, dat3, c("beta", "sigma2"), glmm.model.mlogit3, 
-    n.clones = ncl, multiply="m", unchanged=c("I", "np"), n.update=2000, n.iter=1000)
-stopCluster(cl)
-
-summary(mod2)
-dcdiag(mod2)
-
-summary(mod3)
-dcdiag(mod3)
-
-library(lme4)
-mod.lm <- lmer(Y ~ x + (1|g), family = binomial(link=logit), nAGQ=60,
-doFit=TRUE)
-summary(mod.lm)
-
-cbind(c(beta, sigma2=sigma^2), est=coef(mod2), se=dcsd(mod2))
+```r
+dcdiag(dcfit1)
+dcdiag(dcfit2)
+dcdiag(dcfit3)
 ```
 
 ## Poisson GLMM
