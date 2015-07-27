@@ -1073,8 +1073,8 @@ cbind(c(beta, sigma2=sigma^2), est=coef(mod2), se=dcsd(mod2))
 
 ## Poisson GLMM
 
-The model: $$ Y_{i} \sim Poisson(\lambda_{i})$$, $i = 1, 2, \ldots, n$,
-$$log(lambda_i) = \alpha_i + \tilde{X}^T \tilde{\beta}$$, and
+The model: $$ (Y_{i} \mid \lambda_i) \sim Poisson(\lambda_{i})$$, $i = 1, 2, \ldots, n$,
+$$log(\lambda_i) = \alpha_i + \mathbf{X}^{\top}_{i} \mathbf{\beta}$$, and
 $$\alpha_i \sim Normal(0, \sigma^2)$$.
 
 ### Data generation
