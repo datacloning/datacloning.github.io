@@ -12,8 +12,8 @@ course:
   file: notes-02-hmods
   previous: notes-01-basics
   next: notes-03-pva
-  slides: slides-01-basics.html
-  pdf: notes-01-basics.pdf
+  slides: slides-02-hmods.html
+  pdf: notes-02-hmods.pdf
 ---
 
 ## Introduction
