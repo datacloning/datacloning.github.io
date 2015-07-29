@@ -125,3 +125,330 @@ Try 1 spp with linear response --> will work
 Try multiple spp (opposite Gau) --> will work
 
 Multi species
+
+## Ordinal (cumulative logit)
+
+Each participant ($i = 1, 2, \ldots, n$) rate confidence in using hierarchical models between 1 (not confident) and 5 (very confident). Repeat this before ($t=1$) and after ($t=2$) the workshop.
+
+This paired before-after design with individual variation among
+raters (some are more self critical than others) we get
+a mixed effect ordinal probit model, where our interest lies in
+testing the parameter $\beta_1$ that is the improvement between the
+two stime steps. We hope that $\beta_1 > 0$, but at least not less than 0 (we are not doing any damage). 
+
+We will collect these data and later add a course level
+random effect (obviously need more samples).
+
+We can test if our approach improves over time, and
+what is the overall effect.
+
+
+Simulation:
+
+```
+set.seed(1234)
+n <- 25
+T <- 2
+N <- 5 # maximum rating
+beta0 <- 1
+beta1 <- 2 # we are optimistic that it is non-negative :)
+sigma_sq <- 0
+beta0i <- rnorm(n, mean = beta0, sd = sqrt(sigma_sq))
+mu <- cbind("t=1" = beta0i, "t=2" = beta0i + beta1)
+tau <- round(seq(0, N - 1, length.out = N - 1), 1)
+Q <- array(NA, c(n, T, N - 1))
+p <- array(NA, c(n, T, N))
+Q[,,1] <- plogis(tau[1] - mu)
+p[,,1] <- Q[,,1]
+for (j in 2:(N - 1)) {
+    Q[,,j] <- plogis(tau[j] - mu)
+    p[,,j] <- Q[,,j] - Q[,,j - 1]
+}
+p[,,N] <- 1 - Q[,,N - 1]
+Y <- matrix(NA, n, T)
+for (i in 1:n) {
+    Y[i,1] <- which(rmultinom(1, 1, p[i,1,]) == 1)
+    Y[i,2] <- which(rmultinom(1, 1, p[i,2,]) == 1)
+}
+summary(Y)
+```
+
+Bayesian model:
+
+```
+library(dclone)
+model <- custommodel("model {
+    for (i in 1:n) {
+        #mu[i,1] <- beta0i[i]
+        #mu[i,2] <- beta0i[i] + beta1
+        mu[i,1] <- beta0
+        mu[i,2] <- beta0 + beta1
+        for (t in 1:2) {
+            logit(Q[i,t,1]) <- tau[1] - mu[i,t]
+            p[i,t,1] <- Q[i,t,1]
+            for (j in 2:(N - 1)) {
+                logit(Q[i,t,j]) <- tau[j] - mu[i,t]
+                p[i,t,j] <- Q[i,t,j] - Q[i,t,j - 1]
+            }
+            p[i,t,N] <- 1 - Q[i,t,(N - 1)]
+            Y[i,t] ~ dcat(p[i,t,1:N]) ## p[i,] sums to 1 for each i
+        }
+        #beta0i[i] ~ dnorm(beta0, 1 / sigma_sq)
+    }
+    beta0 ~ dnorm(0, 0.001)
+    beta1 ~ dnorm(0, 0.001)
+    #sigma_sq ~ dlnorm(0, 0.001)
+    for (j in 1:(N - 1)) {
+        tau0[j] ~ dnorm(0, 0.01)
+    }
+    tau[1:(N - 1)] <- sort(tau0) ## JAGS only, not in WinBUGS!
+}")
+dat <- list(Y = Y, n = n, N = N)
+ini <- list(tau0 = 1:(N - 1))
+#fit <- jags.fit(dat, c("beta0", "beta1", "sigma_sq", "tau"), model,
+#    inits = ini)
+fit <- jags.fit(dat, c("beta0", "beta1", "tau"), model,
+    inits = ini)
+summary(fit)
+```
+
+## Lips
+
+```
+## original data
+
+## adjacency list
+adj <- list(
+    c(19, 9, 5), 
+    c(10, 7), 
+    c(12), 
+    c(28, 20, 18), 
+    c(19, 12, 1), 
+    c(17, 16, 13, 10, 2), 
+    c(29, 23, 19, 17, 1), 
+    c(22, 16, 7, 2), 
+    c(5, 3), 
+    c(19, 17, 7), 
+    c(35, 32, 31), 
+    c(29, 25), 
+    c(29, 22, 21, 17, 10, 7), 
+    c(29, 19, 16, 13, 9, 7), 
+    c(56, 55, 33, 28, 20, 4), 
+    c(17, 13, 9, 5, 1), 
+    c(56, 18, 4), 
+    c(50, 29, 16), 
+    c(16, 10), 
+    c(39, 34, 29, 9), 
+    c(56, 55, 48, 47, 44, 31, 30, 27), 
+    c(29, 26, 15), 
+    c(43, 29, 25), 
+    c(56, 32, 31, 24), 
+    c(45, 33, 18, 4), 
+    c(50, 43, 34, 26, 25, 23, 21, 17, 16, 15, 9), 
+    c(55, 45, 44, 42, 38, 24), 
+    c(47, 46, 35, 32, 27, 24, 14), 
+    c(31, 27, 14), 
+    c(55, 45, 28, 18), 
+    c(54, 52, 51, 43, 42, 40, 39, 29, 23), 
+    c(46, 37, 31, 14), 
+    c(41, 37), 
+    c(46, 41, 36, 35), 
+    c(54, 51, 49, 44, 42, 30), 
+    c(40, 34, 23), 
+    c(52, 49, 39, 34), 
+    c(53, 49, 46, 37, 36), 
+    c(51, 43, 38, 34, 30), 
+    c(42, 34, 29, 26), 
+    c(49, 48, 38, 30, 24), 
+    c(55, 33, 30, 28), 
+    c(53, 47, 41, 37, 35, 31), 
+    c(53, 49, 48, 46, 31, 24),
+    c(49, 47, 44, 24), 
+    c(54, 53, 52, 48, 47, 44, 41, 40, 38), 
+    c(29, 21), 
+    c(54, 42, 38, 34), 
+    c(54, 49, 40, 34), 
+    c(49, 47, 46, 41), 
+    c(52, 51, 49, 38, 34), 
+    c(56, 45, 33, 30, 24, 18), 
+    c(55, 27, 24, 20, 18))
+## other values
+lips <- list(
+    N = 56, 
+    O = c( 9, 39, 11, 9, 15, 8, 26, 7, 6, 20, 
+        13, 5, 3, 8, 17, 9, 2, 7, 9, 7, 
+        16, 31, 11, 7, 19, 15, 7, 10, 16, 11, 
+        5, 3, 7, 8, 11, 9, 11, 8, 6, 4, 
+        10, 8, 2, 6, 19, 3, 2, 3, 28, 6, 
+        1, 1, 1, 1, 0, 0), 
+    E = c( 1.4, 8.7, 3.0, 2.5, 4.3, 2.4, 8.1, 2.3, 2.0, 6.6, 
+        4.4, 1.8, 1.1, 3.3, 7.8, 4.6, 1.1, 4.2, 5.5, 4.4, 
+        10.5,22.7, 8.8, 5.6,15.5,12.5, 6.0, 9.0,14.4,10.2, 
+        4.8, 2.9, 7.0, 8.5,12.3,10.1,12.7, 9.4, 7.2, 5.3, 
+        18.8,15.8, 4.3,14.6,50.7, 8.2, 5.6, 9.3,88.7,19.6, 
+        3.4, 3.6, 5.7, 7.0, 4.2, 1.8), 
+    X = c(16,16,10,24,10,24,10, 7, 7,16, 
+        7,16,10,24, 7,16,10, 7, 7,10, 
+        7,16,10, 7, 1, 1, 7, 7,10,10, 
+        7,24,10, 7, 7, 0,10, 1,16, 0, 
+        1,16,16, 0, 1, 7, 1, 1, 0, 1, 
+        1, 0, 1, 1,16,10), 
+    num = c(3, 2, 1, 3, 3, 0, 5, 0, 5, 4, 
+        0, 2, 3, 3, 2, 6, 6, 6, 5, 3, 
+        3, 2, 4, 8, 3, 3, 4, 4, 11, 6, 
+        7, 3, 4, 9, 4, 2, 4, 6, 3, 4, 
+        5, 5, 4, 5, 4, 6, 6, 4, 9, 2, 
+        4, 4, 4, 5, 6, 5), 
+    sumNumNeigh = 234) 
+
+## neighborhood matrix, handling the islands
+D <- diag(1, lips$N, lips$N)
+k <- 1
+for (i in 1:lips$N) {
+    if (lips$num[i] > 0) {
+        for (j in 1:lips$num[i]) {
+            D[i, adj[[k]][j]] <- 1
+            D[adj[[k]][j], i] <- 1
+        }
+        k <- k + 1
+    }
+}
+
+g_try <- seq(-1, 1, 0.01)
+ev_min <- sapply(g_try, function(z) min(1-z*eigen(D)$values))
+plot(g_try,ev_min, type="l")
+abline(0,0)
+(gamma_range <- range(g_try[which(ev_min > 0)]))
+
+## data prep for dclone
+
+library(dclone)
+
+## using a joint bivariate parametrization for pairs of observations
+## this leads to a composite likelihood (not full likelihood)
+i <- row(D)[lower.tri(D)]
+j <- col(D)[lower.tri(D)]
+DD <- array(0, c(length(i), 2, 2))
+for (ii in 1:length(i)) {
+    DD[ii,,] <- if (D[i[ii], j[ii]] > 0)
+        matrix(1,2,2) else diag(1,2,2)
+}
+dat <- list(
+    O = cbind(lips$O[i], lips$O[j]),
+    X = cbind(lips$X[i], lips$X[j]),
+    E = cbind(lips$E[i], lips$E[j]),
+    id = dciid(data.frame(i, j), iid=1:2), # this runs till k*length(i)
+    m = length(i),
+    N = lips$N,
+#    DD = D[lower.tri(D)],
+    DD = DD,
+    I = diag(1,2,2),
+    grange = c(gamma_range[1]+0.0, gamma_range[2]-0.0),
+    Z = c(0,0))
+## cloning
+## - id is cloned according the the 'iid' tag
+## - m and N are multiplied
+k <- 1
+datk <- dclone(dat, k, multiply=c("m", "N"), unchanged="Z")
+
+
+## model
+
+## O_i | RR_i ~ Poisson(E_i * RR_i)
+## log(RR_i) = theta_i + alpha + beta*X_i/10 + eps_i
+## theta_i ~ N(0, sigma^2)
+## eps ~ MVN(0, Sig)
+## Sig = tau^2 * (I - gamm*D)^(-1)
+
+model <- function() {
+  for (i in 1:m) {
+    O[i,1] ~ dpois(E[i,1] * RR[i,1])
+    O[i,2] ~ dpois(E[i,2] * RR[i,2])
+    eps[i,1:2] ~ dmnorm(Z[1:2], Om[i,1:2,1:2])
+    #Om[i,1:2,1:2] <- inverse(Sig[i,1:2,1:2])
+#    Sig[i,1:2,1:2] <- (tau^2) * inverse(M[i,1:2,1:2])
+#    M[i,1,1] <- 1 - gamma
+#    M[i,2,2] <- 1 - gamma
+#    M[i,1,2] <- 0 - gamma*DD[i]
+#    M[i,2,1] <- M[i,1,2]
+    Om[i,1:2,1:2] <- inverse((tau^2) * inverse(I - gamma*DD[i,1:2,1:2]))
+    log(RR[i,1]) <- theta[id[i,1]] + alpha + beta*X[i,1]/10 + eps[i,1]
+    log(RR[i,2]) <- theta[id[i,2]] + alpha + beta*X[i,2]/10 + eps[i,2]
+  }
+  for (j in 1:N) {
+    theta[j] ~ dnorm(0.0, prec)
+  }
+  alpha ~ dnorm(0.0, 1.0E-3)
+  beta ~ dnorm(0.0, 1.0E-3)
+  logsigma ~ dnorm(0.0, 1.0E-3)
+  logtau ~ dnorm(0.0, 1.0E-3)
+  prec <- 1/sigma^2
+  sigma <- exp(logsigma)
+  tau <- exp(logtau)
+  logitgam01 ~ dnorm(0.0, 1.0E-3)
+  gamma <- ilogit(logitgam01)*(grange[2]-grange[1]) + grange[1]
+  #gamma ~ dunif(grange[1], grange[2])
+#  gamma <- 0.1
+}
+
+## jags runs
+m <- jags.fit(dat, c("alpha","beta","sigma","tau","gamma"), model, n.iter=1000)
+mk <- jags.fit(datk, c("alpha","beta","logsigma","logtau"), model, n.iter=1000)
+
+```
+
+## Negative binomial abundance model
+
+```
+set.seed(1234)
+beta <- c(3,-0.8)
+shape <- 2
+n <- 100
+x <- runif(n,0,1)
+X <- model.matrix(~x)
+mu <- drop(exp(X %*% beta))
+lambda <- rgamma(n, shape=shape, scale=mu/shape)
+N <- rpois(n, lambda)
+
+## negbin in MASS
+library(MASS)
+m1 <- glm.nb(N ~ x)
+
+## NB as Poisson-Gamma mixture in JAGS
+library(dclone)
+model.NB <- function() {
+    for (i in 1:n){
+        N[i] ~ dpois(lambda[i])
+        lambda[i] ~ dgamma(shape, shape/mu[i])
+        log(mu[i]) <- inprod(X[i,], beta[])
+    }
+    for (j in 1:nx) {
+        beta[j] ~ dnorm(0, 0.001)
+    }
+    shape ~ dgamma(0.001, 0.001)
+}
+dat2 <- list(N=N, n=n, X=X, nx=ncol(X))
+m2 <- jags.fit(dat2, c("beta","shape"), model.NB, n.update=1000, n.iter=1000)
+
+## NB with ones-trick in JAGS
+model.NB2 <- function() {
+    for (i in 1:n){
+        ones[i] ~ dbern(p[i])
+        p[i] <- L[i] / C
+        L[i] <- dnegbin(N[i], 1/Var, 1/(1+Var*exp(mu[i])))
+        log(mu[i]) <- inprod(X[i,], beta[])
+    }
+    for (j in 1:nx) {
+        beta[j] ~ dnorm(0, 0.001)
+    }
+    
+}
+## plug in Var
+dat3 <- list(N=N, n=n, X=X, nx=ncol(X), ones=rep(1, n), C=10000, Var=1)
+m3 <- jags.fit(dat3, c("beta"), model.NB2, n.update=1000, n.iter=1000)
+
+summary(m1)
+summary(m2)
+summary(m3)
+```
+

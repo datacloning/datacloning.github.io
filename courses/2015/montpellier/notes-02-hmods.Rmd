@@ -658,6 +658,58 @@ dcfit <- dc.fit(data = dat,
     unchanged = c("px", "pz", "pr"), multiply = "n")
 ```
 
+### Zero-inflated Poisson latent process
+
+This really becomes an issue when $T = 1$.
+With $T > 1$ it is much easier to distinguish
+non occupied ($O_i = 0$ or $N_i = 0 | O_i = 1$) locations
+when all the detection history is 0,
+and non-detections when some of the detection history is >0
+if $p$ is not too small.
+
+```r
+set.seed(1234)
+n <- 100
+T <- 2
+p <- 0.6
+lambda <- 3.5
+q <- 0.25
+O <- rbinom(n, size = 1, prob = q)
+N <- O * rpois(n = n, lambda = lambda)
+Y <- matrix(NA, n, T)
+for (t in 1:T) {
+    Y[,t] <- rbinom(n = n, size = N, prob = p)
+}
+table(N = N, Y = apply(Y, 1, max))
+```
+
+```r
+library(dclone)
+model <- custommodel("model {
+    for (i in 1:n) {
+        O[i] ~ dbern(q)
+        N[i] ~ dpois(lambda * O[i])
+        for (t in 1:T) {
+            Y[i,t] ~ dbin(p, N[i])
+        }
+    }
+    p ~ dunif(0.001, 0.999)
+    lambda ~ dlnorm(0, 0.001)
+    q ~ dunif(0.001, 0.999)
+}")
+dat <- list(Y = Y, n = n, T = T)
+ini <- list(N = ifelse(rowSums(Y) > 0, 1, 0) * (apply(Y, 1, max) + 1),
+    O = ifelse(rowSums(Y) > 0, 1, 0))
+fit <- jags.fit(data = dat, params = c("p", "lambda", "q"), 
+    n.update = 10000,
+    model = model, inits = ini)
+summary(fit)
+gelman.diag(fit)
+plot(fit)
+pairs(fit)
+```
+
+
 ## Continuous case with continuous measurement error (Neyman-Scott problem)
 
 Some historical comments: Fisher and Pearson arguments about MOM and MLE; Fisher and Neyman arguments about testing and p-values. This is an example where Fisher is wrong about consistency and efficiency of the MLE. 
