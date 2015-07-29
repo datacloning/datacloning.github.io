@@ -5,13 +5,123 @@ date: "August 1, 2015 -- Montpellier, France -- ICCB/ECCB Congress"
 output: pdf_document
 layout: course
 course:
-  file: 04-misc
-  year: 2015
   location: Montpellier
+  year: 2015
   title: "Hierarchical Models Made Easy &mdash; August 1, 2015 &mdash; Montpellier, France &mdash; ICCB/ECCB Congress"
   lecture: Misc
+  file: notes-04-misc
   previous: notes-03-pva
   next: apps
+  slides: slides-04-misc.html
+  pdf: notes-04-misc.pdf
 ---
 
-**FIXME**
+## Poisson-Lognormal mixed model
+
+```r
+set.seed(1234)
+n <- 600
+x <- runif(n, 0, 20)
+#beta <- c(0.3, 0.4, -0.02)
+beta <- c(0, 0.1, 0)
+## Gaussian response curve
+lambda <- exp(beta[1] + beta[2] * x + beta[3] * x^2)
+y <- rpois(n, lambda)
+#y <- replicate(100,rpois(n, lambda))
+plot(x, y)
+lines(x[order(x)], lambda[order(x)], col=2, lwd=2)
+```
+
+```r
+library(dclone)
+library(rjags)
+model <- custommodel("model {
+    for (i in 1:n) {
+        Y[i] ~ dpois(lambda[i])
+        log(lambda[i]) <- beta[1] + 
+            beta[2] * x[i] + beta[3] * x[i]^2
+    }
+    for (i_new in 1:n_new) {
+        Y_new[i_new] ~ dpois(lambda_new[i_new])
+        log(lambda_new[i_new]) <- beta[1] + 
+            beta[2] * x_new[i_new] + beta[3] * x_new[i_new]^2
+        x_new[i_new] ~ dnorm(10, 0.01)
+    }
+    for (j in 1:3) {
+        beta[j] ~ dnorm(0, 0.001)
+    }
+}")
+dat <- list(Y = y[1:500],
+    Y_new = y[501:600],
+    x = x,
+    n = 500, 
+    n_new = 100)
+fit <- jags.fit(dat, c("beta", "x_new"), model,
+    n.update = 5000, n.iter = 2000)
+
+cbind(beta, coef(fit)[!grepl("x_new", varnames(fit))])
+plot(x[501:600], coef(fit)[grepl("x_new", varnames(fit))])
+abline(0, 1)
+```
+
+```r
+library(dclone)
+library(rjags)
+model1 <- custommodel("model {
+    for (i in 1:n) {
+        for (s in 1:1) {
+            Y[i,s] ~ dpois(lambda[i,s])
+            log(lambda[i,s]) <- beta[1] + 
+                beta[2] * x[i] + beta[3] * x[i]^2
+        }
+    }
+    for (j in 1:3) {
+        beta[j] ~ dnorm(0, 0.001)
+    }
+}")
+dat1 <- list(Y = y[1:500,],
+    x = x[1:500],
+    n = 500)
+fit1 <- jags.fit(dat1, c("beta"), model1,
+    n.update = 2000, n.iter = 2000)
+#fit1 <- jags.parfit(3, dclone(dat1, 10, multiply = "n"), 
+#    c("beta"), model1,
+#    n.update = 2000, n.iter = 2000)
+cbind(beta, coef(fit1))
+
+model2 <- custommodel("model {
+    for (i in 1:n) {
+        for (s in 1:1) {
+            Y[i,s] ~ dpois(lambda[i,s])
+            log(lambda[i,s]) <- beta[1] + 
+                beta[2] * x[i]# + beta[3] * x[i]^2
+        }
+        x[i] ~ dnorm(10, 0.01)
+    }
+    beta[1:2] ~ dmnorm(cf[], pr[,])
+}")
+
+fit1 <- glm(y ~ x, data.frame(y=y[1:500],x=x[1:500]),
+    family=poisson)
+dat2 <- list(Y = data.matrix(y[501:600]),
+    n = 100,
+    cf = coef(fit1),
+    pr = solve(vcov(fit1)))
+    #beta = beta)
+
+fit2 <- jags.fit(dat2, c("x"), model2,
+    n.update = 2000, n.iter = 2000)
+
+plot(x[501:600], coef(fit2))
+abline(0, 1)
+
+```
+
+Try 1 spp (Gau resp), 1 replication --> won't work
+Try 1 spp, >1 replication --> won't work
+It becomes bimodal as it should.
+
+Try 1 spp with linear response --> will work
+Try multiple spp (opposite Gau) --> will work
+
+Multi species
