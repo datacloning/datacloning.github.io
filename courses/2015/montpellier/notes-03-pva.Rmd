@@ -1,17 +1,337 @@
 ---
-title: "Population viability analysis"
+title: "Time series and spatial data analysis"
 author: "Peter Solymos and Subhash Lele"
 date: "August 1, 2015 -- Montpellier, France -- ICCB/ECCB Congress"
 output: pdf_document
 layout: course
 course:
-  file: 03-pva
-  year: 2015
   location: Montpellier
+  year: 2015
   title: "Hierarchical Models Made Easy &mdash; August 1, 2015 &mdash; Montpellier, France &mdash; ICCB/ECCB Congress"
   lecture: PVA
+  file: notes-03-pva
   previous: notes-02-hmods
   next: notes-04-misc
+  slides: slides-03-pva.html
+  pdf: notes-03-pva.pdf
 ---
 
-**FIXME**
+Now that we are familiar with hierarchical models in the regression setup with independent data, we will now extend these ideas to dependent data situations. We will consider the linear and non-linear time series models used in modeling population dynamics as our examples. The principles, of course, apply to more general situations. 
+
+## Discrete time population dynamics models: General setup
+
+We know that next year’s population size depends on the current population size, recruitment rate and survival rate. In the case of meta-population models, we may also need to take into account immigration and emigration in the models. Almost all of these rates are stochastic, changing from one year to the next depending on the environment. We may also have to consider demographic stochasticity when the populations are closer to extinction. A general form for deterministic models is:
+
+$$N_{t+1} = f(N_t, \theta)$$
+
+There are a number of assumptions that we make to make statistical analysis feasible. For example, we assume the environmental noise is additive. We can also consider additive noise on the log-scale because we are interested in modeling growth $$N_{t+1} / N_{t}$$. This is because we tend to use differential equation models of the type: 
+$$\frac{1}{N} \frac{dN}{dt} = f(N)$$.
+These models are models of growth.
+
+Let $X_t = log(N_t)$. Then another way to write the population growth models in discrete time is:
+
+$$log(N_{t+1) - log(N_{t}) = X_{t+1) - X_{t} = f(N_{t}) + \varepsilon_{t+1}$$
+
+Choice of different functional forms for $f(N_t, \theta)$ leads to different growth models. Each one has different dynamical properties. They may also lead to chaotic (or, bifurcation etc.) for different sets of parameters. Please make yourself familiar with these before using the models for estimation and forecasting. Our goal here is to show you why and how hierarchical models are used in this context. 
+
+### Examples
+
+* *Exponential growth model*: This model leads to explosive growth and so is unstable and difficult for inference. It is also not realistic. 
+. This is an auto-regressive time series with auto-correlation equal to 1. This leads to significant difficulties in conducting statistical inference. We may want to avoid discussing this. I am curious how data cloning handles this situation. In VAR(1) (Ives et al paper), it will be interesting to see if some of the species have nearly unit root and some are closer to the carrying capacity and hence stable equilibrium. 
+Gompertz growth model: This model allows for density dependence. 
+. This is a regular autoregressive time series provided . If this is not satisfied, the dynamical properties might be quite erratic and statistical inference is difficult if not impossible.
+Ricker growth model: This is another density dependence model.
+. The effect of the parameter ‘b’ (loosely considered density dependence parameter) is larger here than for Gompertz model. 
+A generalization of the Ricker model that is sometimes used is the theta-logistic model. A common form for the theta –logistic model is:
+*It is not clear what is the correct way to generalize the Ricker model to accommodate the theta parameter. An alternative, e.g., is 
+
+Reparameterization:
+
+There are different, but mathematically equivalent, ways to write these models. For example, one can write the Ricker model in terms of growth parameter and carrying capacity.
+
+
+These different parameterizations, in principle, should lead to the same biological conclusions. 
+
+Higher order density dependence and accommodation of covariates:
+One can easily generalize these models to higher order dependence. Similarly one can include covariates to model changes in the parameters. Although both these are statistically and computationally difficult.
+
+How do we fit these models using MCMC and data cloning? 
+
+Data: The data available is a time series of observations:
+
+Analytical likelihood function: We discuss a general approach to deriving the likelihood function for pedagogical purposes. The likelihood function in this case is proportional to the joint probability density function of the data. 
+
+
+The last step is correct if the process is a first order Markov process. For higher order Markov process, we simply have to use correct number of conditioning steps. 
+
+We are using the concept of conditional independence to write down the likelihood function. This is a critical assumption. Without such an assumption, statistical inference is nearly impossible. Recall the dictum: Information in the data should increase substantially faster than the number of parameters. 
+We can write down the analytical likelihood functions for all the models discussed above by using the facts:
+
+We can ignore the first term in the likelihood function without losing information. Initial condition does not matter eventually. 
+The conditional probability density function, also known as the transition density, can be written analytically under the assumption that environmental noise is Gaussian. 
+
+Examples (Homework!): 
+
+Notice that the product is from T=2. We are ignoring the distribution of the first observation. This is okay as long as you have a first order Markov process and the number of observations is not too small.
+
+1) The likelihood function for the Gompertz model is:
+
+The likelihood function for the Ricker model is:
+
+The likelihood function for the Theta-Ricker model is:
+
+We hope you can see the pattern here. 
+
+However, we have promised you that hierarchical models are easy. We will simply use our knowledge of JAGS to both compute the likelihood function and conduct statistical inference when we simply understand the model structure and not necessarily the full mathematical theory behind the likelihood function.
+
+Computer programs (with comments):
+
+JAGS models for these three cases:
+
+
+
+Bayesian inference: Convergence issues for Theta-logistic, ridges and what do we do?
+
+Now let us conduct the standard Bayesian approach. 
+
+
+Likelihood inference (Data cloning): If you can do Bayesian inference, you can easily do the frequentist inference using nearly identical program. However, it has some interesting features such as estimability diagnostics and problems with multiple modes. We will illustrate the use of profile likelihood to study these problems and also show a formal test for the estimability. 
+
+JAGS program modifications for data cloning (time series case): 
+
+This will introduce the dcmatrix
+This will introduce the initial values and how to replicate them
+(Missing data and hierarchical models:
+
+Typically, population time series tend to have missing observations. Hierarchical models and MCMC are useful to deal with such missing observations. 
+
+How do we write down the likelihood function when there are missing observations?
+
+This involves integration over the possible values of the missing data. Let us consider a simple example where there are only three time points. If all the time points are observed, then we know the likelihood function is simply proportional to the joint distribution of the three observations, namely,. Now suppose the second observation is missing, then we have to write down the joint distribution of the observed data . This can be obtained (under certain conditions such as the data are missing completely at random) using standard probability arguments as:
+
+
+
+CAUTIONARY NOTE: It is extremely important that the data are missing completely at random (Little et al., 200?) for this to be valid. Otherwise one has to know the mechanism that led to the missingness, such as length biased sampling. We will not go into the details of this situation in this course. It will be covered in the book manuscript.
+
+As promised, we do not have to do this integration analytically. Here is how you would modify the JAGS program to accommodate missing observations. Once you can modify the file appropriately, you can conduct either the Bayesian inference or the likelihood based frequentist inference. 
+
+JAGS model files modified for dealing with missing data
+
+Bayesian inference
+
+Likelihood inference:
+
+
+Measurement error or Sampling variability:
+
+Almost always we only have estimated population sizes and not the true population sizes. We need to account for such sampling variability in the estimates of the population sizes and make our inferential statements. The measurement error model can be looked upon as if ALL data are missing and instead of the original data we observe something related to it. This relation has to be specified. This is the measurement error model or observation model.  
+The key assumptions are:
+Independent surveys: Conditional on the true states, observation process is of independent surveys. 
+We have a specification of this observation process. 
+
+Hierarchical model (in general):
+Observation model: 
+Process model: 
+Likelihood function: Similar to the missing data case, we now can write down the likelihood function as the joint distribution of the observed data as:
+
+This is a multiple integration problem and cannot be simplified. The dimension of the integral is the same as the length of the time series. We will not write specific forms for each of the models we have considered above. We will show how to modify the JAGS model file in this case. 
+
+JAGS model with emphasis on modifying what we already know
+
+Bayesian inference:
+
+Likelihood inference:
+
+Estimability is an important issue and data cloning can help you on that (Dennis’ student thesis?)
+
+Forecasting and PVA for single species case:
+Once we fit a population dynamics model (and, done the model selection .. more on that later), we use it to project the populations in future to compute various population viability metrics such as population prediction intervals (PPI), mean time to extinction etc. How do we do forecasting using MCMC? It is surprisingly easy. We consider the future states as ‘missing observations’ and predict them, just as we predict the current states given the observations. The main difference is that we have lot more information about the current states than we have about the future observations. 
+
+Let denote the future states that we want to predict and obtain corresponding prediction intervals.
+
+Bayesian forecasting: We consider the unobserved states and parameters as unknowns and find the posterior distribution.
+
+
+
+The marginal distribution of the future states is obtained simply by taking the marginal distribution of the corresponding states in the above expression. This is obtained simply by considering the histogram of the MCMC output corresponding to those states.
+
+Frequentist forecasting:
+
+Frequentist forecasting replaces the prior in the above by the sampling distribution of the MLE. This may be approximated by the asymptotic normal distribution or one may use parametric bootstrap to get a better estimate of the sampling distribution. In the following, we use only the asymptotic normal approximation for computational simplicity. 
+
+JAGS program for forecasting:
+
+Bayesian version:
+
+Frequentist version:
+
+
+These principles can be applied in other contexts as well. We will not be covering the extensions. The goal here is to provide you with enough information to be able to read about these extensions.
+
+Complex population dynamics (Random coefficient models): 
+
+Here we consider some interesting extensions of the basic population dynamics models. First we consider the random coefficient model where the growth parameters itself is a time series. This allows for growth values to change from year to year in a dependent fashion. We will only consider the Ricker model to make the discussion easier.
+
+Hierarchical formulation
+Observation model: 
+Process model: 
+Random coefficient model
+
+JAGS model
+
+Bayesian and frequentist analysis of the data from Zhang, Dennis and Taper (1998):
+
+
+
+Extension to multivariate case:
+
+This will introduce using multivariate distributions in JAGS and associated problems of singularity of the matrices etc. This is useful for spatial data analysis. 
+
+Multi-species dynamics: Ives et al. (2002) use vector Autoregression to model multi-species dynamics. They discuss using Kalman filter approach to estimate the parameters when measurement error follows the Log-normal. We illustrate how one can use JAGS program to fit such multivariate models. By now, you should be able to modify the program to fit other kinds of measurement error models also.
+
+The hierarchical model is:
+
+Observation model: This model allows for correlated sampling errors where correlation is between species and not across time.
+
+Process model: This is a vector auto-regression model of order 1. It allows for interactions between species through the matrix  and environmental correlations between species through matrix 
+
+
+JAGS program:
+
+Points to note: 
+Specification of the variance matrix has to be such that it is positive definite matrix. 
+Prior distributions on variance matrices are tricky and not very flexible. How sensitive are the inferences? 
+Convergence is difficult to obtain. 
+
+(Peter: Note to ourselves .. we should use composite likelihood approach for these data. It will be an easy modification of the program.)
+
+
+Stage structured models (Matrix population models)
+
+I am not sure if we want to discuss these but we should modify the program in the paper that I sent you to do data cloning. It will be interesting to see the effect of misclassification.
+
+Species composition example: We should use the binary data matrix example here. I do not recall the paper that we had found in Ecology. But I think they had a BUGS program? It will introduce multivariate Logistic model.
+
+
+What have we learnt?
+
+Standard questions:
+
+Can we get the MCMC to work? Convergence diagnostics?
+Are their multiple modes?
+Are parameters estimable?
+Can we estimate the parameters, get credible intervals or confidence intervals?
+How sensitive are the inferences to the specification of the priors? Parameterization invariance?
+Model diagnostics, model selection
+Can we forecast? Can we do PVA?
+
+## Gompertz, w/o obs error
+
+```
+model { 
+     for (i in 1:kk) { 
+         x[1,i] ~ dnorm(m, prc) 
+         for (j in 2:T) { 
+             x[j,i] ~ dnorm(mu[j,i], prcx) 
+             mu[j,i] <- a + (1+b)*x[j-1,i] 
+         } 
+     } 
+     c <- 1 + b 
+     z <- 0.5 * log((1+c) / (1-c)) 
+     m <- a / (1-c) 
+     prc <- (1-(c*c)) / (sigma*sigma) 
+     a ~ dnorm(0, 0.01) 
+     b ~ dunif(-0.999, -0.0001) 
+     sigma <- exp(lnsigma) 
+     lnsigma ~ dnorm(0, 1) 
+     prcx <- 1/sigma^2 
+} 
+```
+
+## Ricker w/o obs error
+
+```
+model { 
+     for (i in 1:kk) { 
+         N[1,i] <- exp(x[1,i]) 
+         for (j in 2:T) { 
+             x[j,i] ~ dnorm(mu[j,i], prcx) 
+             mu[j,i] <- a + b * N[j-1,i] + x[j-1,i] 
+             N[j,i] <- min(exp(x[j,i]), 10000) 
+         } 
+     } 
+     a ~ dnorm(1, 0.01) 
+     b ~ dnorm(0, 10) 
+     sigma <- exp(lnsigma) 
+     lnsigma ~ dnorm(0, 1) 
+     prcx <- 1/sigma^2 
+} 
+```
+
+## Theta-logistic w/o obs error
+
+```
+model { 
+     for (i in 1:kk) { 
+         for (j in 2:T) { 
+             x[j,i] ~ dnorm(mu[j,i],prcx) 
+             mu[j,i] <- x[j-1,i] + r*( 1- (exp(x[j-1,i])/K)^theta ) 
+         } 
+     } 
+     r ~ dnorm(0,1) 
+     K ~ dexp(0.005) 
+     theta ~ dnorm(3,1) 
+     sigma <- exp(lnsigma) 
+     lnsigma ~ dnorm(0, 1) 
+     prcx <- 1/sigma^2 
+} 
+```
+
+## Ricker w/ Normal obs error
+
+```
+model { 
+     for (i in 1:kk) { 
+         N[1,i] <- exp(y[1,i]) 
+         x[1,i] <- y[1,i] 
+         for (j in 2:T) { 
+             x[j,i] ~ dnorm(mu[j,i], prcx) 
+             mu[j,i] <- a + b * N[j-1,i] + x[j-1,i] 
+             N[j,i] <- min(exp(x[j,i]), 10000) 
+             y[j,i] ~ dnorm(x[j,i], prcy) 
+         } 
+     } 
+     sigma <- exp(lnsigma) 
+     tau <- exp(lntau) 
+     lnsigma ~ dnorm(0, 1) 
+     lntau ~ dnorm(0, 1) 
+     a ~ dnorm(0, 0.01) 
+     b ~ dnorm(0, 10) 
+     prcx <- 1/sigma^2 
+     prcy <- 1/tau^2 
+} 
+```
+
+## Ricker w/ Poisson obs error
+
+```
+model { 
+     for (i in 1:kk) { 
+         N[1,i] <- O[1,i] 
+         x[1,i] <- log(O[1,i]) 
+         for (j in 2:T) { 
+             x[j,i] ~ dnorm(mu[j,i], prcx) 
+             mu[j,i] <- a + b * N[j-1,i] + x[j-1,i] 
+             N[j,i] <- min(exp(x[j,i]), 10000) 
+             O[j,i] ~ dpois(N[j,i]) 
+         } 
+     } 
+     a ~ dnorm(1, 0.01) 
+     b ~ dnorm(0, 10) 
+     sigma <- exp(lnsigma) 
+     lnsigma ~ dnorm(0, 1) 
+     prcx <- 1/sigma^2 
+} 
+```
+
+```
