@@ -890,8 +890,19 @@ model <- custommodel("model {
     log_tau <- param[3]
     tau_sq <- exp(log_tau)^2
 }")
+## we need parameters on log scale
+## calculate covariance matrix by hand
+## create a matrix of the posterior samples
+pos <- as.matrix(dcfit1)
+head(pos)
+pos[,"sigma_sq"] <- log(sqrt(pos[,"sigma_sq"]))
+pos[,"tau_sq"] <- log(sqrt(pos[,"tau_sq"]))
+colnames(pos)[2:3] <- c("log_sigma", "log_tau")
+head(pos)
+(V <- cov(pos) * nclones(dcfit1))
+(cf <- colMeans(pos))
 dat <- list(Y = Y, n = n, m = m,
-    cf = coef(dcfit1), V = solve(vcov(dcfit1)))
+    cf = cf, V = solve(V)) # precision matrix
 pred <- jags.fit(data = dat, 
     params = c("alpha"), 
     model = model)
@@ -916,6 +927,9 @@ points(1:n + 0.2, alpha_dc[order(alpha),1],
 segments(x0 = 1:n + 0.2, x1 = 1:n + 0.2,
     y0 = alpha_dc[order(alpha),2], 
     y1 = alpha_dc[order(alpha),3], col = 4)
+
+table(rowSums(sign(alpha - alpha_b[,-1])))
+table(rowSums(sign(alpha - alpha_dc[,-1])))
 
 model <- custommodel("model {
     for (i in 1:n) {
