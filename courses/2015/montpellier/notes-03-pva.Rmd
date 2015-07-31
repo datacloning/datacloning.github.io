@@ -566,25 +566,65 @@ summary(fit)
 
 ## Compare predictive distributions
 
-### True predictive distribution
+a-b parametrization
 
 ```
-mod_true <- custommodel("model{
-    x[1] <- log(O_last)
-    N[1] <- O_last 
-    for (t in 2:(1 + T2)) { 
+model_ab_ppi <- custommodel("model { 
+    x[1] <- log(O[1])
+    N[1] <- O[1] 
+    for (t in 2:T) { 
         x[t] ~ dnorm(mu[t], 1 / sigma_sq) 
-        mu[t] <- a + b * N[t - 1] + x[t - 1]
+        mu[t] <- a + b * N[t - 1] + x[t - 1] 
         N[t] <- min(exp(x[t]), 10000)
         O[t] ~ dpois(N[t])
     } 
-    a <- par[1]
-    b <- par[2]
-    sigma_sq <- par[3]
+    for (i in (T + 1):(T + T2)) {
+        x[i] ~ dnorm(mu[i], 1 / sigma_sq) 
+        mu[i] <- a + b * min(exp(x[i - 1]), 10000) + x[i - 1] 
+    }
+    a ~ dnorm(1, 0.01) 
+    b ~ dnorm(0, 1) 
+    sigma_sq <- exp(log_sigma)^2 
+    log_sigma ~ dnorm(0, 1) 
 }")
 T2 <- 10
-dat <- list(par = c(a, b, sigma_sq), 
-    O_last = O[T], T2 = T2)
-pr_true <- jags.fit(dat, "O", mod_true)
+dat_ppi <- list(O = O, T = T, T2 = T2)
+ppi_ab_b <- jags.fit(dat_ppi, "x", model_ab_ppi)
+
+model_rK_ppi <- custommodel("model { 
+    x[1] <- log(O[1])
+    N[1] <- O[1] 
+    for (t in 2:T) { 
+        x[t] ~ dnorm(mu[t], 1 / sigma_sq) 
+        mu[t] <- r * (1 - N[t - 1] / K) + x[t - 1]
+        N[t] <- min(exp(x[t]), 10000)
+        O[t] ~ dpois(N[t])
+    } 
+    for (i in (T + 1):(T + T2)) {
+        x[i] ~ dnorm(mu[i], 1 / sigma_sq) 
+        mu[i] <- r * (1 - min(exp(x[i - 1]), 10000) / K) + x[i - 1]
+    }
+    r ~ dnorm(0, 0.1) 
+    K <- exp(log_K)
+    log_K ~ dnorm(0, 0.1) 
+    sigma_sq <- exp(log_sigma)^2 
+    log_sigma ~ dnorm(0, 1) 
+}")
+dat_ppi <- list(O = O, T = T, T2 = T2)
+ppi_rK_b <- jags.fit(dat_ppi, "x", model_rK_ppi)
+
+qppi_ab_b <- quantile(ppi_ab_b, probs = c(0.025, 0.5, 0.975))
+qppi_rK_b <- quantile(ppi_rK_b, probs = c(0.025, 0.5, 0.975))
+
+plot(1:(T + T2) - 0.2, qppi_ab_b[2,], type = "p", 
+    col = 2, pch = 19, cex = 0.5,
+    ylim = range(qppi_ab_b, qppi_rK_b))
+segments(x0 = 1:(T + T2) - 0.2, x1 = 1:(T + T2) - 0.2,
+    y0 = qppi_ab_b[1,], y1 = qppi_ab_b[3,], col = 2)
+points(1:(T + T2) + 0.2, qppi_rK_b[2,], type = "p", 
+    col = 4, pch = 19, cex = 0.5)
+segments(x0 = 1:(T + T2) + 0.2, x1 = 1:(T + T2) + 0.2,
+    y0 = qppi_rK_b[1,], y1 = qppi_rK_b[3,], col = 4)
+
 ```
 
