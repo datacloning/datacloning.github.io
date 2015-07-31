@@ -359,6 +359,85 @@ segments(x0 = 1:T2 + 0.2, x1 = 1:T2 + 0.2,
 
 ## Gompertz model with observation error
 
+Poisson error
+
+```
+set.seed(1234)
+a <- 1.5
+b <- -0.35
+sigma_sq <- 0.01
+T <- 30
+x <- numeric(T)
+x[1] <- log(1)
+for (t in 2:T)
+    x[t] <- x[t - 1] + a + b * x[t - 1] + rnorm(1, 0, sqrt(sigma_sq))
+N <- exp(x)
+Y <- rpois(T, lambda = N)
+plot(as.ts(Y))
+lines(as.ts(N), col=2)
+
+model <- custommodel("model { 
+    for (k in 1:K) { 
+        Y[1,k] ~ dpois(exp(x[1,k]))
+        x[1,k] ~ dnorm(a / (1 - b), (1 - b^2) / sigma_sq) 
+        for (t in 2:T) { 
+            Y[t,k] ~ dpois(exp(x[t,k]))
+            x[t,k] ~ dnorm(mu[t,k], 1 / sigma_sq) 
+            mu[t,k] <- a + (1 + b) * x[t - 1,k] 
+        } 
+    } 
+    a ~ dnorm(0, 0.01) 
+    b ~ dunif(-0.999, -0.001)
+    z <- 0.5 * log((1 + b) / (1 - b))
+    sigma_sq <- exp(log_sigma)^2 
+    log_sigma ~ dnorm(0, 0.01) 
+}") 
+dat <- list(Y = data.matrix(Y), K = 1, T = T)
+fit <- jags.fit(dat, c("a", "b", "sigma_sq"), model)
+summary(fit)
+```
+
+Normal error
+
+```
+set.seed(1234)
+a <- 1.5
+b <- -0.35
+sigma_sq <- 0.01
+tau_sq <- 0.1
+T <- 30
+x <- numeric(T)
+x[1] <- log(1)
+for (t in 2:T)
+    x[t] <- x[t - 1] + a + b * x[t - 1] + rnorm(1, 0, sqrt(sigma_sq))
+Y <- rnorm(T, mean = x, sd = sqrt(tau_sq))
+N <- exp(Y)
+plot(as.ts(N))
+lines(as.ts(exp(x)), col=2)
+
+model <- custommodel("model { 
+    for (k in 1:K) { 
+        Y[1,k] ~ dnorm(x[1,k], 1 / tau_sq)
+        x[1,k] ~ dnorm(a / (1 - b), (1 - b^2) / sigma_sq) 
+        for (t in 2:T) { 
+            Y[t,k] ~ dnorm(x[t,k], 1 / tau_sq)
+            x[t,k] ~ dnorm(mu[t,k], 1 / sigma_sq) 
+            mu[t,k] <- a + (1 + b) * x[t - 1,k] 
+        } 
+    } 
+    a ~ dnorm(0, 0.01) 
+    b ~ dunif(-0.999, -0.001)
+    z <- 0.5 * log((1 + b) / (1 - b))
+    sigma_sq <- exp(log_sigma)^2 
+    log_sigma ~ dnorm(0, 0.01) 
+    tau_sq <- exp(log_tau)^2 
+    log_tau ~ dnorm(0, 0.01) 
+}") 
+dat <- list(Y = data.matrix(Y), K = 1, T = T)
+fit <- jags.fit(dat, c("a", "b", "sigma_sq", "tau_sq"), model)
+summary(fit)
+```
+
 ## Ricker: prior effects and PPI
 
 
