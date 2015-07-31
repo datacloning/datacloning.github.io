@@ -458,7 +458,7 @@ plot(as.ts(N))
 
 library(dclone)
 model_ab <- custommodel("model { 
-    for (k in 1:K) { 
+    for (k in 1:kk) { 
         N[1,k] <- exp(x[1,k]) 
         for (t in 2:T) { 
             x[t,k] ~ dnorm(mu[t,k], 1 / sigma_sq) 
@@ -471,7 +471,7 @@ model_ab <- custommodel("model {
     sigma_sq <- exp(log_sigma)^2 
     log_sigma ~ dnorm(0, 1) 
 }")
-dat <- list(x = data.matrix(x), K = 1, T = T)
+dat <- list(x = data.matrix(x), kk = 1, T = T)
 fit <- jags.fit(dat, c("a", "b", "log_sigma"), model_ab)
 summary(fit)
 ```
@@ -519,7 +519,7 @@ plot(as.ts(O))
 
 library(dclone)
 model_ab <- custommodel("model { 
-    for (k in 1:K) { 
+    for (k in 1:kk) { 
         x[1,k] <- log(O[1,k])
         N[1,k] <- O[1,k] 
         for (t in 2:T) { 
@@ -534,7 +534,7 @@ model_ab <- custommodel("model {
     sigma_sq <- exp(log_sigma)^2 
     log_sigma ~ dnorm(0, 1) 
 }")
-dat <- list(O = data.matrix(O), K = 1, T = T)
+dat <- list(O = data.matrix(O), kk = 1, T = T)
 fit <- jags.fit(dat, c("a", "b", "sigma_sq"), model_ab)
 summary(fit)
 ```
@@ -564,4 +564,27 @@ fit <- jags.fit(dat, c("r", "K", "sigma_sq"), model_rK)
 summary(fit)
 ```
 
+## Compare predictive distributions
+
+### True predictive distribution
+
+```
+mod_true <- custommodel("model{
+    x[1] <- log(O_last)
+    N[1] <- O_last 
+    for (t in 2:(1 + T2)) { 
+        x[t] ~ dnorm(mu[t], 1 / sigma_sq) 
+        mu[t] <- a + b * N[t - 1] + x[t - 1]
+        N[t] <- min(exp(x[t]), 10000)
+        O[t] ~ dpois(N[t])
+    } 
+    a <- par[1]
+    b <- par[2]
+    sigma_sq <- par[3]
+}")
+T2 <- 10
+dat <- list(par = c(a, b, sigma_sq), 
+    O_last = O[T], T2 = T2)
+pr_true <- jags.fit(dat, "O", mod_true)
+```
 
