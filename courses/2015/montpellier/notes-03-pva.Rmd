@@ -438,93 +438,130 @@ fit <- jags.fit(dat, c("a", "b", "sigma_sq", "tau_sq"), model)
 summary(fit)
 ```
 
-## Ricker: prior effects and PPI
+## Ricker without observation error
 
-
-
-## Ricker w/o obs error
+a-b parametrization
 
 ```
-model { 
-     for (i in 1:kk) { 
-         N[1,i] <- exp(x[1,i]) 
-         for (j in 2:T) { 
-             x[j,i] ~ dnorm(mu[j,i], prcx) 
-             mu[j,i] <- a + b * N[j-1,i] + x[j-1,i] 
-             N[j,i] <- min(exp(x[j,i]), 10000) 
-         } 
-     } 
-     a ~ dnorm(1, 0.01) 
-     b ~ dnorm(0, 10) 
-     sigma <- exp(lnsigma) 
-     lnsigma ~ dnorm(0, 1) 
-     prcx <- 1/sigma^2 
-} 
+set.seed(1234)
+a <- 0.5
+b <- -0.1
+sigma_sq <- 0.05
+T <- 30
+x <- numeric(T)
+x[1] <- log(1)
+for (t in 2:T)
+    x[t] <- x[t - 1] + a + b * exp(x[t - 1]) + 
+        rnorm(1, 0, sqrt(sigma_sq))
+N <- exp(x)
+plot(as.ts(N))
+
+library(dclone)
+model_ab <- custommodel("model { 
+    for (k in 1:K) { 
+        N[1,k] <- exp(x[1,k]) 
+        for (t in 2:T) { 
+            x[t,k] ~ dnorm(mu[t,k], 1 / sigma_sq) 
+            mu[t,k] <- a + b * N[t - 1,k] + x[t - 1,k] 
+            N[t,k] <- min(exp(x[t,k]), 10000) 
+        } 
+    } 
+    a ~ dnorm(1, 0.01) 
+    b ~ dnorm(0, 0.1) 
+    sigma_sq <- exp(log_sigma)^2 
+    log_sigma ~ dnorm(0, 1) 
+}")
+dat <- list(x = data.matrix(x), K = 1, T = T)
+fit <- jags.fit(dat, c("a", "b", "log_sigma"), model_ab)
+summary(fit)
 ```
 
-## Theta-logistic w/o obs error
+r-K (logistic) parametrization (r=a, K=-a/b)
 
 ```
-model { 
-     for (i in 1:kk) { 
-         for (j in 2:T) { 
-             x[j,i] ~ dnorm(mu[j,i],prcx) 
-             mu[j,i] <- x[j-1,i] + r*( 1- (exp(x[j-1,i])/K)^theta ) 
-         } 
-     } 
-     r ~ dnorm(0,1) 
-     K ~ dexp(0.005) 
-     theta ~ dnorm(3,1) 
-     sigma <- exp(lnsigma) 
-     lnsigma ~ dnorm(0, 1) 
-     prcx <- 1/sigma^2 
-} 
+model_rK <- custommodel("model { 
+    for (k in 1:kk) { 
+        N[1,k] <- exp(x[1,k]) 
+        for (t in 2:T) { 
+            x[t,k] ~ dnorm(mu[t,k], 1 / sigma_sq) 
+            mu[t,k] <- r * (1 - N[t - 1,k] / K) + x[t - 1,k]
+            N[t,k] <- min(exp(x[t,k]), 10000) 
+        } 
+    } 
+    r ~ dnorm(0, 0.1) 
+    K <- exp(log_K)
+    log_K ~ dnorm(0, 0.1) 
+    sigma_sq <- exp(log_sigma)^2 
+    log_sigma ~ dnorm(0, 1) 
+}")
+dat <- list(x = data.matrix(x), kk = 1, T = T)
+fit <- jags.fit(dat, c("r", "K", "sigma_sq"), model_rK)
+summary(fit)
 ```
 
-## Ricker w/ Normal obs error
+## Ricker with observation error
+
+a-b parametrization
 
 ```
-model { 
-     for (i in 1:kk) { 
-         N[1,i] <- exp(y[1,i]) 
-         x[1,i] <- y[1,i] 
-         for (j in 2:T) { 
-             x[j,i] ~ dnorm(mu[j,i], prcx) 
-             mu[j,i] <- a + b * N[j-1,i] + x[j-1,i] 
-             N[j,i] <- min(exp(x[j,i]), 10000) 
-             y[j,i] ~ dnorm(x[j,i], prcy) 
-         } 
-     } 
-     sigma <- exp(lnsigma) 
-     tau <- exp(lntau) 
-     lnsigma ~ dnorm(0, 1) 
-     lntau ~ dnorm(0, 1) 
-     a ~ dnorm(0, 0.01) 
-     b ~ dnorm(0, 10) 
-     prcx <- 1/sigma^2 
-     prcy <- 1/tau^2 
-} 
+set.seed(2345)
+a <- 0.5
+b <- -0.1
+sigma_sq <- 0.05
+T <- 30
+x <- numeric(T)
+x[1] <- log(1)
+for (t in 2:T)
+    x[t] <- x[t - 1] + a + b * exp(x[t - 1]) + 
+        rnorm(1, 0, sqrt(sigma_sq))
+O <- rpois(T, lambda = exp(x))
+plot(as.ts(O))
+
+library(dclone)
+model_ab <- custommodel("model { 
+    for (k in 1:K) { 
+        x[1,k] <- log(O[1,k])
+        N[1,k] <- O[1,k] 
+        for (t in 2:T) { 
+            x[t,k] ~ dnorm(mu[t,k], 1 / sigma_sq) 
+            mu[t,k] <- a + b * N[t - 1,k] + x[t - 1,k] 
+            N[t,k] <- min(exp(x[t,k]), 10000)
+            O[t,k] ~ dpois(N[t,k])
+        } 
+    } 
+    a ~ dnorm(1, 0.01) 
+    b ~ dnorm(0, 1) 
+    sigma_sq <- exp(log_sigma)^2 
+    log_sigma ~ dnorm(0, 1) 
+}")
+dat <- list(O = data.matrix(O), K = 1, T = T)
+fit <- jags.fit(dat, c("a", "b", "sigma_sq"), model_ab)
+summary(fit)
 ```
 
-## Ricker w/ Poisson obs error
+r-K (logistic) parametrization (r=a, K=-a/b)
 
 ```
-model { 
-     for (i in 1:kk) { 
-         N[1,i] <- O[1,i] 
-         x[1,i] <- log(O[1,i]) 
-         for (j in 2:T) { 
-             x[j,i] ~ dnorm(mu[j,i], prcx) 
-             mu[j,i] <- a + b * N[j-1,i] + x[j-1,i] 
-             N[j,i] <- min(exp(x[j,i]), 10000) 
-             O[j,i] ~ dpois(N[j,i]) 
-         } 
-     } 
-     a ~ dnorm(1, 0.01) 
-     b ~ dnorm(0, 10) 
-     sigma <- exp(lnsigma) 
-     lnsigma ~ dnorm(0, 1) 
-     prcx <- 1/sigma^2 
-} 
+model_rK <- custommodel("model { 
+    for (k in 1:kk) { 
+        x[1,k] <- log(O[1,k])
+        N[1,k] <- O[1,k] 
+        for (t in 2:T) { 
+            x[t,k] ~ dnorm(mu[t,k], 1 / sigma_sq) 
+            mu[t,k] <- r * (1 - N[t - 1,k] / K) + x[t - 1,k]
+            N[t,k] <- min(exp(x[t,k]), 10000)
+            O[t,k] ~ dpois(N[t,k])
+        } 
+    } 
+    r ~ dnorm(0, 0.1) 
+    K <- exp(log_K)
+    log_K ~ dnorm(0, 0.1) 
+    sigma_sq <- exp(log_sigma)^2 
+    log_sigma ~ dnorm(0, 1) 
+}")
+dat <- list(O = data.matrix(O), kk = 1, T = T)
+fit <- jags.fit(dat, c("r", "K", "sigma_sq"), model_rK)
+summary(fit)
 ```
+
 
