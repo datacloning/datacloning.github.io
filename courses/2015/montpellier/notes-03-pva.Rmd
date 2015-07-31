@@ -225,28 +225,143 @@ How sensitive are the inferences to the specification of the priors? Parameteriz
 Model diagnostics, model selection
 Can we forecast? Can we do PVA?
 
-## Gompertz, w/o obs error
+## Gompertz growth model without observation error
+
+Data generation
 
 ```
-model { 
-     for (i in 1:kk) { 
-         x[1,i] ~ dnorm(m, prc) 
-         for (j in 2:T) { 
-             x[j,i] ~ dnorm(mu[j,i], prcx) 
-             mu[j,i] <- a + (1+b)*x[j-1,i] 
-         } 
-     } 
-     c <- 1 + b 
-     z <- 0.5 * log((1+c) / (1-c)) 
-     m <- a / (1-c) 
-     prc <- (1-(c*c)) / (sigma*sigma) 
-     a ~ dnorm(0, 0.01) 
-     b ~ dunif(-0.999, -0.0001) 
-     sigma <- exp(lnsigma) 
-     lnsigma ~ dnorm(0, 1) 
-     prcx <- 1/sigma^2 
-} 
+set.seed(1234)
+a <- 1.5
+b <- -0.35
+sigma_sq <- 0.01
+T <- 30
+x <- numeric(T)
+x[1] <- log(1)
+for (t in 2:T)
+    x[t] <- x[t - 1] + a + b * x[t - 1] + rnorm(1, 0, sqrt(sigma_sq))
+N <- exp(x)
+plot(as.ts(N))
 ```
+
+Bayesiam analysis
+
+```
+library(dclone)
+model <- custommodel("model { 
+    for (k in 1:K) { 
+        x[1,k] ~ dnorm(a / (1 - b), (1 - b^2) / sigma_sq) 
+        for (t in 2:T) { 
+            x[t,k] ~ dnorm(mu[t,k], 1 / sigma_sq) 
+            mu[t,k] <- a + (1 + b) * x[t - 1,k] 
+        } 
+    } 
+    a ~ dnorm(0, 0.01) 
+    b ~ dunif(-0.999, -0.001)
+    z <- 0.5 * log((1 + b) / (1 - b))
+    sigma_sq <- exp(log_sigma)^2 
+    log_sigma ~ dnorm(0, 0.01) 
+}") 
+dat <- list(x = data.matrix(x), K = 1, T = T)
+fit <- jags.fit(dat, c("a", "b", "sigma_sq"), model)
+summary(fit)
+```
+
+Data cloning
+
+```
+K <- c(1, 2, 4, 8)
+dat <- list(x = dcdim(data.matrix(x)), K = 1, T = T)
+dcfit <- dc.fit(dat, c("a", "b", "sigma_sq"), model,
+    n.clones = K,
+    unchanged = "T", multiply = "K")
+summary(fit)
+plot(dctable(dcfit))
+```
+
+Missing data
+
+```
+dat$x[5,1] <- NA
+```
+
+Bayesian approach to predict missing observations
+
+```
+fit <- jags.fit(dat, c("a", "b", "sigma_sq", "x[5,1]"), model)
+summary(fit)
+densplot(fit[,"x[5,1]"])
+abline(v = x[5], col = 2)
+quantile(fit[,"x[5,1]"], probs = c(0.025, 0.5, 0.975))
+x[5]
+```
+
+DC approach to predict missing observations
+
+```
+pmodel <- custommodel("model { 
+    for (k in 1:K) { 
+        x[1,k] ~ dnorm(a / (1 - b), (1 - b^2) / sigma_sq) 
+        for (t in 2:T) { 
+            x[t,k] ~ dnorm(mu[t,k], 1 / sigma_sq) 
+            mu[t,k] <- a + (1 + b) * x[t - 1,k] 
+        } 
+    } 
+    param[1:3] ~ dmnorm(cf[], Vinv[,])
+    a <- param[1] 
+    z <- param[2]
+    b <- (exp(2 * z) - 1) / (exp(2 * z) + 1)
+    log_sigma <- param[3] 
+    sigma_sq <- exp(log_sigma)^2 
+}") 
+dcfit2 <- dcfit <- dc.fit(dat, c("a", "z", "log_sigma"), model,
+    n.clones = 8,
+    unchanged = "T", multiply = "K")
+(V <- vcov(dcfit2)[c("a", "z", "log_sigma"), c("a", "z", "log_sigma")])
+(cf <- coef(dcfit2)[c("a", "z", "log_sigma")])
+prdat <- c(dat, list(cf = cf, Vinv = solve(V)))
+pred <- jags.fit(prdat, "x[5,1]", pmodel)
+
+densplot(pred)
+abline(v = x[5], col = 2)
+quantile(pred, probs = c(0.025, 0.5, 0.975))
+x[5]
+```
+
+Predicting future states, Bayesian
+
+```
+T2 <- 10
+dat2 <- list(x = data.matrix(c(x, rep(NA, T2))), 
+    K = 1, T = T + T2)
+fit <- jags.fit(dat2, c("x[31:40,1]"), model)
+summary(fit)
+pi1 <- quantile(fit, probs = c(0.025, 0.5, 0.975))
+```
+
+Predicting future states, DC
+
+```
+prdat2 <- c(dat2, list(cf = cf, Vinv = solve(V)))
+pred2 <- jags.fit(prdat2, "x[31:40,1]", pmodel)
+summary(pred2)
+pi2 <- quantile(pred2, probs = c(0.025, 0.5, 0.975))
+
+plot(1:T2 - 0.2, pi1[2,], type = "p", 
+    col = 2, pch = 19, cex = 0.5,
+    ylim = range(pi1, pi2))
+segments(x0 = 1:T2 - 0.2, x1 = 1:T2 - 0.2,
+    y0 = pi1[1,], y1 = pi1[3,], col = 2)
+points(1:T2 + 0.2, pi2[2,], type = "p", 
+    col = 4, pch = 19, cex = 0.5)
+segments(x0 = 1:T2 + 0.2, x1 = 1:T2 + 0.2,
+    y0 = pi2[1,], y1 = pi2[3,], col = 4)
+```
+
+## Gompertz model with observation error
+
+## Ricker: prior effects and PPI
+
+
 
 ## Ricker w/o obs error
 
