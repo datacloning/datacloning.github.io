@@ -11,7 +11,7 @@ course:
   lecture: Hierarchical models
   file: notes-02-hmods
   previous: notes-01-basics
-  next: apps
+  next: notes-03-pva
 ---
 
 ## Introduction

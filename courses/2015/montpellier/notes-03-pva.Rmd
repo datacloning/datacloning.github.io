@@ -11,9 +11,7 @@ course:
   lecture: PVA
   file: notes-03-pva
   previous: notes-02-hmods
-  next: notes-04-misc
-  slides: slides-03-pva.html
-  pdf: notes-03-pva.pdf
+  next: apps
 ---
 
 Now that we are familiar with hierarchical models in the regression setup with independent data, we will now extend these ideas to dependent data situations. We will consider the linear and non-linear time series models used in modeling population dynamics as our examples. The principles, of course, apply to more general situations. 
