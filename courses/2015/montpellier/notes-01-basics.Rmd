@@ -2,16 +2,17 @@
 title: "Statistical concepts and paradigms"
 author: "Peter Solymos and Subhash Lele"
 date: "August 1, 2015 -- Montpellier, France -- ICCB/ECCB Congress"
-output: pdf_document
+output: html_document
 layout: course
 course:
-  location: Montpellier
-  year: 2015
-  title: "Hierarchical Models Made Easy &mdash; August 1, 2015 &mdash; Montpellier, France &mdash; ICCB/ECCB Congress"
-  lecture: Basics
   file: notes-01-basics
-  previous: quickstart
+  lecture: Basics
+  location: Montpellier
   next: notes-02-hmods
+  previous: quickstart
+  title: Hierarchical Models Made Easy &mdash; August 1, 2015 &mdash; Montpellier,
+    France &mdash; ICCB/ECCB Congress
+  year: 2015
 ---
 
 ## Introduction
@@ -325,7 +326,7 @@ sampling distribution. The values overlap perfectly, that is why the red
 lines are not visible:
 
 ```r
-hist(res, col = flatly$palered, border = flatly$pre_border,
+hist(res, col = flatly$red, border = flatly$pre_border,
     xlim = c(0, 1), main = "Sampling distribution")
 rug(res+runif(B, -0.01, 0.01), col = flatly$info, lwd = 2)
 ## sampling distribution based sumarry statistics
@@ -608,6 +609,7 @@ coef(m)
 exp(coef(m)) / (1 + exp(coef(m)))
 plogis(coef(m))
 mean(y)
+confint(m)
 ```
 
 ### Bayesian model in JAGS
@@ -620,7 +622,8 @@ model <- custommodel("model {
         #Y[i] ~ dbin(p, 1) # Binomial(N,p)
         Y[i] ~ dbern(p) # Bernoulli(p)
     }
-    p ~ dunif(0.001, 0.999)
+    #p ~ dunif(0.001, 0.999)
+    p ~ dbeta(1, 3)
 }")
 dat <- list(Y = y, n = n)
 fit <- jags.fit(data = dat, params = "p", model = model)
@@ -643,11 +646,12 @@ model <- custommodel("model {
             Y[i,k] ~ dbin(p, 1)
         }
     }
-    p ~ dunif(0.001, 0.999)
+    logit_p <- log(p/(1-p))
+    p ~ dbeta(0.001, 0.999)
 }")
 dat <- list(Y = dcdim(data.matrix(y)), n = n, K = 1)
-dcfit <- dc.fit(data = dat, params = "p", model = model,
-    n.clones = c(1,2,4,8), unchanged = "n", multiply = "K")
+dcfit <- dc.fit(data = dat, params = "logit_p", model = model,
+    n.clones = c(1,100), unchanged = "n", multiply = "K")
 summary(dcfit)
 plot(dcfit)
 dctable(dcfit)

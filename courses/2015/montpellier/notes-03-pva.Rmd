@@ -82,6 +82,7 @@ dcfit <- dc.fit(dat, c("a", "b", "sigma_sq"), model,
     n.clones = K,
     unchanged = "T", multiply = "K")
 summary(fit)
+plot(dcdiag(dcfit))
 plot(dctable(dcfit))
 ```
 

@@ -138,16 +138,19 @@ library(dclone)
 library(rjags)
 model <- custommodel("model {
     for (i in 1:n) {
-        Y[i] ~ dbern(p)
-        W[i] ~ dbern(Y[i] * phi)
+        Y[i] ~ dbern(phi)
+        W[i] ~ dbern(Y[i] * p)
     }
-    p ~ dunif(0.001, 0.999)
-    phi ~ dunif(0.001, 0.999)
+    #p ~ dunif(0.001, 0.999)
+    #phi ~ dunif(0.001, 0.999)
+    p ~ dbeta(1, 1)
+    phi ~ dbeta(0.5, 0.5)
 }")
 dat <- list(W = w, n = n)
-ini <- list(Y = w)
+#ini <- list(Y = w)
+ini <- list(Y = rep(1, n))
 fit <- jags.fit(data = dat, params = c("p", "phi"), 
-    model = model, inits = ini)
+    model = model, init = ini)
 summary(fit)
 plot(fit)
 pairs(fit)
@@ -171,12 +174,14 @@ library(rjags)
 model <- custommodel("model {
     for (k in 1:K) {
         for (i in 1:n) {
-            Y[i,k] ~ dbern(p)
-            W[i,k] ~ dbern(Y[i,k] * phi)
+            Y[i,k] ~ dbern(phi)
+            W[i,k] ~ dbern(Y[i,k] * p)
         }
     }
-    p ~ dunif(0.001, 0.999)
-    phi ~ dunif(0.001, 0.999)
+    #p ~ dunif(0.001, 0.999)
+    #phi ~ dunif(0.001, 0.999)
+    p ~ dbeta(1, 1)
+    phi ~ dbeta(0.5, 0.5)
 }")
 dat <- list(W = dcdim(data.matrix(w)), n = n, K = 1)
 ini <- list(Y = dcdim(data.matrix(w)))
@@ -187,7 +192,7 @@ ifun <- function(model, n.clones) {
 dcfit <- dc.fit(data = dat, params = c("p", "phi"), 
     model = model, inits = ini,
     n.clones = c(1,2,4,8), unchanged = "n", multiply = "K",
-    initsfun = ifun)
+    initsfun = ifun, n.iter = 10000)
 summary(dcfit)
 plot(dcfit)
 dctable(dcfit)
@@ -317,9 +322,9 @@ library(dclone)
 library(rjags)
 model <- custommodel("model {
     for (i in 1:n) {
-        Y[i] ~ dbern(p)
+        Y[i] ~ dbern(phi)
         for (t in 1:T) {
-            W[i,t] ~ dbern(Y[i] * phi)
+            W[i,t] ~ dbern(Y[i] * p)
         }
     }
     p ~ dunif(0.001, 0.999)
@@ -370,23 +375,25 @@ Frequentist inference: Identifiability check, independence from the specificatio
 library(dclone)
 library(rjags)
 model <- custommodel("model {
+    for (k in 1:K) {
     for (i in 1:n) {
-        Y[i] ~ dbern(p)
+        Y[i,k] ~ dbern(phi)
         for (t in 1:T) {
-            W[i,t] ~ dbern(Y[i] * phi)
+            W[i,t,k] ~ dbern(Y[i,k] * p)
         }
+    }
     }
     p ~ dunif(0.001, 0.999)
     phi ~ dunif(0.001, 0.999)
 }")
-dat <- list(W = w, n = n, T = T)
-ini <- list(Y = ifelse(rowSums(w) > 0, 1, 0))
+dat <- list(W = dcdim(array(w, c(n,T,1))), n = n, T = T, K = 1)
+ini <- list(Y = data.matrix(rep(1, n)))
 ifun <- function(model, n.clones) {
-    dclone(list(Y = ifelse(rowSums(w) > 0, 1, 0)), n.clones)
+    list(Y = dclone(dcdim(data.matrix(rep(1, n))), n.clones))
 }
 dcfit <- dc.fit(data = dat, params = c("p", "phi"), 
     model = model, inits = ini,
-    n.clones = c(1,2,4,8), multiply = "n", unchanged = "T",
+    n.clones = c(1,2,4,8), multiply = "K", unchanged = c("n","T"),
     initsfun = ifun)
 summary(dcfit)
 plot(dcfit)
