@@ -11,6 +11,7 @@ course:
   lecture: Quickstart
   file: quickstart
   previous: how-to-prepare
+  next: notes-01-basics
 ---
 
 ## Basic data structures and operations in R
