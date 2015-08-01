@@ -12,8 +12,6 @@ course:
   file: notes-04-misc
   previous: notes-03-pva
   next: apps
-  slides: slides-04-misc.html
-  pdf: notes-04-misc.pdf
 ---
 
 ## Poisson-Lognormal mixed model

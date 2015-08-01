@@ -12,8 +12,6 @@ course:
   file: notes-01-basics
   previous: quickstart
   next: notes-02-hmods
-  slides: slides-01-basics.html
-  pdf: notes-01-basics.pdf
 ---
 
 ## Introduction
