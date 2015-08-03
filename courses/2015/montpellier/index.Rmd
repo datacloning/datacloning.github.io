@@ -16,27 +16,8 @@ This training course is aimed towards the conservation professionals who need to
 * [About the course]({{ site.baseurl }}/courses/2015/montpellier/about-the-course.html)
 * [What to do before the course]({{ site.baseurl }}/courses/2015/montpellier/how-to-prepare.html)
 * [R quickstart]({{ site.baseurl }}/courses/2015/montpellier/quickstart.html)
-* Lecture 1: Basics ([notes]({{ site.baseurl }}/courses/2015/montpellier/notes-01-basics.html), [slides]({{ site.baseurl }}/courses/2015/montpellier/slides-01-basics.html))
-* Lecture 2: Hierarchical models ([notes]({{ site.baseurl }}/courses/2015/montpellier/notes-02-hmods.html), [slides]({{ site.baseurl }}/courses/2015/montpellier/slides-02-hmods.html))
-* Lecture 3: Population viability analysis ([notes]({{ site.baseurl }}/courses/2015/montpellier/notes-03-pva.html), [notes]({{ site.baseurl }}/courses/2015/montpellier/slides-03-pva.html)) 
-* [A list of Shiny apps used in the lectures]({{ site.baseurl }}/courses/2015/montpellier/apps.html)
-
-{% comment %}
-
-The links below will take you to the course material pages:
-lecture notes and slides.
-There are navigation (previous/next) buttons within each
-page. You can download the lecture notes in various
-formats (html, pdf, source Rmd). Alternatively, 
-clone or download the full website content from
-[GitHub](https://github.com/datacloning/datacloning.github.io).
-
-* [About the course]({{ site.baseurl }}/courses/2015/montpellier/about-the-course.html)
-* [What to do before the course]({{ site.baseurl }}/courses/2015/montpellier/how-to-prepare.html)
-* [R quickstart]({{ site.baseurl }}/courses/2015/montpellier/quickstart.html)
 * [Statistical concepts and paradigms]({{ site.baseurl }}/courses/2015/montpellier/notes-01-basics.html)
 * [Hierarchical models]({{ site.baseurl }}/courses/2015/montpellier/notes-02-hmods.html)
 * [Analysing data with dependence]({{ site.baseurl }}/courses/2015/montpellier/notes-03-pva.html)
 * [A list of Shiny apps used in the lectures]({{ site.baseurl }}/courses/2015/montpellier/apps.html)
 
-{% endcomment %}
