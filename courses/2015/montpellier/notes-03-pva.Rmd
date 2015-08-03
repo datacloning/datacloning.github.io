@@ -1,5 +1,5 @@
 ---
-title: "Time series and spatial data analysis"
+title: "Analysing data with dependence"
 author: "Peter Solymos and Subhash Lele"
 date: "August 1, 2015 -- Montpellier, France -- ICCB/ECCB Congress"
 output: pdf_document
