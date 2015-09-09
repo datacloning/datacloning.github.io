@@ -32,6 +32,8 @@ $$log(N_{t+1}) - log(N_{t}) = X_{t+1} - X_{t} = f(N_{t}) + \varepsilon_{t+1}$$
 
 Choice of different functional forms for $f(N_t, \theta)$ leads to different growth models. Each one has different dynamical properties. They may also lead to chaotic (or, bifurcation etc.) for different sets of parameters. Please make yourself familiar with these before using the models for estimation and forecasting. Our goal here is to show you why and how hierarchical models are used in this context. 
 
+This lecture is more bare-bones than the previous ones. Please feel free to contact the organizers if you have questions.
+
 ## Gompertz growth model without observation error
 
 Data generation
