@@ -11,7 +11,7 @@ layout: plain
 <p>Frequentist statistical inference meets
 Bayesian Markov-chain Monte Carlo (MCMC) methods.</p>
 <!-- <p><a class="btn btn-primary" href="{{ site.baseurl }}/dc.html">Learn more</a></p> -->
-            
+
             </div>
         </div>
     </div>
@@ -23,7 +23,7 @@ Bayesian Markov-chain Monte Carlo (MCMC) methods.</p>
 
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-laptop"></i> Easy to Install</h3>
-<p>The <a href="http://cran.r-project.org/package=dclone">dclone</a> <a href="http://www.r-project.org">R</a> package 
+<p>The <a href="http://cran.r-project.org/package=dclone">dclone</a> <a href="http://www.r-project.org">R</a> package
 works with all major MCMC engines. See the <a href="{{ site.baseurl }}/install.html">installation guide</a>.</p>
 </div>
 
@@ -67,6 +67,7 @@ works with all major MCMC engines. See the <a href="{{ site.baseurl }}/install.h
 <p><small>Posed on 2015&ndash;06&ndash;20</small></p>
 <p><strong>One-day teaching workshop at <a href="http://www.iccb-eccb2015.org/content/pre-congress-training-workshops">ICCB/ECCB congress</a> in Montpellier on August 1st</strong></p>
 <p>This training course is aimed towards the conservation professionals who need to understand and feel comfortable with modern statistical and computational tools used to address pressing conservation issues. By presenting both Bayesian and Likelihood based approaches, the participants will be able to go beyond the rhetorics of philosophy of statistics and use the tools with full understanding of their assumptions and implications.</p>
+</div>
 
         </div>
     </div>
