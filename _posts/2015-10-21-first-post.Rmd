@@ -1,10 +1,15 @@
 ---
 title: "First post"
+subtitle: "ahogy kene"
 layout: blog
 comments: true
 published: true
 ---
 
-Elso bejegyzes.
+Lorem ipsum dolor sit amet, amet essent audiam pro ex. Nemore ocurreret concludaturque ne mea, modo feugait ei per. Cu cetero verterem efficiendi est, ei sit vide novum docendi, vel ad efficiendi contentiones. Per congue ubique complectitur ea, consul lucilius ei vim. Ullum harum graeci ne eum, eum cu sale qualisque inciderint, quas graeci duo eu.
 
-Masodik para.
+Dicat liber ludus usu ut, mel habeo noluisse scribentur id. Ne saperet reprimique vim, sit an nonumy definitionem, eos facilisi splendide ea. Dicat volutpat et nam. Consul abhorreant te vim, ne veritus accusata sit.
+
+Eu vel tota utinam verear, mea modo movet cu. Ne cum suas abhorreant, mucius vidisse qualisque mei id, duo animal pertinacia instructior et. Eam no veniam populo, no tincidunt maiestatis per, per id atqui adipisci. Cu mei alia erant audire. At posse liber intellegebat quo, et suas error has, ne pri voluptua imperdiet.
+
+Eam no quis assueverit. Quo vero scriptorem ne, ullum blandit noluisse pro no. Sit utroque denique ea, nemore feugait et quo, tollit quidam eam ex. Vis ut vidit habeo inimicus. Ius at alia cibo ponderum, id his prompta bonorum hendrerit. Id usu homero voluptua, id simul feugait vix.
