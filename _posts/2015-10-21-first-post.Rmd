@@ -3,7 +3,7 @@ title: "First post"
 subtitle: "ahogy kene"
 layout: blog
 category: DC
-tags: [opinion, example]
+tags: [Opinion, Example]
 comments: true
 published: true
 ---

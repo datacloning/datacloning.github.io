@@ -9,6 +9,8 @@ layout: default
 <p>{{ post.excerpt }}</p>
 {% endfor %}
 
+{% comment %}
+
 {% for tag in site.tags %}
 <h2>Articles by tag: {{ tag }}</h2>
     {% if site.tags[tag] %}
@@ -20,3 +22,5 @@ layout: default
         <p>There are no posts for this tag.</p>
     {% endif %}
 {% endfor %}
+
+{% endcomment %}

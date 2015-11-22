@@ -31,7 +31,7 @@
                 {% endif %}
             {% endif %}
             <p id="post-meta"><small>Posed on {{ page.date | date: '%B %d, %Y' }} by <a href="http://peter.solymos.org">P&eacute;ter S&oacute;lymos</a><br />
-            {% if page.category %}<a href="#" class="btn btn-info btn-xs">{{ page.category }}</a>{% endif %} {{ tags_content }}</small></p>
+            {% if page.category %}<a href="#" class="btn btn-info btn-xs">{{ page.category }}</a>{% endif %}{% if page.tags %} {% endif %}</small></p>
 <!-- content starts here %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
 
             {{ content }}
