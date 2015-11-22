@@ -1,6 +1,7 @@
 ---
 title: "Second post"
 layout: blog
+comments: true
 published: true
 ---
 

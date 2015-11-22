@@ -1,6 +1,7 @@
 ---
 title: "First post"
 layout: blog
+comments: true
 published: true
 ---
 
