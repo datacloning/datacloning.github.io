@@ -1,6 +1,6 @@
 ---
 title: "Second post"
-layout: default
+layout: blog
 published: true
 ---
 

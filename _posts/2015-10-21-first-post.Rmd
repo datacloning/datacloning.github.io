@@ -1,6 +1,6 @@
 ---
 title: "First post"
-layout: default
+layout: blog
 published: true
 ---
 
