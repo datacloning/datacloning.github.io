@@ -9,9 +9,6 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <span class="pull-right">
-            <p><small>Posed on {{ page.date | date: '%B %d, %Y' }} by <a href="http://peter.solymos.org">P&eacute;ter S&oacute;lymos</a></small></p>
-            </span>
             {% if page.title %}
                 {% if page.subtitle %}
                     <a href="index.html"><h1 class="title">{{ page.title }}</h1></a>
@@ -20,6 +17,7 @@
                     <h1 class="title">{{ page.title }}</h1>
                 {% endif %}
             {% endif %}
+            <p><small>Posed on {{ page.date | date: '%B %d, %Y' }} by <a href="http://peter.solymos.org">P&eacute;ter S&oacute;lymos</a></small></p>
 <!-- content starts here %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
 
             {{ content }}
