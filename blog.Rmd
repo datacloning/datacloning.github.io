@@ -23,4 +23,6 @@ layout: default
     {% endif %}
 {% endfor %}
 
+http://www.minddust.com/post/tags-and-categories-on-github-pages/
+
 {% endcomment %}
