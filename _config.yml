@@ -23,8 +23,4 @@ fancyfonts: true
 # navbar style: inverse, transparent
 navbar: inverse
 
-tags:
-  - Announcement
-  - Programming
-  - Opinion
-  - Example
+disqus: datacloning
