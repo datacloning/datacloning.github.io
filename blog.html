@@ -8,7 +8,7 @@ layout: default
 {% assign tag_words = site_tags | split:',' | sort %}
 <p>
 {% for tag in tag_words) %}
-  <a href="#{{ tag | slugify }}" class="btn btn-default btn-xs">{{ tag }} <span>({{ site.categories[tag] | size }})</span></a>
+  <a href="{{ site.baseurl }}/categories.html#{{ tag | slugify }}" class="btn btn-default btn-xs">{{ tag }} <span>({{ site.categories[tag] | size }})</span></a>
 {% endfor %}
 </p>
 <hr>
@@ -18,7 +18,7 @@ layout: default
 {% assign tag_words = site_tags | split:',' | sort %}
 <p>
 {% for tag in tag_words) %}
-  <a href="#{{ tag | slugify }}" class="btn btn-info btn-xs">{{ tag }} <span>({{ site.tags[tag] | size }})</span></a>
+  <a href="{{ site.baseurl }}/tags.html#{{ tag | slugify }}" class="btn btn-info btn-xs">{{ tag }} <span>({{ site.tags[tag] | size }})</span></a>
 {% endfor %}
 </p>
 <hr>
