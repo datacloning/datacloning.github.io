@@ -5,8 +5,9 @@ layout: default
 
 ### Upcoming courses
 
-* [Aug 1 2015, Montpellier, France](./2015/montpellier/)
+* [2016, Madison, Wisconsin, USA](./2016/madison/)
 
 ### Past courses
 
+* [Aug 1 2015, Montpellier, France](./2015/montpellier/)
 * 2009, Edmonton, AB Canada.
