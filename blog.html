@@ -1,0 +1,10 @@
+---
+title: "Blog"
+layout: default
+---
+
+<ul class="list-unstyled">
+  {% for post in site.posts %}
+  <li itemscope><span class="entry-date"><time datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">{{ post.date | date: "%B %d, %Y" }}</time></span> &mdash; <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>

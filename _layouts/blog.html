@@ -17,8 +17,9 @@
                     <h1 class="title">{{ page.title }}</h1>
                 {% endif %}
             {% endif %}
-            <p id="post-meta"><small>Posed on {{ page.date | date: '%B %d, %Y' }} by <a href="http://peter.solymos.org">P&eacute;ter S&oacute;lymos</a></small><br />
-            {% if page.category %}<span class="label label-info">{{ page.category }}</span>{% endif %}{% if page.tags %}{% for tag in page.tags %} <span class="label label-success">{{ tag }}</span>{% endfor %}{% endif %}</p>
+            <p id="post-meta">Posed on {{ page.date | date: '%B %d, %Y' }} by <a href="http://peter.solymos.org">P&eacute;ter S&oacute;lymos</a><br />
+            {% if page.category %}Category: <a href="{{ site.baseurl }}/categories.html#{{ page.category | slugify }}" class="btn btn-default btn-xs">{{ page.category }}</a> {% endif %}
+            {% if page.tags %}Tags: {% for tag in page.tags %}<a href="{{ site.baseurl }}/tags.html#{{ tag | slugify }}" class="btn btn-info btn-xs">{{ tag }}</a> {% endfor %}{% endif %}</p>
             <hr>
 <!-- content starts here %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
 
