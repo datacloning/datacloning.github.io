@@ -20,7 +20,7 @@
             <p id="post-meta"><i class="fa fa-clock-o"></i> {{ page.date | date: '%B %d, %Y' }} <i class="fa fa-pencil"></i> {% if page.author != null %}{{ page.author }}{% else %}{{ site.author }}{% endif %}<br />
             {% if page.category %}<a href="{{ site.baseurl }}/categories.html#{{ page.category | slugify }}" class="btn btn-default btn-xs">{{ page.category }}</a> {% endif %}
             {% if page.tags %}<i class="fa fa-tag"></i> {% for tag in page.tags %}<a href="{{ site.baseurl }}/tags.html#{{ tag | slugify }}" class="btn btn-info btn-xs">{{ tag }}</a> {% endfor %}{% endif %}
-            {% if site.disqus or page.disqus %}<i class="fa fa-comment"></i> <a href="{{ page.url }}#disqus_thread">{{ page.url }}</a>{% endif %}</p>
+            {% if site.disqus or page.disqus %}<i class="fa fa-comment"></i> <a href="{{ page.url }}#disqus_thread"></a>{% endif %}</p>
             <hr>
 <!-- content starts here %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
 
