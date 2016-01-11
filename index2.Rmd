@@ -17,6 +17,11 @@ Bayesian Markov-chain Monte Carlo (MCMC) methods.</p>
     </div>
 </div>
 
+<script type="text/javascript">
+$(document).ready(function(){
+     $("#myCarousel").carousel();
+});
+</script>
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
         <!-- Carousel indicators -->
         <ol class="carousel-indicators">
