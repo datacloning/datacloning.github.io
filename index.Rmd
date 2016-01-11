@@ -44,7 +44,7 @@ works with all major MCMC engines. See the <a href="{{ site.baseurl }}/install.h
 
 <div class="col-lg-4 col-sm-6">
 <h3><i class="fa fa-cloud"></i> Contribute</h3>
-<p>Share your own dclone-ified models <a href="https://github.com/datacloning/dcexamples">here</a>.</p>
+<p>Share your own clode (dclone-ified code) <a href="https://github.com/datacloning/dcexamples">here</a>.</p>
 </div>
 
 <div class="col-lg-4 col-sm-6">
