@@ -1,0 +1,127 @@
+---
+layout: plain
+---
+
+<div class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+
+<h1 class="title">Data Cloning</h1>
+<p>Frequentist statistical inference meets
+Bayesian Markov-chain Monte Carlo (MCMC) methods.</p>
+<!-- <p><a class="btn btn-primary" href="{{ site.baseurl }}/dc.html">Learn more</a></p> -->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Carousel indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>   
+        <!-- Wrapper for carousel items -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <img src="../images/slide1.png" alt="First Slide">
+            </div>
+            <div class="item">
+                <img src="../images/slide2.png" alt="Second Slide">
+            </div>
+            <div class="item">
+                <img src="../images/slide3.png" alt="Third Slide">
+            </div>
+        </div>
+        <!-- Carousel controls -->
+        <a class="carousel-control left" href="#myCarousel" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="carousel-control right" href="#myCarousel" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+    </div>
+
+
+<div class="section-tout">
+    <div class="container">
+        <div class="row">
+
+<div class="col-lg-4 col-sm-6">
+<h3><i class="fa fa-laptop"></i> Easy to Install</h3>
+<p>The <a href="http://cran.r-project.org/package=dclone">dclone</a> <a href="http://www.r-project.org">R</a> package
+works with all major MCMC engines. See the <a href="{{ site.baseurl }}/install.html">installation guide</a>.</p>
+</div>
+
+<div class="col-lg-4 col-sm-6">
+<h3><i class="fa fa-code"></i> Open Source</h3>
+<p>R packages released under <a href="http://www.gnu.org/licenses/licenses.en.html">public licenses</a>, stable version on <a href="http://cran.r-project.org/package=dclone">CRAN</a>, development on <a href="https://github.com/datacloning/dclone">GitHub</a>.</p>
+</div>
+
+<div class="col-lg-4 col-sm-6">
+<h3><i class="fa fa-flash"></i> High Performance</h3>
+<p>Built with support for <a href="{{ site.baseurl }}/usage.html#high-performance-computing">parallel computations</a> using clusters or forking.</p>
+</div>
+
+<div class="col-lg-4 col-sm-6">
+<h3><i class="fa fa-file-text-o"></i> Learn through Examples</h3>
+<p>Find <a href="{{ site.baseurl }}/documentation.html">documentation</a>, <a href="{{ site.baseurl }}/tutorials/">tutorials</a>, and other <a href="{{ site.baseurl }}/courses/">teaching materials</a>.</p>
+</div>
+
+<div class="col-lg-4 col-sm-6">
+<h3><i class="fa fa-cloud"></i> Contribute</h3>
+<p>Share your own dclone-ified models <a href="https://github.com/datacloning/dcexamples">here</a>.</p>
+</div>
+
+<div class="col-lg-4 col-sm-6">
+<h3><i class="fa fa-bullhorn"></i> Stay Updated</h3>
+<p>Subscribe to the <a href="https://groups.google.com/forum/?fromgroups#!forum/dclone-users">dclone users mailing list</a> for general modeling discussions.</p>
+</div>
+
+        </div>
+    </div>
+</div>
+
+*****************
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+
+<div class="well">
+<h3><a href="{{ site.baseurl }}/courses/2015/montpellier/">Hierarchical models for conservation biologists made easy</a></h3>
+<p><small>Posed on 2015&ndash;06&ndash;20</small></p>
+<p><strong>One-day teaching workshop at <a href="http://www.iccb-eccb2015.org/content/pre-congress-training-workshops">ICCB/ECCB congress</a> in Montpellier on August 1st</strong></p>
+<p>This training course is aimed towards the conservation professionals who need to understand and feel comfortable with modern statistical and computational tools used to address pressing conservation issues. By presenting both Bayesian and Likelihood based approaches, the participants will be able to go beyond the rhetorics of philosophy of statistics and use the tools with full understanding of their assumptions and implications.</p>
+</div>
+
+        </div>
+    </div>
+</div>
+
+{% comment %}
+<!-- Move old entries here. -->
+
+Navbar organization
+
+Software:
+* Introduction
+* Installation
+* R packages
+  - dclone
+  - dcmle
+  - dcextras
+* Issues
+
+Resources:
+* Documentation
+* Tutorials
+* Courses
+* Talks
+
+Search
+
+{% endcomment %}
