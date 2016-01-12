@@ -7,9 +7,9 @@ layout: plain
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
 
-<h1 class="title">Happy Cloding!</h1>
 <p>Frequentist statistical inference meets
 Bayesian Markov-chain Monte Carlo (MCMC) methods.</p>
+<h1 class="title">Happy Cloding!</h1>
 <!-- <p><a class="btn btn-primary" href="{{ site.baseurl }}/dc.html">Learn more</a></p> -->
 <h3>
 <a href="https://twitter.com/datacloning"><i class="fa fa-twitter-square text-grey"></i></a>
