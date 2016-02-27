@@ -68,10 +68,10 @@ works with all major MCMC engines. See the <a href="{{ site.baseurl }}/install.h
         <div class="col-md-8 col-md-offset-2">
 
 <div class="well">
-<h3><a href="{{ site.baseurl }}/courses/2015/montpellier/">Hierarchical models for conservation biologists made easy</a></h3>
-<p><small>Posted on 2015&ndash;06&ndash;20</small></p>
-<p><strong>One-day teaching workshop at <a href="http://www.iccb-eccb2015.org/content/pre-congress-training-workshops">ICCB/ECCB congress</a> in Montpellier on August 1st</strong></p>
-<p>This training course is aimed towards the conservation professionals who need to understand and feel comfortable with modern statistical and computational tools used to address pressing conservation issues. By presenting both Bayesian and Likelihood based approaches, the participants will be able to go beyond the rhetorics of philosophy of statistics and use the tools with full understanding of their assumptions and implications.</p>
+<h3><a href="{{ site.baseurl }}/courses/2016/madison/">Hierarchical models for conservation biologists made easy</a></h3>
+<p><small>Posted on 2016&ndash;02&ndash;27</small></p>
+<p><strong>One-day short course at <a href="http://www.scbnacongress.org/">NACCB congress</a> in Madison, WI, on July 16th, with Peter Solymos and Subhash Lele</strong></p>
+<p>This course is aimed towards the conservation professionals who need to understand and feel comfortable with modern statistical and computational tools used to address conservation issues. Conservation science needs to be transparent and credible to be able to make an impact and translate information and knowledge into action.</p>
 </div>
 
         </div>
