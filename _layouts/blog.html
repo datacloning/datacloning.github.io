@@ -50,6 +50,13 @@ s.setAttribute('data-timestamp', +new Date());
 
         </div>
     </div>
+    {% if site.ads %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+        {% include _ads.html %}
+        </div>
+    </div>
+    {% endif %}
 </div>
 
 {% include _footer.html %}

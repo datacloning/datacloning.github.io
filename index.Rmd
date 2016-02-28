@@ -76,6 +76,13 @@ works with all major MCMC engines. See the <a href="{{ site.baseurl }}/install.h
 
         </div>
     </div>
+    {% if site.ads %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+        {% include _ads.html %}
+        </div>
+    </div>
+    {% endif %}
 </div>
 
 {% comment %}
