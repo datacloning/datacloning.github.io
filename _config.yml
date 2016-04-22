@@ -27,7 +27,7 @@ disqus: datacloning
 
 author: '<a href="http://peter.solymos.org">P&eacute;ter S&oacute;lymos</a>'
 
-ads: true
+ads: false
 
 gems:
   - jekyll-feed
