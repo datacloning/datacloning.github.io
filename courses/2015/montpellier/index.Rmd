@@ -7,8 +7,6 @@ layout: default
 
 ### August 1st, 2015, from 8:15 to 17:15, at Agropolis International ([map](https://www.google.ca/maps/place/Agropolis+International/@43.6468738,3.8686796,17z/data=!3m1!4b1!4m2!3m1!1s0x12b6af2babf8ec2f:0xd266d886ae37eee9)) in room Argane.
 
-![Montpellier course image](http://peter.solymos.org/img/thumbnails/dc-montpellier-2015.png)
-
 This training course is aimed towards the conservation professionals who need to understand and feel comfortable with modern statistical and computational tools used to address pressing conservation issues. By presenting both Bayesian and Likelihood based approaches, the participants will be able to go beyond the rhetorics of philosophy of statistics and use the tools with full understanding of their assumptions and implications.
 
 ## Course resources
