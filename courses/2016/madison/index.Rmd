@@ -5,7 +5,17 @@ layout: default
 
 **One-day short course at [NACCB congress](http://www.scbnacongress.org/) in Madison, WI, on July 16th, with Peter Solymos and Subhash Lele.**
 
-We aim this training course towards conservation professionals who need to understand and feel comfortable with modern statistical and computational tools used to address conservation issues. Conservation science needs to be transparent and credible to be able to make an impact and translate information and knowledge into action.
+> We aim this training course towards conservation professionals who need to understand and feel comfortable with modern statistical and computational tools used to address conservation issues. Conservation science needs to be transparent and credible to be able to make an impact and translate information and knowledge into action.
+
+### Where, when?
+
+The congress program is out (see [here](http://www.xcdsystem.com/scbna/program/)).
+
+Congress registration is <del>now open [here](http://www.scbnacongress.org/short-courses)</del> closed.
+
+* The short course date: Saturday, July 16,
+* time: 9:00 AM &ndash; 5:00 PM,
+* location: Hall of Ideas H, [Monona Terrace Community and Convention Center](http://www.mononaterrace.com/).
 
 ### Description
 
@@ -15,14 +25,23 @@ Hierarchical models are useful in such situations. Fitting these models to data,
 
 We will teach both Bayesian and Likelihood based approaches to these models using freely available software developed by the tutors. By presenting both Bayesian and Likelihood based approaches participants will be able to go beyond the rhetorics of philosophy of statistics and use the tools with full understanding of their assumptions and implications. This will help ensure that when they use the statistical techniques, be they Bayesian or Frequentist, they will be able to explain and communicate the results to the managers and general public appropriately.
 
-### Where, when?
+### Organizational structure
 
-The congress program is out (see [here](http://www.xcdsystem.com/scbna/program/)).
+* Introduction and overview of statistical concepts: seminar format (1&ndash;1.5 hours), followed by a short break.
+* Hierarchical models: hands on training.
+* Lunch break (lunch provided) with informal discussions.
+* Analyzing data with temporal and spatial dependence, model identifiability: hands on training with short break in the middle.
 
-* The short course date: Saturday, July 16,
-* time: 9:00 AM &ndash; 5:00 PM,
-* location: Hall of Ideas H, [Monona Terrace Community and Convention Center](http://www.mononaterrace.com/).
+Participants should bring their own laptops. Open source and free software, and electronic course material will be provided by organizers.
 
-### Registration
+Coffee and lunch will be provided.
 
-Congress registration is <del>now open [here](http://www.scbnacongress.org/short-courses)</del> closed.
+### Course resources
+
+* [What to do before the course]({{ site.baseurl }}/courses/2016/madison/how-to-prepare.html)
+
+### Contact the organizers
+
+* [Péter Sólymos](http://peter.solymos.org)
+* [Subhash R. Lele](http://www.stat.ualberta.ca/~slele/)
+
