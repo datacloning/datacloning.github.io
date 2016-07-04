@@ -31,15 +31,16 @@ notation, so having RStudio will make our life easier. RStudio is also available
 We will use JAGS during the course because it is robust, easy to install, and cross-paltform available. Download the latest version suitable for your operating system from [here](http://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/) (the latest JAGS version at the time of writing these instructions is 3.4.2).
 
 > **Note**: due to recent changes in R's Windows toolchain (which impacts Windows specific installation only), pay attention to matching versions:
+>
 > * if you are using R 3.3.0 or later then install `JAGS-4.2.0-Rtools33.exe`,
 > * if you are using R 3.2.4 or earlier then install `JAGS-4.2.0.exe`.
 
 ## Install R packages
 
-Once R/RStudio and JAGS is installed, run the following commands in R/RStudio to install the necessary R packages ([rjags](https://cran.r-project.org/package=rjags), 
-[dclone](https://cran.r-project.org/package=dclone), 
-[coda](https://cran.r-project.org/package=code), 
-[snow](https://cran.r-project.org/package=snow), 
+Once R/RStudio and JAGS is installed, run the following commands in R/RStudio to install the necessary R packages ([rjags](https://cran.r-project.org/package=rjags),
+[dclone](https://cran.r-project.org/package=dclone),
+[coda](https://cran.r-project.org/package=code),
+[snow](https://cran.r-project.org/package=snow),
 [rlecuyer](https://cran.r-project.org/package=rlecuyer)):
 
 ```r
@@ -57,38 +58,38 @@ function()
 {
     if (getRversion() < "2.15.1")
         stop("R >= 2.15.1 required")
-    cat("--- R version is", 
+    cat("--- R version is",
         as.character(getRversion()), "--- OK\n")
 
     if (!require(dclone))
         stop("dclone package not installed")
     if (packageVersion("dclone") < "2.1.1")
         stop("dclone >= 2.1.1 required")
-    cat("--- dclone package version is", 
+    cat("--- dclone package version is",
         as.character(packageVersion("dclone")), "--- OK\n")
 
     if (!require(coda))
         stop("coda package not installed")
     if (packageVersion("coda") < "0.13")
         stop("coda >= 0.13 required")
-    cat("--- coda package version is", 
+    cat("--- coda package version is",
         as.character(packageVersion("coda")), "--- OK\n")
 
     if (!require(rjags))
         stop("rjags package not installed")
     if (packageVersion("rjags") < "4.4")
         stop("rjags >= 4.4 required")
-    cat("--- rjags package version is", 
+    cat("--- rjags package version is",
         as.character(packageVersion("rjags")), "--- OK\n")
 
     if (!require(snow))
         stop("snow package not installed")
-    cat("--- snow package version is", 
+    cat("--- snow package version is",
         as.character(packageVersion("snow")), "--- OK\n")
 
     if (!require(rlecuyer))
         stop("rlecuyer package not installed")
-    cat("--- rlecuyer version is", 
+    cat("--- rlecuyer version is",
         as.character(packageVersion("rlecuyer")), "--- OK\n")
 
     cat("\n--- YOU ARE READY TO GO!\n\n")
@@ -98,4 +99,4 @@ check_if_ready_for_the_course()
 ```
 Congratulations! Now your computer is ready for the course.
 
-Contact [PC)ter SC3lymos](http://peter.solymos.org#about) if you still have problems.
+Contact [Peter Solymos](http://peter.solymos.org#about) if you still have problems.
