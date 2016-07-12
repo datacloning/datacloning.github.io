@@ -8,6 +8,15 @@ output:
     toc: true
     toc_depth: 2
     number_sections: true
+layout: course
+course:
+  location: Madison
+  year: 2016
+  title: "Hierarchical Models Made Easy &mdash; July 16, 2016 &mdash; Madison, WI &mdash; NACCB Congress"
+  lecture: Intro
+  file: Hierarchical-Models-Made-Easy_Intro
+  previous: how-to-prepare
+  next:
 ---
 
 # About this document
