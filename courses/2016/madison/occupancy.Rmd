@@ -1,0 +1,493 @@
+---
+title: "Occupancy models with detection error"
+author: "Peter Solymos and Subhash Lele"
+date: "July 16, 2016 &mdash; Madison, WI &mdash; NACCB Congress"
+layout: course
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+course:
+  location: Madison
+  year: 2016
+  title: "Hierarchical Models Made Easy &mdash; July 16, 2016 &mdash; Madison, WI &mdash; NACCB Congress"
+  lecture: Occupancy models with detection error
+  file: occupancy
+  previous: hierarchical-models
+  next: n-mixture
+  pdf: occupancy.pdf
+---
+
+
+
+Let us continue with the simple occupancy model we used previously. Most applied ecologists are aware that the occupancy and abundance surveys have some level of detection error. Even if the species is present, for various reasons we may not observe its presence. Similarly we may not be able to count all the individuals that are present at a location. Let us look at how to model such a situation. We will discuss the model and then show how it can be looked upon as a hierarchical model. 
+
+### Notation
+
+* $W_i$: this denotes the *observed* status at the location $i$, 
+  can be 0 or 1,
+* $Y_i$: this denotes the true status at the location $i$,
+  can be 0 or 1; this status is *unknown*.
+
+### Assumptions
+
+1. The observed status depends on the true status. If there is no dependence between the two variables, obviously we cannot do any inference.
+2. There are no ``phantom'' individuals. That is, if the true status is 0, we will observe 0 with probability 1.
+3. True status at one location is independent of status of other locations. 
+4. Observation at one location is not affected by what we observed anywhere else (or, at other times at that location). Surveys are independent of each other. 
+
+We can extend the Bernoulli model from the introduction as follows:
+
+* True status: $$ Y_i \sim Bernoulli(\varphi) $$.
+* Observed status: $$ (W_i \mid Y_i = y_i) \sim Bernoulli(p^{y_i} (1 - p)^{1 - y_i}) $$.
+
+An important thing to note here is that we only observe $W$'s and not the true statuses ($Y$) which are unknown. We can use the standard probability rules to compute:
+
+$$P(W_i = 1) = P(W_i = 1 \mid Y_i = 1) P(Y_i = 1) + P(W_i = 1 \mid Y_i = 0) P(Y_i = 0) = p \varphi + 0 \cdot (1 - \varphi) = p \varphi$$
+
+$$P(W_i = 0) = P(W_i = 0 \mid Y_i = 1) P(Y_i = 1) + P(W_i = 0 \mid Y_i = 0) P(Y_i = 0) = 1 - p \varphi$$
+
+This is called the marginal distribution of $W$. We can write down the likelihood function as a function of parameters $(p, \varphi)$.
+
+$$L(p, \varphi; w_{1}, w_{2}, \ldots, w_{n}) = \prod_{i=1}^{n} P(W_i = w_i; p, \varphi) = \prod_{i=1}^{n} (p \varphi)^{w_i} (1 - p \varphi)^{1 - w_i}$$
+
+> ### Cautionary note
+>
+> Just because one can write down the likelihood function, 
+> it does not mean one can estimate the parameters. 
+
+This is a simple situation with two parameters and hence we can plot the likelihood function as a contour plot. 
+
+R code for data generation:
+
+```{r}
+set.seed(4321)
+n <- 100
+p <- 0.6
+phi <- 0.4
+y <- rbinom(n = n, size = 1, prob = phi)
+w <- rbinom(n = n, size = y, prob = p)
+table(Y = y, W = w)
+```
+
+Given the data, plot the likelihood contours.
+
+```{r}
+## setting up the grid for p and phi
+grid <- expand.grid(p = seq(0, 1, by = 0.01),
+    phi = seq(0, 1, by = 0.01), 
+    L = NA)
+## the likelihood function
+L_fun <- function(w, p, phi) {
+    prod((p * phi)^w * (1 - p * phi)^(1 - w))
+}
+## calculating the likelihood for the grid
+for (i in 1:nrow(grid)) {
+    grid$L[i] <- L_fun(w = w, p = grid$p[i], phi = grid$phi[i])
+}
+## plot the likelihood surface
+dcpal_reds <- colorRampPalette(c("#f9f2f4", "#c7254e"))
+L_mat <- matrix(grid$L, sqrt(nrow(grid)))
+image(L_mat, 
+    xlab = "p", ylab = expression(varphi),
+    col = dcpal_reds(12))
+abline(h = phi, v = p, col = "#f9f2f4", lwd = 3)
+abline(h = phi, v = p, col = "#c7254e", lwd = 1)
+curve((p * phi) / x, 0, 1, add = TRUE, 
+    col = "#18bc9c", lwd = 2)
+```
+
+We can see that the likelihood function looks like a mountain with a ridge tracing a curve corresponding to the product $p \varphi = c$.
+
+```{r,eval=FALSE}
+library(rgl)
+open3d()
+bg3d("white")
+material3d(col = "black")
+dcpal_grbu <- colorRampPalette(c("#18bc9c", "#3498db"))
+Col <- rev(dcpal_grbu(12))[cut(L_mat, breaks = 12)]
+persp3d(L_mat / max(L_mat), col = Col,
+    theta=50, phi=25, expand=0.75, ticktype="detailed",
+    xlab = "p", ylab = "phi", zlab = "L")
+```
+
+* Likelihood function does not have a unique maximum. All values along this curve have equal support in the data. We can estimate the product but not the individual components of the product. 
+* The placement of the curve depends on the data. So there is information in the data only about the product but not the components.
+
+When the likelihood function attains maximum at more than one parameter combination, we call the parameters *non-estimable*. There are various reasons for such non-estimability (Reference: Campbell and Lele, 2013 and a couple of references from that paper).
+
+Structural problems with the model: it might be that the structure of the problem is such that no matter what, you cannot estimate the parameters. This is called *non-identifiability*.
+
+Sometimes there are no structural issues but the observed data combination is such that the likelihood is problematic. This is called *non-estimability*. An example will be collinear covariates in regression. 
+
+> Consequences of *non-identifiability*: 
+> management decisions can be based only on identifiable 
+> components of the model. 
+
+For models with more than two parameters, it is very difficult to plot the likelihood function. It is nearly impossible to diagnose non-identifiability and non-estimability of the parameters. Data cloning method provides a very simple approach to diagnose non-estimability for general hierarchical models. 
+
+We can skip all the mathematical details in the calculation of the likelihood function and use JAGS and MCMC to do almost all of the above analysis.
+
+### Bayesian model in JAGS
+
+```{r}
+library(dclone)
+library(rjags)
+model <- custommodel("model {
+    for (i in 1:n) {
+        Y[i] ~ dbern(phi)
+        W[i] ~ dbern(Y[i] * p)
+    }
+    #p ~ dunif(0.001, 0.999)
+    #phi ~ dunif(0.001, 0.999)
+    p ~ dbeta(1, 1)
+    phi ~ dbeta(0.5, 0.5)
+}")
+dat <- list(W = w, n = n)
+#ini <- list(Y = w)
+ini <- list(Y = rep(1, n))
+fit <- jags.fit(data = dat, params = c("p", "phi"), 
+    model = model, init = ini)
+summary(fit)
+plot(fit)
+pairs(fit)
+```
+
+
+> ### Bayesian inference
+> 
+> Observe what happens to convergence diagnostics. 
+
+### Data cloning
+
+To make sure that both locations and klones are independent
+(i.i.d.), it is safest to include and extra dimension
+and the corresponding loop.
+
+```{r}
+library(dclone)
+library(rjags)
+model <- custommodel("model {
+    for (k in 1:K) {
+        for (i in 1:n) {
+            Y[i,k] ~ dbern(phi)
+            W[i,k] ~ dbern(Y[i,k] * p)
+        }
+    }
+    #p ~ dunif(0.001, 0.999)
+    #phi ~ dunif(0.001, 0.999)
+    p ~ dbeta(1, 1)
+    phi ~ dbeta(0.5, 0.5)
+}")
+dat <- list(W = dcdim(data.matrix(w)), n = n, K = 1)
+ini <- list(Y = dcdim(data.matrix(w)))
+ifun <- function(model, n.clones) {
+    dclone(list(Y = dcdim(data.matrix(w))),
+        n.clones)
+}
+dcfit <- dc.fit(data = dat, params = c("p", "phi"), 
+    model = model, inits = ini,
+    n.clones = c(1,2,4,8), unchanged = "n", multiply = "K",
+    initsfun = ifun, n.iter = 10000)
+summary(dcfit)
+plot(dcfit)
+dctable(dcfit)
+plot(dctable(dcfit))
+dcdiag(dcfit)
+plot(dcdiag(dcfit))
+pairs(dcfit)
+```
+
+#### Modification
+
+If locations are treated as i.i.d., it is possible to
+replicate the vector, so that length
+becomes `n * K`.
+
+```{r}
+model <- custommodel("model {
+    for (i in 1:n) {
+        Y[i] ~ dbern(p)
+        W[i] ~ dbern(Y[i] * phi)
+    }
+    p ~ dunif(0.001, 0.999)
+    phi ~ dunif(0.001, 0.999)
+}")
+dat <- list(W = w, n = n)
+ini <- list(Y = w)
+ifun <- function(model, n.clones) {
+    dclone(list(Y = w), n.clones)
+}
+dcfit <- dc.fit(data = dat, params = c("p", "phi"), 
+    model = model, inits = ini,
+    n.clones = c(1,2,4,8), multiply = "n",
+    initsfun = ifun)
+```
+
+> ### Data cloning inference
+>
+> Observe what happens to the standard errors as we increase the 
+> number of clones. It does not converge to 0 as it did before. 
+> This indicates non-estimabilty of the parameters. 
+
+### Can we do something about this non-identifiability?
+
+Suppose we go to the same location more than once, say $T$ times. Then sometimes we will observe the species and sometimes we will not. These changes may help us learn about the detection error process.
+
+The occupancy model with replicate visits is:
+
+* True status: $$ Y_i \sim Bernoulli(\varphi) $$.
+* Observed status: $$ (W_{i,t} \mid Y_i = 1) \sim Bernoulli(p) $$ and
+$$ W_{i,t}  \mid Y_i = 0 $$ equals 0 with probability 1.
+
+The likelihood function is:
+
+$$L(p, \varphi; w_{1,1}, \ldots, w_{n,T})  = \prod_{i=1}^{n} \left[ \varphi \left( \binom{Y}{w_{i \cdot}} p^{w_{i \cdot}} (1 - p)^{T - w_{i \cdot}} \right) + (1 - \varphi) I(w_{i \cdot} = 0)\right]$$
+
+where $$ w_{i \cdot} = \sum^{t=1}_{T} w_{i,t}$$ and $$I( w_{i \cdot} = 0 )$$ is an indicator function that is equal to one if $$w_{i \cdot} = 0$$. 
+
+### Assumptions
+
+1. Closed population assumption: there is colonization or
+  extinction, that is the true status remains the same
+  over the visits.
+2. Independent survey assumption: replicate visits are
+  independent of each other.
+
+R code for data generation:
+
+```{r}
+set.seed(1234)
+n <- 50
+T <- 5
+p <- 0.6
+phi <- 0.4
+y <- rbinom(n = n, size = 1, prob = phi)
+w <- matrix(NA, n, T)
+for (t in 1:T)
+    w[,t] <- rbinom(n = n, size = y, prob = p)
+```
+
+Given the data, plot the likelihood contours.
+
+```{r}
+## setting up the grid for p and phi
+grid <- expand.grid(p = seq(0, 1, by = 0.01),
+    phi = seq(0, 1, by = 0.01), 
+    L = NA)
+## the likelihood function
+L_fun <- function(w, p, phi) {
+    wdot <- rowSums(w)
+    T <- ncol(w)
+    prod(phi * (choose(T, wdot) * p^wdot * (1 - p)^(T - wdot)) + 
+        (1 - phi) * (wdot == 0))
+}
+## calculating the likelihood for the grid
+for (i in 1:nrow(grid)) {
+    grid$L[i] <- L_fun(w = w, p = grid$p[i], phi = grid$phi[i])
+}
+## plot the likelihood surface
+dcpal_reds <- colorRampPalette(c("#f9f2f4", "#c7254e"))
+L_mat <- matrix(grid$L, sqrt(nrow(grid)))
+image(L_mat, 
+    xlab = "p", ylab = expression(varphi),
+    col = dcpal_reds(12))
+abline(h = phi, v = p, col = "#f9f2f4", lwd = 3)
+abline(h = phi, v = p, col = "#c7254e", lwd = 1)
+```
+
+
+```{r,eval=FALSE}
+library(rgl)
+open3d()
+bg3d("white")
+material3d(col = "black")
+dcpal_grbu <- colorRampPalette(c("#18bc9c", "#3498db"))
+Col <- rev(dcpal_grbu(12))[cut(L_mat, breaks = 12)]
+persp3d(L_mat / max(L_mat), col = Col,
+    theta=50, phi=25, expand=0.75, ticktype="detailed",
+    ylab = "p", xlab = "phi", zlab = "L")
+```
+
+### Bayesian model in JAGS
+
+```{r}
+library(dclone)
+library(rjags)
+model <- custommodel("model {
+    for (i in 1:n) {
+        Y[i] ~ dbern(phi)
+        for (t in 1:T) {
+            W[i,t] ~ dbern(Y[i] * p)
+        }
+    }
+    p ~ dunif(0.001, 0.999)
+    phi ~ dunif(0.001, 0.999)
+}")
+dat <- list(W = w, n = n, T = T)
+ini <- list(Y = ifelse(rowSums(w) > 0, 1, 0))
+fit <- jags.fit(data = dat, params = c("p", "phi"), 
+    model = model, inits = ini)
+summary(fit)
+plot(fit)
+pairs(fit)
+```
+
+
+### Bayesian inference
+
+Effect of priors on the estimation and prediction of the occupancy proportion:
+
+```{r}
+model <- custommodel("model {
+    for (i in 1:n) {
+        Y[i] ~ dbern(p)
+        for (t in 1:T) {
+            W[i,t] ~ dbern(Y[i] * phi)
+        }
+    }
+    p <- ilogit(logit_p)
+    phi <- ilogit(logit_phi)
+    logit_p ~ dnorm(-2, 0.01)
+    logit_phi ~ dnorm(2, 0.01)
+}")
+dat <- list(W = w, n = n, T = T)
+ini <- list(Y = ifelse(rowSums(w) > 0, 1, 0))
+fit2 <- jags.fit(data = dat, params = c("p", "phi"), 
+    model = model, inits = ini)
+summary(fit2)
+plot(fit2)
+pairs(fit2)
+```
+
+### Data cloning
+
+Frequentist inference: Identifiability check, independence from the specification of the prior check, confidence intervals and predictions for the occupancy proportion.
+
+```{r}
+library(dclone)
+library(rjags)
+model <- custommodel("model {
+    for (k in 1:K) {
+    for (i in 1:n) {
+        Y[i,k] ~ dbern(phi)
+        for (t in 1:T) {
+            W[i,t,k] ~ dbern(Y[i,k] * p)
+        }
+    }
+    }
+    p ~ dunif(0.001, 0.999)
+    phi ~ dunif(0.001, 0.999)
+}")
+dat <- list(W = dcdim(array(w, c(n,T,1))), n = n, T = T, K = 1)
+ini <- list(Y = data.matrix(rep(1, n)))
+ifun <- function(model, n.clones) {
+    list(Y = dclone(dcdim(data.matrix(rep(1, n))), n.clones))
+}
+dcfit <- dc.fit(data = dat, params = c("p", "phi"), 
+    model = model, inits = ini,
+    n.clones = c(1,2,4,8), multiply = "K", unchanged = c("n","T"),
+    initsfun = ifun)
+summary(dcfit)
+plot(dcfit)
+dctable(dcfit)
+plot(dctable(dcfit))
+dcdiag(dcfit)
+plot(dcdiag(dcfit))
+#pairs(dcfit)
+```
+
+### Generalization to take into account covariates
+
+$p$ and $\varphi$ can be a function of independent variables
+with values varying across the $n$ location, for example:
+
+* $$p_i = \frac{exp(\theta_0 + \theta_1 z_i)}{1 + exp(\theta_0 + \theta_1 z_i)}$$.
+* $$\varphi_i = \frac{exp(\beta_0 + \beta_1 x_i)}{1 + exp(\beta_0 + \beta_1 x_i)}$$,
+
+R code for data generation:
+
+```{r}
+set.seed(1234)
+n <- 1000
+x <- rnorm(n)
+z <- rnorm(n)
+beta <- c(0, 1)
+theta <- c(0.2, -0.5)
+p <- exp(theta[1] + theta[2] * z) / (1 + exp(theta[1] + theta[2] * z))
+phi <- exp(beta[1] + beta[2] * x) / (1 + exp(beta[1] + beta[2] * x))
+#p <- plogis(model.matrix(~z) %*% theta)
+#phi <- plogis(model.matrix(~x) %*% beta)
+y <- rbinom(n = n, size = 1, prob = phi)
+w <- rbinom(n = n, size = y, prob = p)
+table(Y = y, W = w)
+```
+
+```{r}
+naive <- glm(w ~ x, family = binomial("logit"))
+summary(naive)
+library(detect)
+m <- svocc(w ~ x | z)
+summary(m)
+```
+
+```{r}
+model <- custommodel("model {
+    for (i in 1:n) {
+        W[i] ~ dbin(p[i] * phi[i], K)
+        logit(p[i]) <- inprod(Z[i,], theta)
+        logit(phi[i]) <- inprod(X[i,], beta)
+    }
+    beta[1] ~ dnorm(0, 0.001)
+    beta[2] ~ dnorm(0, 0.001)
+    theta[1] ~ dnorm(0, 0.001)
+    theta[2] ~ dnorm(0, 0.001)
+}")
+dat <- list(W = w, n = n, K = 1, 
+    X = model.matrix(~x), Z = model.matrix(~z))
+dcfit <- dc.fit(data = dat, 
+    params = c("beta", "theta"), model = model,
+    n.clones = c(1, 10), n.iter = 2000,
+    unchanged = c("W", "n", "X", "Z"), multiply = "K")
+summary(dcfit)
+#plot(dcfit)
+dctable(dcfit)
+#plot(dctable(dcfit))
+dcdiag(dcfit)
+#plot(dcdiag(dcfit))
+pairs(dcfit)
+```
+
+For a quasi-Bayesian approach, see [here](https://github.com/psolymos/detect/tree/master/extras/revisitingSV#quasi-bayesian-single-visit-occupancy-model) how to utilize the naive estimator to stabilize single visit based estimates:
+
+```{r}
+model <- custommodel("model {
+    for (i in 1:n) {
+        W[i] ~ dbin(p[i] * phi[i], K)
+        logit(p[i]) <- inprod(Z[i,], theta)
+        logit(phi[i]) <- inprod(X[i,], beta)
+    }
+    beta[1] ~ dnorm(naive[1], penalty)
+    beta[2] ~ dnorm(naive[2], penalty)
+    theta[1] ~ dnorm(0, 0.001)
+    theta[2] ~ dnorm(0, 0.001)
+}")
+dat <- list(W = w, n = n, K = 1, 
+    X = model.matrix(~x), Z = model.matrix(~z),
+    naive = coef(naive), penalty = 0.5)
+dcfit <- dc.fit(data = dat, 
+    params = c("beta", "theta"), model = model,
+    n.clones = c(1, 10, 100), 
+    n.update = 5000, n.iter = 2000,
+    unchanged = c("W", "n", "X", "Z", "naive", "penalty"), 
+    multiply = "K")
+summary(dcfit)
+#plot(dcfit)
+dctable(dcfit)
+#plot(dctable(dcfit))
+dcdiag(dcfit)
+#plot(dcdiag(dcfit))
+pairs(dcfit)
+```
+
