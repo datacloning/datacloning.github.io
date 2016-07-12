@@ -2,7 +2,6 @@
 title: "Hierarchical Models Made Easy"
 date: "July 16, 2016 &mdash; Madison, WI &mdash; NACCB Congress"
 author: "Peter Solymos and Subhash Lele"
-layout: default
 output:
   pdf_document:
     toc: true
@@ -16,7 +15,7 @@ course:
   lecture: Intro
   file: Hierarchical-Models-Made-Easy_Intro
   previous: how-to-prepare
-  next:
+  next: hierarchical-models
 ---
 
 # About this document
