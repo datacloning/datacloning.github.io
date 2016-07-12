@@ -11,6 +11,7 @@ course:
   file: how-to-prepare
   previous: index
   next: Hierarchical-Models-Made-Easy_Intro
+  pdf: Hierarchical-Models-Made-Easy_Intro.pdf
 ---
 
 Please follow these steps and install necessary software onto your computer that you are going to use at the course. This way we can spend more time on talking about modeling.
