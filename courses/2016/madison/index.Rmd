@@ -39,7 +39,7 @@ Morning coffee, and afternoon iced tea and lemonade, plus light snack of chips a
 ### Course resources
 
 * [What to do before the course]({{ site.baseurl }}/courses/2016/madison/how-to-prepare.html)
-* Introduction ([PDF]({{ site.baseurl }}/courses/2016/madison/Hierarchical-Models-Made-Easy_Intro.pdf), [Rmd](https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/2016/madison/Hierarchical-Models-Made-Easy_Intro.Rmd), [html]({{ site.baseurl }}/courses/2016/madison/Hierarchical-Models-Made-Easy_Intro.html))
+* [Introduction]({{ site.baseurl }}/courses/2016/madison/Hierarchical-Models-Made-Easy_Intro.html)
 
 ### Contact the organizers
 
