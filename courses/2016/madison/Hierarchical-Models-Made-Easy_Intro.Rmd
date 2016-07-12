@@ -16,6 +16,7 @@ course:
   file: Hierarchical-Models-Made-Easy_Intro
   previous: how-to-prepare
   next: hierarchical-models
+  pdf: Hierarchical-Models-Made-Easy_Intro.pdf
 ---
 
 # About this document
@@ -29,7 +30,7 @@ we can jump right into the fun part of hierarchical modeling on July 16th.
 
 This introduction is provided in PDF and Rmd file formats.
 Use RStudio (see installation guide) to open the Rmd
-([R markdown file format](http://rmarkdown.rstudio.com/)) 
+([R markdown file format](http://rmarkdown.rstudio.com/))
 file to directly access R code used in the PDF file.
 
 # About the course
@@ -528,7 +529,7 @@ abline(v = p, lwd = 2, col = flatly$red)
 ```
 
 As we increase the sample size,
-the likelihood becomes concentrated around the true value. 
+the likelihood becomes concentrated around the true value.
 This property of the maximum likelihood estimator is called
 *consistency*.
 
@@ -575,7 +576,7 @@ install_github("datacloning/dcapps")
 
 ### Commonly used statistical distributions
 
-Play with the parameter settings for these distributions: 
+Play with the parameter settings for these distributions:
 ```{r}
 library(dcapps)
 op <- par(mfrow = c(2, 2))
@@ -966,7 +967,7 @@ There is also a function for `normal_prior` and a `bimodel_prior`
 n <- 5
 op <- par(mfrow = c(1,2))
 normal_prior(p = 0.3, n = n, mu = 0, var = 1, scale = "prob")
-bimodal_prior(p = 0.3, n = n, 
+bimodal_prior(p = 0.3, n = n,
     mu1 = -2, var1 = 1, mu2 = 1, var2 = 2, scale = "prob")
 par(op)
 ```
