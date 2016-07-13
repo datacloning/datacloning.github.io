@@ -11,7 +11,7 @@ course:
   lecture: Occupancy models with detection error
   file: occupancy
   previous: hierarchical-models
-  next: n-mixture
+  next: abundance
   pdf: occupancy.pdf
 ---
 

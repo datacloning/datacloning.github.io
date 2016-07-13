@@ -9,10 +9,10 @@ course:
   year: 2016
   title: "Hierarchical Models Made Easy &mdash; July 16, 2016 &mdash; Madison, WI &mdash; NACCB Congress"
   lecture: Abundance models with detection error
-  file: n-mixture
+  file: abundance
   previous: occupancy
   next: lmm
-  pdf: n-mixture.pdf
+  pdf: abundance.pdf
 ---
 
 We can easily generalize this to model abundance surveys. The N-mixture model is the simplest (though unrealistic in practice). 
