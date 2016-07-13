@@ -3,11 +3,7 @@ title: "Occupancy models with detection error"
 author: "Peter Solymos and Subhash Lele"
 date: "July 16, 2016 &mdash; Madison, WI &mdash; NACCB Congress"
 layout: course
-output:
-  pdf_document:
-    toc: true
-    toc_depth: 2
-    number_sections: true
+output: pdf_document
 course:
   location: Madison
   year: 2016
@@ -39,8 +35,8 @@ Let us continue with the simple occupancy model we used previously. Most applied
 
 We can extend the Bernoulli model from the introduction as follows:
 
-* True status: $$ Y_i \sim Bernoulli(\varphi) $$.
-* Observed status: $$ (W_i \mid Y_i = y_i) \sim Bernoulli(p^{y_i} (1 - p)^{1 - y_i}) $$.
+* True status: $Y_i \sim Bernoulli(\varphi)$.
+* Observed status: $(W_i \mid Y_i = y_i) \sim Bernoulli(p^{y_i} (1 - p)^{1 - y_i})$.
 
 An important thing to note here is that we only observe $W$'s and not the true statuses ($Y$) which are unknown. We can use the standard probability rules to compute:
 
@@ -52,10 +48,8 @@ This is called the marginal distribution of $W$. We can write down the likelihoo
 
 $$L(p, \varphi; w_{1}, w_{2}, \ldots, w_{n}) = \prod_{i=1}^{n} P(W_i = w_i; p, \varphi) = \prod_{i=1}^{n} (p \varphi)^{w_i} (1 - p \varphi)^{1 - w_i}$$
 
-> ### Cautionary note
->
-> Just because one can write down the likelihood function, 
-> it does not mean one can estimate the parameters. 
+**Cautionary note** Just because one can write down the likelihood function, 
+it does not mean one can estimate the parameters. 
 
 This is a simple situation with two parameters and hence we can plot the likelihood function as a contour plot. 
 
@@ -121,9 +115,9 @@ Structural problems with the model: it might be that the structure of the proble
 
 Sometimes there are no structural issues but the observed data combination is such that the likelihood is problematic. This is called *non-estimability*. An example will be collinear covariates in regression. 
 
-> Consequences of *non-identifiability*: 
-> management decisions can be based only on identifiable 
-> components of the model. 
+Consequences of *non-identifiability*: 
+management decisions can be based only on identifiable 
+components of the model. 
 
 For models with more than two parameters, it is very difficult to plot the likelihood function. It is nearly impossible to diagnose non-identifiability and non-estimability of the parameters. Data cloning method provides a very simple approach to diagnose non-estimability for general hierarchical models. 
 
@@ -134,36 +128,50 @@ We can skip all the mathematical details in the calculation of the likelihood fu
 ```{r}
 library(dclone)
 library(rjags)
+library(lattice)
 model <- custommodel("model {
     for (i in 1:n) {
         Y[i] ~ dbern(phi)
         W[i] ~ dbern(Y[i] * p)
     }
-    #p ~ dunif(0.001, 0.999)
+    #p ~ dunif(0.001, 0.999) # alternative priors
     #phi ~ dunif(0.001, 0.999)
     p ~ dbeta(1, 1)
     phi ~ dbeta(0.5, 0.5)
 }")
 dat <- list(W = w, n = n)
+
+## try running this and see what happens:
+#fit <- jags.fit(data = dat, params = c("p", "phi"),  model = model)
+##  Error in node W[2]
+##  Node inconsistent with parents
+
+## ways of deining initial values
 #ini <- list(Y = w)
 ini <- list(Y = rep(1, n))
 fit <- jags.fit(data = dat, params = c("p", "phi"), 
     model = model, init = ini)
 summary(fit)
-plot(fit)
-pairs(fit)
+gelman.diag(fit)
+plot(fit) # trace and density
+pairs(fit) # bivariate density
+densityplot(fit) # density by chains
+qqmath(fit) # cumulative density by chains
+xyplot(fit) # lattice based trace
+acfplot(fit) # autocorrelation vs. lag
+crosscorr.plot(fit) # correlation matrix image
 ```
 
+Observe these about Bayesian inference:
 
-> ### Bayesian inference
-> 
-> Observe what happens to convergence diagnostics. 
+* Traceplot and R-hat values indicate good mixing and convergence.
+* Correlations are high, bivariate plots indicate problems.
 
 ### Data cloning
 
-To make sure that both locations and klones are independent
+To make sure that both locations and clones are independent
 (i.i.d.), it is safest to include and extra dimension
-and the corresponding loop.
+and the corresponding loop in the model.
 
 ```{r}
 library(dclone)
@@ -175,13 +183,14 @@ model <- custommodel("model {
             W[i,k] ~ dbern(Y[i,k] * p)
         }
     }
-    #p ~ dunif(0.001, 0.999)
+    #p ~ dunif(0.001, 0.999) # alternative priors
     #phi ~ dunif(0.001, 0.999)
     p ~ dbeta(1, 1)
     phi ~ dbeta(0.5, 0.5)
 }")
 dat <- list(W = dcdim(data.matrix(w)), n = n, K = 1)
 ini <- list(Y = dcdim(data.matrix(w)))
+## need to clone the initial values too
 ifun <- function(model, n.clones) {
     dclone(list(Y = dcdim(data.matrix(w))),
         n.clones)
@@ -199,13 +208,14 @@ plot(dcdiag(dcfit))
 pairs(dcfit)
 ```
 
+
 #### Modification
 
 If locations are treated as i.i.d., it is possible to
 replicate the vector, so that length
 becomes `n * K`.
 
-```{r}
+```{r,eval=FALSE}
 model <- custommodel("model {
     for (i in 1:n) {
         Y[i] ~ dbern(p)
@@ -225,27 +235,33 @@ dcfit <- dc.fit(data = dat, params = c("p", "phi"),
     initsfun = ifun)
 ```
 
-> ### Data cloning inference
->
-> Observe what happens to the standard errors as we increase the 
-> number of clones. It does not converge to 0 as it did before. 
-> This indicates non-estimabilty of the parameters. 
+Observe these about data cloning:
+
+* Traceplot and R-hat values indicate good mixing and convergence.
+* Correlations are high, bivariate plots indicate problems.
+* Observe what happens to the standard errors as we increase the 
+  number of clones. It does not converge to 0 as it did before. 
+  This indicates non-estimabilty of the parameters. 
+* `lambda.max` value is constant (not decreasing) with $K$, we'll discuss why.
+
 
 ### Can we do something about this non-identifiability?
 
-Suppose we go to the same location more than once, say $T$ times. Then sometimes we will observe the species and sometimes we will not. These changes may help us learn about the detection error process.
+Suppose we go to the same location more than once, say $T$ times. 
+Then sometimes we will observe the species and sometimes we will not. 
+These changes may help us learn about the detection error process.
 
 The occupancy model with replicate visits is:
 
-* True status: $$ Y_i \sim Bernoulli(\varphi) $$.
-* Observed status: $$ (W_{i,t} \mid Y_i = 1) \sim Bernoulli(p) $$ and
-$$ W_{i,t}  \mid Y_i = 0 $$ equals 0 with probability 1.
+* True status: $Y_i \sim Bernoulli(\varphi)$.
+* Observed status: $(W_{i,t} \mid Y_i = 1) \sim Bernoulli(p)$ and
+$W_{i,t}  \mid Y_i = 0$ equals 0 with probability 1.
 
 The likelihood function is:
 
 $$L(p, \varphi; w_{1,1}, \ldots, w_{n,T})  = \prod_{i=1}^{n} \left[ \varphi \left( \binom{Y}{w_{i \cdot}} p^{w_{i \cdot}} (1 - p)^{T - w_{i \cdot}} \right) + (1 - \varphi) I(w_{i \cdot} = 0)\right]$$
 
-where $$ w_{i \cdot} = \sum^{t=1}_{T} w_{i,t}$$ and $$I( w_{i \cdot} = 0 )$$ is an indicator function that is equal to one if $$w_{i \cdot} = 0$$. 
+where $w_{i \cdot} = \sum^{t=1}_{T} w_{i,t}$ and $I( w_{i \cdot} = 0 )$ is an indicator function that is equal to one if $w_{i \cdot} = 0$. 
 
 ### Assumptions
 
@@ -326,14 +342,21 @@ model <- custommodel("model {
     phi ~ dunif(0.001, 0.999)
 }")
 dat <- list(W = w, n = n, T = T)
+## initial values need to reflact realistic values
+#ini <- list(Y = rep(1, nrow(w)))
 ini <- list(Y = ifelse(rowSums(w) > 0, 1, 0))
 fit <- jags.fit(data = dat, params = c("p", "phi"), 
     model = model, inits = ini)
 summary(fit)
 plot(fit)
 pairs(fit)
+crosscorr.plot(fit)
 ```
 
+Much better right? Observe these:
+
+* Good mixing, but now the mode is at the right values.
+* No strong correlation.
 
 ### Bayesian inference
 
@@ -349,8 +372,8 @@ model <- custommodel("model {
     }
     p <- ilogit(logit_p)
     phi <- ilogit(logit_phi)
-    logit_p ~ dnorm(-2, 0.01)
-    logit_phi ~ dnorm(2, 0.01)
+    logit_p ~ dnorm(-2, 1)
+    logit_phi ~ dnorm(2, 1)
 }")
 dat <- list(W = w, n = n, T = T)
 ini <- list(Y = ifelse(rowSums(w) > 0, 1, 0))
@@ -359,6 +382,12 @@ fit2 <- jags.fit(data = dat, params = c("p", "phi"),
 summary(fit2)
 plot(fit2)
 pairs(fit2)
+```
+
+Compare posteriors based on the different priors: which one shall we prefer?
+
+```{r}
+cbind(Truth=c(p, phi), Uniform_prior=coef(fit), Normal_prior=coef(fit2))
 ```
 
 ### Data cloning
@@ -390,12 +419,39 @@ dcfit <- dc.fit(data = dat, params = c("p", "phi"),
     n.clones = c(1,2,4,8), multiply = "K", unchanged = c("n","T"),
     initsfun = ifun)
 summary(dcfit)
-plot(dcfit)
-dctable(dcfit)
-plot(dctable(dcfit))
-dcdiag(dcfit)
-plot(dcdiag(dcfit))
-#pairs(dcfit)
+
+## alternative prior specification
+model <- custommodel("model {
+    for (k in 1:K) {
+    for (i in 1:n) {
+        Y[i,k] ~ dbern(phi)
+        for (t in 1:T) {
+            W[i,t,k] ~ dbern(Y[i,k] * p)
+        }
+    }
+    }
+    p <- ilogit(logit_p)
+    phi <- ilogit(logit_phi)
+    logit_p ~ dnorm(-2, 10)
+    logit_phi ~ dnorm(2, 10)
+}")
+dat <- list(W = dcdim(array(w, c(n,T,1))), n = n, T = T, K = 1)
+ini <- list(Y = data.matrix(rep(1, n)))
+ifun <- function(model, n.clones) {
+    list(Y = dclone(dcdim(data.matrix(rep(1, n))), n.clones))
+}
+dcfit2 <- dc.fit(data = dat, params = c("p", "phi"), 
+    model = model, inits = ini,
+    n.clones = c(1,2,4,8), multiply = "K", unchanged = c("n","T"),
+    initsfun = ifun)
+summary(dcfit2)
+
+## no effect of prior
+cbind(Truth=c(p, phi), Uniform_prior=coef(dcfit), Normal_prior=coef(dcfit2))
+
+## see how prior effect is related to K
+sapply(dctable(dcfit), "[[", "mean")
+sapply(dctable(dcfit2), "[[", "mean")
 ```
 
 ### Generalization to take into account covariates
@@ -403,8 +459,8 @@ plot(dcdiag(dcfit))
 $p$ and $\varphi$ can be a function of independent variables
 with values varying across the $n$ location, for example:
 
-* $$p_i = \frac{exp(\theta_0 + \theta_1 z_i)}{1 + exp(\theta_0 + \theta_1 z_i)}$$.
-* $$\varphi_i = \frac{exp(\beta_0 + \beta_1 x_i)}{1 + exp(\beta_0 + \beta_1 x_i)}$$,
+* $p_i = \frac{exp(\theta_0 + \theta_1 z_i)}{1 + exp(\theta_0 + \theta_1 z_i)}$,
+* $\varphi_i = \frac{exp(\beta_0 + \beta_1 x_i)}{1 + exp(\beta_0 + \beta_1 x_i)}$.
 
 R code for data generation:
 
@@ -432,7 +488,7 @@ m <- svocc(w ~ x | z)
 summary(m)
 ```
 
-```{r}
+```{r,eval=FALSE}
 model <- custommodel("model {
     for (i in 1:n) {
         W[i] ~ dbin(p[i] * phi[i], K)
@@ -451,17 +507,14 @@ dcfit <- dc.fit(data = dat,
     n.clones = c(1, 10), n.iter = 2000,
     unchanged = c("W", "n", "X", "Z"), multiply = "K")
 summary(dcfit)
-#plot(dcfit)
 dctable(dcfit)
-#plot(dctable(dcfit))
 dcdiag(dcfit)
-#plot(dcdiag(dcfit))
 pairs(dcfit)
 ```
 
 For a quasi-Bayesian approach, see [here](https://github.com/psolymos/detect/tree/master/extras/revisitingSV#quasi-bayesian-single-visit-occupancy-model) how to utilize the naive estimator to stabilize single visit based estimates:
 
-```{r}
+```{r,eval=FALSE}
 model <- custommodel("model {
     for (i in 1:n) {
         W[i] ~ dbin(p[i] * phi[i], K)
@@ -478,16 +531,13 @@ dat <- list(W = w, n = n, K = 1,
     naive = coef(naive), penalty = 0.5)
 dcfit <- dc.fit(data = dat, 
     params = c("beta", "theta"), model = model,
-    n.clones = c(1, 10, 100), 
+    n.clones = c(1, 10), 
     n.update = 5000, n.iter = 2000,
     unchanged = c("W", "n", "X", "Z", "naive", "penalty"), 
     multiply = "K")
 summary(dcfit)
-#plot(dcfit)
 dctable(dcfit)
-#plot(dctable(dcfit))
 dcdiag(dcfit)
-#plot(dcdiag(dcfit))
 pairs(dcfit)
 ```
 
