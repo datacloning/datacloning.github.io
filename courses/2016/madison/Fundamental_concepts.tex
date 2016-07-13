@@ -1,0 +1,443 @@
+\documentclass[10pt]{beamer}
+\hypersetup{pdfpagemode=FullScreen}
+\usepackage{setspace}
+ \linespread{1.2}
+% \usepackage{beamerthemesplit} // Activate for custom appearance
+
+\title{Fundamental concepts in statistics}
+\subtitle {Statistical model and the likelihood function}
+\author{Subhash R. Lele}
+\institute {University of Alberta}
+\institute{Department of Mathematical Sciences\\University of Alberta\\Canada\\\textit{Email: slele@ualberta.ca}}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+%\section[Outline]{}
+%\frame{\tableofcontents}
+
+\begin{frame}
+\begin{center}
+\LARGE{Occupancy surveys}
+\end{center}
+\begin{enumerate} 
+\item Divide the study area in equal area cells. Let there be $N$ cells. 
+\pause
+\item Take a simple random sample of size $n$ from these cells.
+\pause
+\item Visit these selected cells and find out if it is occupied by the species or not.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\LARGE{Assumptions}
+\end{center}
+\begin{enumerate} 
+\item Cells are identical to each other. 
+\pause
+\item Occupancy status of one cell does not depend on the occupancy status of the other cells.
+\pause
+\item Because we cannot visit all selected cells simultaneously, we assume the occupancy status of the cells does not change during the survey period.   
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\LARGE{Statistical model and notation}
+\end{center}
+We can express the above process in statistical terms as:
+\begin{equation}
+Y_i \sim Bernoulli(p), i=1,2,...,n.
+\end{equation}
+are independent, identically distributed random variables.\\
+\begin{center}
+ Sampled cells: $Y_1,Y_2,...,Y_n$\\
+ Unsampled cells: $Y_{(n+1)},Y_{(n+2)},...,Y_N$\\
+ \end{center}
+ \emph {We will not differentiate between data and random variables for the sake of simplicity. The difference should be obvious from the context.}\\
+\begin{center} \textbf {Data:}$y_1,y_2,...,y_n.$\\
+\end{center}
+ These are the realized values $(0,0,1,1,0,..)$\\
+\end{frame}
+
+\begin{frame}
+\textbf {Statistical model}: This quantifies the probability of different outcomes. In our case, the possible outcomes are \{0,1\}. Hence we use the Bernoulli distribution to model these outcomes. The probability mass function of the Bernoulli random variable is given by $P(Y=y)=p^y(1-p)^{(1-y)}$ where $p$.\\
+The probability of success, $p$, is called the parameter of the model. This is generally unknown. However, if we know the value of this parameter, we know the behaviour of the statistical model completely.\\
+\textbf{One} of the goals of the statistical inference is to infer the value of the parameter using the observed data. The \textbf{method of maximum likelihood} tells us how this can be done in a very general fashion.\\
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\textbf {Likelihood function}
+\end{center}
+This is proportional to the probability of observing the data at hand: 
+\begin{equation}
+L(p; y_{1}, y_{2}, \ldots, y_{n}) = \prod_{i=1}^{n} p^{y_{i}} (1-p)^{1-y_{i}}
+\end{equation}
+We take the product because observations are assumed to be independent of each other. If the observations are dependent, such as in time series, we need to account for dependence appropriately. This will be covered later when we deal with population time series data. 
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\textbf {Important properties of the likelihood}
+\end{center}
+
+\begin{enumerate}
+\item Likelihood is a function of the parameter. 
+\item Data are fixed. 
+\item Likelihood is \emph{not} a probability of the parameter taking a specific value. It represents the probability of observing the data at hand for that particular value of the parameter. Thus, if the parameter is fixed at $\tilde{p}$, then the probability of observing the data at hand is:
+\begin{equation}
+L(\tilde{p}; y_{1}, y_{2}, \ldots, y_{n}) =\prod_{i=1}^{n} \tilde{p}^{y_{i}} (1-\tilde{p})^{1-y_{i}}. 
+\end{equation}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\textbf {Important properties of the likelihood (continued)}
+\end{center}
+
+\begin{enumerate}
+\item Different data sets lead to different likelihood functions.
+\pause 
+\item As the sample size increases, the likelihood function becomes concentrated around the true value of the parameter. This is an essential property of any estimation procedure. As we get more data, we should have stronger and stronger evidence for the true value. 
+\pause
+\item Likelihood is an intrinsically relative concept. It answers the question what is the strength of evidence for one parameter values \emph {as compared to} an alternative parameter value. Thus, likelihood \emph {ratio} is a more fundamental concept than the likelihood itself. (Hacking, 1965; Royall 1997).
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\textbf {Goals of statistical inference}
+\end{center}
+\begin{enumerate}
+\item Given these data, what is the strength of evidence for one hypothesis vis a vis an alternative hypothesis? \textbf {(Evidential paradigm)}
+\pause 
+\item Given these data, what decision do I make? \textbf {(Neyman-Pearson-Wald paradigm)}
+\pause
+\item Given these data, how do I change my beliefs? \textbf {(Bayesian paradigm)}
+\end{enumerate}
+Fisherian \textit {p-value} approach falls somewhere between the evidential paradigm and the Neyman-Pearson-Wald paradigm. It lacks the consideration of the alternative hypothesis and hence is inadequate for quantifying evidence (Royall, 1997).
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\textbf {The Maximum Likelihood Estimator (MLE)}
+\end{center}
+\begin{enumerate}
+\item This is that value of the parameter that is supported the best by the data at hand. 
+\pause 
+\item For a specific data set, this is simply a number; a point \textbf {estimate}.
+\pause
+\item For different data sets, we get different point estimates. A function that allows us to compute these different values is called an \textbf {estimator}. 
+\item Thus, $p$ is a parameter, $\hat{p}=\bar{Y}$ is an estimator and $\hat{p}=0.34$ is an estimate. 
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[plain,c]
+\begin{center}
+\LARGE{What is \alert {\emph{statistical}} about statistical inference?}\\ 
+\small \textit{Cox (1958, Annals of Mathematical Statistics)}
+\end{center}
+\begin{itemize}
+\item From particular to general: Inductive inference means making statements about population quantities based on the observed sample 
+\pause
+\item Quantifying \alert{\emph{uncertainty}} about such statements is what makes such statements \emph{statistical} inferential statements.
+\pause
+\item How do we quantify uncertainty? Traditionally we use probability as a measure of uncertainty. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\LARGE {Different definitions of probability}
+\end{center}
+\begin{enumerate}
+\item \textbf{Frequency definition} Long range proportion in a repeatable experiment
+\pause
+\item \textbf{Betting definition} How much would one bet on one event as compared to other event? 
+\pause
+\end{enumerate} 
+There are other systems of probability \textit{(Stanford encyclopedia of philosophy of science)}. We will use only these two for our discussion.
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\LARGE {Frequentist quantification of uncertainty}
+\end{center}
+If we repeat the experiment (whatever that might be), how often would my inferential statement be contradicted? Is my statement replicable? 
+\begin{enumerate}
+\item \textbf{Confidence intervals} What is the range of values would the statement take?
+\pause
+\item \textbf{Hypothesis testing and errors} How often would I make a mistake (Type I) or how often would I be correct (Power)?
+\pause
+\item \textbf{Misleading, Weak and Strong evidence} How often would I be misled? How often would I say 'I do not know'?
+\end{enumerate} 
+\end{frame}
+
+\begin{frame}
+\begin{enumerate}
+\item \textbf {Sampling distribution of an estimator}: Suppose we repeat the experiment, we will get different point estimate for each repetition. The histogram of these point estimates is called the \emph {sampling distribution} of the estimator. We may report the mean and quantiles of such a distribution. It characterizes the \alert {frequentist} uncertainty of the estimator. 
+\item \textbf {Estimated sampling distribution of the estimator}: In practice, of course, we do not have replicated experiments. We can, instead, use the point estimate from the current data as if it is the true parameter value and replicate the experiment under that assumption. This leads to Monte Carlo estimate of the sampling distribution. This is also called the 'parametric bootstrap'. 
+\item \textbf {Non-parametric bootstrap approach}: Instead of assuming the parametric model, if we simply resample with replacement from the data to generate new samples, we obtain a model-robust estimate of the sampling distribution. 
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\large Bias, Consistency and validity of the estimated confidence intervals
+\end{center}
+\begin{enumerate}
+\item If the estimator on an average equals the true parameter value, it is called an unbiased estimator. 
+\pause
+\item If the estimator converges to the true value as the sample size increases, it is called a 'consistent' estimator. This is an essential property of ANY statistical procedure. 
+\pause
+\item An estimator that converges to the true value fastest, is called an 'efficient' estimator. This can be, most of the times, characterized by the variance of the sampling distribution. Smaller the variance, better is the estimator. 
+\pause
+\item How often the true parameter value lies inside the \alert {estimated} confidence interval determines the validity of the confidence interval. It should cover the true value close to the stated coverage proportion. 
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}
+\begin{center}
+\alert{\LARGE Bayesian paradigm}
+\end{center}
+\begin{itemize}
+\item Inference should be based on the data at hand and should not depend on what other data I might have observed (roughly, \textit {the likelihood principle})
+\pause
+\item Where does the uncertainty come from? 
+\pause
+\item Uncertainty is in our beliefs about the values of the parameters. 
+\pause
+\item When we have no data, this uncertainty is quantified by the prior distribution $\pi(\theta)$.
+\pause
+\item When we observe some data, this uncertainty is quantified by the posterior distribution
+\begin{equation}
+\pi(\theta|y_{n})=\frac{f(\mathbf{y_{n}}|\theta)\pi(\theta)}{\int \mathbf{f(y_{n}}|\theta)\pi(\theta)d\theta}
+\end{equation}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{enumerate}
+\item We need to quantify our beliefs in terms of a probability distribution.
+\pause
+\item We need to be able to compute the posterior distribution.
+\pause 
+\item This is the uncertainty of our \alert {beliefs} about different values of the parameters after we observe the data. 
+\pause
+\item The posterior distribution, obviously, depends not just on the data at hand (unlike the likelihood function) but also depends on the prior distribution. Different prior distributions lead to different posterior distributions.
+\pause
+\item All we need to know is the posterior distribution. Any of the inferential statements can be obtained from the posterior distribution. (Examples later). 
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\LARGE Properties of the posterior distribution
+\end{center}
+\begin{enumerate}
+\item Same data, different priors lead to different posteriors.
+\pause
+\item Same prior, different data lead to different posteriors. 
+\pause
+\item As the sample size increases, the posterior distribution is invariant to the prior and it eventually degenerates at the true value (phew!). 
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\large \textbf {Bayesian analysis of occupancy problem}
+\end{center}
+\begin{itemize}
+\item Prior distribution: The parameter $p$ takes values in the range (0,1) and hence the prior distribution should also have the same range. Hence we MAY consider 
+\begin{equation}
+\pi(p)\sim Beta(a,b)
+\end{equation}
+We can choose different values for $a$ and $b$. They will reflect different beliefs about the occupancy probability. 
+\item The model for the observed data is as before:
+\begin{equation}
+Y_{i}|p\sim Bernoulli(p) for i=1,2,...,n
+\end{equation}
+\item The posterior distribution can be analytically computed as:
+\begin{equation}
+\pi(p|y_{(n)})\sim Beta(a+\sum y_{i},b+(n-\sum y_{i}))
+\end{equation}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\item Shapes of different priors
+\pause
+\item Shapes of different posteriors for the same data (prior affects the posterior)
+\pause
+\item Shapes of the posterior as we increase the sample size (information in the data)
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\begin{itemize}
+\item Nuisance parameters: If we are interested in only one of the parameters, we simply find the marginal posterior distribution for it by integrating over the rest of the parameters. 
+\begin{equation}
+\pi(\theta_2|\mathbf{y_n})=\int \pi(\theta_2,\theta_1|\mathbf{y_n})d\theta_1
+\end{equation}
+\pause
+\item Prediction of a new observation: We can simply write 
+\begin{equation}
+\pi(y_{n+1}|\mathbf{y_n})=\int f(y_{n+1}|\theta)\pi(\theta|\mathbf{y_n})d\theta
+\end{equation}
+\end{itemize}
+All these operations follow from the standard probability calculus. 
+\end{frame}
+
+\begin{frame}
+\begin{center} 
+\LARGE \textbf {Non-informative priors}
+\end{center}
+\begin{enumerate}
+\item Dependence of the scientific inference on the beliefs of the experimenter is bothersome to many scientists. It can bias the conclusions. Whose belief should we accept: An environmental activist or an oil industry expert or a 'scientist'? How do we justify these beliefs in the court of law where many ecological studies end up.
+\pause
+\item Can we construct priors so that the posterior is mostly affected by the data (the likelihood)?
+\pause
+\item Such priors are called non-informative priors and the analysis is euphemistically called an 'objective Bayesian' analysis.
+\pause
+\item Unfortunately, it is impossible to construct such non-informative priors (even according to the staunchest Bayesians). 
+\pause
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+Let us look at shapes of some of the 'non-informative' priors commonly used in occupancy models. 
+\begin{itemize}
+\item Uniform prior or $Beta(1,1)$ prior.
+\pause
+\item Jeffrey's prior or $Beta(0.5,0.5)$ prior
+\pause 
+\item Normal prior with large variance on the logit scale: In most applications, we use logistic regression model to model the probability of occupancy and such priors are specified on the regression coefficients. 
+\pause
+\item What are the induced priors on the probability scale? 
+\pause
+\item What is 'non-informative' on the logit scale is highly informative on the probability scale. This non-invariance to reparameterization is a major problem with the concept of 'non-informative' or 'objective' priors. It has strong implications in scientific inference and decision making. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\LARGE Hierarchical models
+\end{center}
+For hierarchical models, we have observables $\mathbf{y_n}$, latent variables$\mathbf{X_n}$ and parameters $\theta$. 
+\begin{itemize}
+\item Observation model: $\mathbf{y_n} \sim f(\mathbf{y_n}|\mathbf{X_n},\theta)$
+\item Latent variable model: $\mathbf{X_n} \sim g(\mathbf{X_n}|\theta)$
+\item Prior distribution: $\pi(\theta)$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\item We need to define a prior distribution is on ALL unknowns. Bayesian inference does not differentiate between parameters and random variables. 
+\item Information about parameters converges to infinity as the sample size increases.
+\item Information about random variables does not converge to infinity. There is always uncertainty about the next observation. 
+\item Random effects are NOT parameters. They are variables. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+Bayesian inference for hierarchical models is quite easy. All we need is the posterior distribution of the unknowns given the knowns. That is:
+\begin{equation}
+\pi(\theta,\mathbf{X_n}|\mathbf{y_n})=\frac{f(\mathbf{y_n}|\theta,\mathbf{X_n})g(\mathbf{X_n}|\theta)\pi(\theta)}{m(\mathbf{y_n})}
+\end{equation}
+The MCMC algorithms allow us to generate random numbers from the posterior distribution. These can be used to obtain credible intervals and other inferential quantities.\\
+\vspace{5mm}
+\textit{Complete class theorem says that the best decision is necessarily a Bayesian decision.}
+\pause
+\begin{center}
+\alert {\LARGE PROBLEM SOLVED?}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\item Let us see how to use computer software JAGS and 'dclone' to conduct Bayesian inference using MCMC for the occupancy model we have discussed.
+\pause
+\item Please make sure that the algorithm has converged. You can use the time series plots and R-hat diagnostics; however these are NOT fool-proof tests. There are no such test available.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\item The likelihood inference for hierarchical models is computationally very challenging because the evaluating the likelihood function involves evaluation of the high-dimensional integral:
+\pause
+\item On the other hand, Bayesian inference is relatively computationally easy. Hence the popularity of the Bayesian inference in ecology.
+\pause
+\item However, the thorny problem of specifying the prior (informative or non-informative) distribution and its effect on the final scientific inference remains. 
+\pause
+\item Can we trick Bayesian approach into giving frequentist answers? Thus, exploiting the computational simplicity of the Bayesian approach and still retaining the objectivity of the frequentist approach? 
+\pause
+\item \alert {DATA CLONING!}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\LARGE \alert {A brief introduction to data cloning}
+\end{center}
+The basic idea behind data cloning is really very simple. Recall that as we increase the sample size, the posterior distribution becomes degenerate at the MLE. Furthermore, it is also known that the posterior distribution converges to 
+$N(\hat{\theta,}I^{-1}(\hat{\theta}))$. 
+
+\begin{enumerate}
+\item Pretend as if we have conducted $K$ \alert {independent} experiments and each experiment ended up with \alert {exactly the same data.}
+\pause
+\item Thus, we have $K$ copies of the same data (hence the name 'data cloning'). Now apply the MCMC algorithm on this cloned data. 
+\pause
+\item If the number of clones is large, mean of the posterior distribution is the MLE and the variance multiplied by $K$ is the asymptotic variance of the MLE. 
+\pause
+\item This is invariant to the choice of the prior distribution. Prior distribution is simply a collection of guesses at the MLE.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\alert {Estimability of the parameters}
+\end{center}
+A very important outcome of the data cloning algorithm is a test for estimability of the parameters in the model. Just because you can write the likelihood function and maximize it; it does not imply that the parameters are estimable given the data. We may end up on a ridge in the likelihood. This is difficult to prove mathematically, especially for hierarchical models.\\
+\pause
+If the variance of the posterior distribution, instead of converging to 0 converges to a positive number, it implies that some of the parameters in the model are non-estimable. This should raise a very big red flag when interpreting the results of the analysis. 
+\end{frame}
+
+\begin{frame}
+Conducting data cloning based likelihood analysis is quite simple. A very minor modification of the JAGS program and the data file allows us to obtain the MLE and its variance. Let us see how we can do it for the occupancy model. 
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\LARGE {SUMMARY}
+\end{center}
+\begin{enumerate}
+\item Statistical inference is an inductive process. Given the data, we want to infer about the mechanism that could have generated the data.
+\pause
+\item Estimation corresponds to finding the best supported mechanism out of the proposed alternative mechanisms.
+\pause
+\item An inferential statement is \alert {statistical} only when we attach a measure of uncertainty to it.
+\pause
+\item There are two ways to attach such uncertainty measures: Frequentist and Bayesian.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\begin{enumerate}
+\item Frequentist approach requires the researcher to specify how the experiment might be replicated (at least potentially). It tells you how reliable are our statements.
+\pause
+\item Bayesian approach requires the researcher to specify prior beliefs and then it tells you what your modified beliefs should be. 
+\pause
+\item Both inferences can be applied for hierarchical models. Models are neither Bayesian nor Frequentist; only Bayesian or Frequentist inferences.
+\end{enumerate}
+\end{frame}
+
+\end{document}
