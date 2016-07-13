@@ -12,7 +12,7 @@ course:
   location: Madison
   year: 2016
   title: "Hierarchical Models Made Easy &mdash; July 16, 2016 &mdash; Madison, WI &mdash; NACCB Congress"
-  lecture: Intro
+  lecture: Hierarchical models
   file: hierarchical-models
   previous: Hierarchical-Models-Made-Easy_Intro
   next: occupancy
