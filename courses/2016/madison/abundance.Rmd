@@ -3,11 +3,7 @@ title: "Abundance models with detection error"
 author: "Peter Solymos and Subhash Lele"
 date: "July 16, 2016 &mdash; Madison, WI &mdash; NACCB Congress"
 layout: course
-output:
-  pdf_document:
-    toc: true
-    toc_depth: 2
-    number_sections: true
+output: pdf_document
 course:
   location: Madison
   year: 2016
@@ -29,8 +25,8 @@ We can easily generalize this to model abundance surveys. The N-mixture model is
 
 ### Specification of the hierarchical model
 
-* True abundance model:  $$ N_i \sim Poisson(\lambda) $$ for locations $i=1,2, \ldots, n$. 
-* Observation model: $$ (Y_{i,t} \mid N_i) \sim Binomial(N_i, p) $$ for visits $t=1,2, \ldots, T$.
+* True abundance model:  $N_i \sim Poisson(\lambda)$ for locations $i=1,2, \ldots, n$. 
+* Observation model: $(Y_{i,t} \mid N_i) \sim Binomial(N_i, p)$ for visits $t=1,2, \ldots, T$.
 
 ```{r}
 set.seed(1234)
@@ -146,6 +142,8 @@ dcfit <- dc.fit(data = dat,
     n.clones = c(1, 2, 4, 8), 
 #    n.update = 5000,
     unchanged = c("px", "pz", "naive"), multiply = "n")
+summary(dcfit)
+dcdiag(dcfit)
 ```
 
 ## Learning with DC
@@ -171,6 +169,8 @@ ini <- list(N = Y + 1)
 ifun <- function(model, n.clones) {
     dclone(list(N = Y + 1), n.clones)
 }
+## function to update prior
+## defined as Multivariate Normal distribution
 ufun <- function(model, n.clones) {
     cbind(coef(model), solve(vcov(model)))
 }
@@ -181,6 +181,8 @@ dcfit <- dc.fit(data = dat,
     n.clones = c(1, 2, 4, 8), 
     n.update = 5000,
     unchanged = c("px", "pz", "pr"), multiply = "n")
+summary(dcfit)
+dcdiag(dcfit)
 ```
 
 ### Zero-inflated Poisson latent process
@@ -223,6 +225,7 @@ model <- custommodel("model {
     q ~ dunif(0.001, 0.999)
 }")
 dat <- list(Y = Y, n = n, T = T)
+## initial values are trickier
 ini <- list(N = ifelse(rowSums(Y) > 0, 1, 0) * (apply(Y, 1, max) + 1),
     O = ifelse(rowSums(Y) > 0, 1, 0))
 fit <- jags.fit(data = dat, params = c("p", "lambda", "q"), 
