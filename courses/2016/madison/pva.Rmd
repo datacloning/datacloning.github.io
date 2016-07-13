@@ -36,7 +36,236 @@ Choice of different functional forms for $f(N_t, \theta)$ leads to different gro
 
 This lecture is more bare-bones than the previous ones. Please feel free to contact the organizers if you have questions.
 
-## Gompertz growth model without observation error
+
+## Ricker growth model
+
+### Ricker without observation error
+
+a-b parametrization (similar to Gompertz and Kalman filter), data generation:
+
+```{r}
+set.seed(23432)
+a <- 2
+b <- -0.1
+sigma_sq <- 0.05
+T <- 30
+x <- numeric(T)
+x[1] <- log(1)
+for (t in 2:T)
+    x[t] <- x[t - 1] + a + b * exp(x[t - 1]) + 
+        rnorm(1, 0, sqrt(sigma_sq))
+N <- exp(x)
+plot(as.ts(N))
+```
+
+Bayesian analysis
+
+```{r}
+library(dclone)
+model <- custommodel("model { 
+    for (k in 1:kk) { 
+        N[1,k] <- exp(x[1,k]) 
+        for (t in 2:T) { 
+            x[t,k] ~ dnorm(mu[t,k], 1 / sigma_sq) 
+            mu[t,k] <- a + b * N[t - 1,k] + x[t - 1,k] 
+            N[t,k] <- min(exp(x[t,k]), 10000) 
+        } 
+    } 
+    a ~ dnorm(1, 0.01) 
+    b ~ dnorm(0, 0.1) 
+    sigma_sq <- exp(log_sigma)^2 
+    log_sigma ~ dnorm(0, 1) 
+}")
+dat <- list(x = data.matrix(x), kk = 1, T = T)
+fit <- jags.fit(dat, c("a", "b", "log_sigma"), model)
+summary(fit)
+```
+
+Data cloning
+
+```{r}
+K <- c(1, 2, 4, 8)
+dat <- list(x = dcdim(data.matrix(x)), kk = 1, T = T)
+dcfit <- dc.fit(dat, c("a", "b", "sigma_sq"), model,
+    n.clones = K,
+    unchanged = "T", multiply = "kk")
+summary(fit)
+plot(dcdiag(dcfit))
+plot(dctable(dcfit))
+```
+
+Missing data
+
+```{r}
+dat$x[5,1] <- NA
+```
+
+Bayesian approach to predict missing observations and credible intervals
+
+```{r}
+fit <- jags.fit(dat, c("a", "b", "sigma_sq", "x[5,1]"), model)
+summary(fit)
+densplot(fit[,"x[5,1]"])
+abline(v = x[5], col = 2)
+abline(v = quantile(fit[,"x[5,1]"], probs = c(0.025, 0.5, 0.975)), 
+    col = 4, lty = 2)
+quantile(fit[,"x[5,1]"], probs = c(0.025, 0.5, 0.975))
+x[5]
+```
+
+DC approach to predict missing observations
+
+```{r}
+pmodel <- custommodel("model { 
+    for (k in 1:kk) { 
+        N[1,k] <- exp(x[1,k]) 
+        for (t in 2:T) { 
+            x[t,k] ~ dnorm(mu[t,k], 1 / sigma_sq) 
+            mu[t,k] <- a + b * N[t - 1,k] + x[t - 1,k] 
+            N[t,k] <- min(exp(x[t,k]), 10000) 
+        } 
+    } 
+    param[1:3] ~ dmnorm(cf[], Vinv[,])
+    a <- param[1] 
+    b <- param[2]
+    log_sigma <- param[3] 
+    sigma_sq <- exp(log_sigma)^2 
+}") 
+dcfit2 <- dc.fit(dat, c("a", "b", "log_sigma"), model,
+    n.clones = 8,
+    unchanged = "T", multiply = "kk")
+(V <- vcov(dcfit2)[c("a", "b", "log_sigma"), c("a", "b", "log_sigma")])
+(cf <- coef(dcfit2)[c("a", "b", "log_sigma")])
+prdat <- c(dat, list(cf = cf, Vinv = solve(V)))
+pred <- jags.fit(prdat, "x[5,1]", pmodel)
+
+densplot(pred)
+abline(v = x[5], col = 2)
+abline(v = quantile(pred, probs = c(0.025, 0.5, 0.975)), col = 4, lty = 2)
+x[5]
+quantile(pred, probs = c(0.025, 0.5, 0.975))
+```
+
+Predicting future states, Bayesian
+
+```{r}
+T2 <- 10
+dat2 <- list(x = data.matrix(c(x, rep(NA, T2))), 
+    kk = 1, T = T + T2)
+fit <- jags.fit(dat2, c("x[31:40,1]"), model)
+summary(fit)
+pi1 <- quantile(fit, probs = c(0.025, 0.5, 0.975))
+
+plot(as.ts(x), xlim=c(1,40), ylim = range(c(x, pi1)))
+matlines(30:40, rbind(x[c(30, 30, 30)], t(pi1)), col=4, lty=2)
+```
+
+Predicting future states, DC
+
+```{r}
+prdat2 <- c(dat2, list(cf = cf, Vinv = solve(V)))
+pred2 <- jags.fit(prdat2, "x[31:40,1]", pmodel)
+summary(pred2)
+pi2 <- quantile(pred2, probs = c(0.025, 0.5, 0.975))
+
+plot(as.ts(x), xlim=c(1,40), ylim = range(c(x, pi1, pi2)))
+matlines(30:40, rbind(x[c(30, 30, 30)], t(pi1)), col=4, lty=2)
+matlines(30:40, rbind(x[c(30, 30, 30)], t(pi2)), col=2, lty=2)
+```
+
+
+### Ricker with observation error
+
+Poisson observation error:
+
+```{r}
+set.seed(2345)
+a <- 0.5
+b <- -0.1
+sigma_sq <- 0.05
+T <- 30
+x <- numeric(T)
+x[1] <- log(1)
+for (t in 2:T)
+    x[t] <- x[t - 1] + a + b * exp(x[t - 1]) + 
+        rnorm(1, 0, sqrt(sigma_sq))
+O <- rpois(T, lambda = exp(x))
+plot(as.ts(O))
+
+library(dclone)
+model <- custommodel("model { 
+    for (k in 1:kk) { 
+        x[1,k] <- log(O[1,k])
+        N[1,k] <- O[1,k] 
+        for (t in 2:T) { 
+            x[t,k] ~ dnorm(mu[t,k], 1 / sigma_sq) 
+            mu[t,k] <- a + b * N[t - 1,k] + x[t - 1,k] 
+            N[t,k] <- min(exp(x[t,k]), 10000)
+            O[t,k] ~ dpois(N[t,k])
+        } 
+    } 
+    a ~ dnorm(1, 0.01) 
+    b ~ dnorm(0, 1) 
+    sigma_sq <- exp(log_sigma)^2 
+    log_sigma ~ dnorm(0, 1) 
+}")
+dat <- list(O = data.matrix(O), kk = 1, T = T)
+fit <- jags.fit(dat, c("a", "b", "sigma_sq"), model)
+summary(fit)
+```
+
+Normal observation error: this comes with an additional parameter
+
+```{r}
+set.seed(12321)
+a <- 0.5
+b <- -0.1
+sigma_sq <- 0.05
+tau_sq <- 0.1
+T <- 30
+x <- numeric(T)
+x[1] <- log(1)
+for (t in 2:T)
+    x[t] <- x[t - 1] + a + b * exp(x[t - 1]) + 
+        rnorm(1, 0, sqrt(sigma_sq))
+O <- exp(rnorm(T, mean = x, sd = sqrt(tau_sq)))
+plot(as.ts(O))
+
+model <- custommodel("model { 
+    for (k in 1:kk) { 
+        N[1,k] <- exp(O[1,k]) 
+        x[1,k] <- O[1,k] 
+        for (t in 2:T) { 
+            x[t,k] ~ dnorm(mu[t,k], 1 / sigma_sq) 
+            mu[t,k] <- a + b * N[t-1,k] + x[t-1,k] 
+            N[t,k] <- min(exp(x[t,k]), 10000) 
+            O[t,k] ~ dnorm(x[t,k], 1 / tau_sq) 
+        } 
+    } 
+    a ~ dnorm(0, 0.01) 
+    b ~ dnorm(0, 10) 
+    sigma_sq <- exp(log_sigma)^2 
+    log_sigma ~ dnorm(0, 0.01) 
+    tau_sq <- exp(log_tau)^2 
+    log_tau ~ dnorm(0, 0.01) 
+}") 
+dat <- list(O = data.matrix(O), kk = 1, T = T)
+fit <- jags.fit(dat, c("a", "b", "sigma_sq", "tau_sq"), model)
+summary(fit)
+```
+
+There is a package called PVAClone that can fit all of these models:
+
+```{r}
+library(PVAClone)
+m <- pva(O, model = ricker("normal"), n.clones=c(1, 2, 4))
+summary(m)
+```
+
+
+## Gompertz growth model 
+
+### Gompertz model without observation error
 
 Data generation
 
@@ -103,6 +332,8 @@ fit <- jags.fit(dat, c("a", "b", "sigma_sq", "x[5,1]"), model)
 summary(fit)
 densplot(fit[,"x[5,1]"])
 abline(v = x[5], col = 2)
+abline(v = quantile(fit[,"x[5,1]"], probs = c(0.025, 0.5, 0.975)), 
+    col = 4, lty = 2)
 quantile(fit[,"x[5,1]"], probs = c(0.025, 0.5, 0.975))
 x[5]
 ```
@@ -125,7 +356,7 @@ pmodel <- custommodel("model {
     log_sigma <- param[3] 
     sigma_sq <- exp(log_sigma)^2 
 }") 
-dcfit2 <- dcfit <- dc.fit(dat, c("a", "z", "log_sigma"), model,
+dcfit2 <- dc.fit(dat, c("a", "z", "log_sigma"), model,
     n.clones = 8,
     unchanged = "T", multiply = "K")
 (V <- vcov(dcfit2)[c("a", "z", "log_sigma"), c("a", "z", "log_sigma")])
@@ -167,7 +398,8 @@ matlines(30:40, rbind(x[c(30, 30, 30)], t(pi1)), col=4, lty=2)
 matlines(30:40, rbind(x[c(30, 30, 30)], t(pi2)), col=2, lty=2)
 ```
 
-## Gompertz model with observation error
+
+### Gompertz model with observation error
 
 Using Poisson distribution for observation error
 
@@ -250,70 +482,11 @@ fit <- jags.fit(dat, c("a", "b", "sigma_sq", "tau_sq"), model)
 summary(fit)
 ```
 
-## Ricker without observation error
 
-a-b parametrization
+## Compare predictive distributions under different parametrizations of Ricker model
 
-```{r}
-set.seed(1234)
-a <- 0.5
-b <- -0.1
-sigma_sq <- 0.05
-T <- 30
-x <- numeric(T)
-x[1] <- log(1)
-for (t in 2:T)
-    x[t] <- x[t - 1] + a + b * exp(x[t - 1]) + 
-        rnorm(1, 0, sqrt(sigma_sq))
-N <- exp(x)
-plot(as.ts(N))
+$a$-$b$  vs. $r$-$K$ (logistic) parametrization ($r=a$, $K=-a/b$)
 
-library(dclone)
-model_ab <- custommodel("model { 
-    for (k in 1:kk) { 
-        N[1,k] <- exp(x[1,k]) 
-        for (t in 2:T) { 
-            x[t,k] ~ dnorm(mu[t,k], 1 / sigma_sq) 
-            mu[t,k] <- a + b * N[t - 1,k] + x[t - 1,k] 
-            N[t,k] <- min(exp(x[t,k]), 10000) 
-        } 
-    } 
-    a ~ dnorm(1, 0.01) 
-    b ~ dnorm(0, 0.1) 
-    sigma_sq <- exp(log_sigma)^2 
-    log_sigma ~ dnorm(0, 1) 
-}")
-dat <- list(x = data.matrix(x), kk = 1, T = T)
-fit <- jags.fit(dat, c("a", "b", "log_sigma"), model_ab)
-summary(fit)
-```
-
-r-K (logistic) parametrization (r=a, K=-a/b)
-
-```{r}
-model_rK <- custommodel("model { 
-    for (k in 1:kk) { 
-        N[1,k] <- exp(x[1,k]) 
-        for (t in 2:T) { 
-            x[t,k] ~ dnorm(mu[t,k], 1 / sigma_sq) 
-            mu[t,k] <- r * (1 - N[t - 1,k] / K) + x[t - 1,k]
-            N[t,k] <- min(exp(x[t,k]), 10000) 
-        } 
-    } 
-    r ~ dnorm(0, 0.1) 
-    K <- exp(log_K)
-    log_K ~ dnorm(0, 0.1) 
-    sigma_sq <- exp(log_sigma)^2 
-    log_sigma ~ dnorm(0, 1) 
-}")
-dat <- list(x = data.matrix(x), kk = 1, T = T)
-fit <- jags.fit(dat, c("r", "K", "sigma_sq"), model_rK)
-summary(fit)
-```
-
-## Ricker with observation error
-
-a-b parametrization
 
 ```{r}
 set.seed(2345)
@@ -330,57 +503,6 @@ O <- rpois(T, lambda = exp(x))
 plot(as.ts(O))
 
 library(dclone)
-model_ab <- custommodel("model { 
-    for (k in 1:kk) { 
-        x[1,k] <- log(O[1,k])
-        N[1,k] <- O[1,k] 
-        for (t in 2:T) { 
-            x[t,k] ~ dnorm(mu[t,k], 1 / sigma_sq) 
-            mu[t,k] <- a + b * N[t - 1,k] + x[t - 1,k] 
-            N[t,k] <- min(exp(x[t,k]), 10000)
-            O[t,k] ~ dpois(N[t,k])
-        } 
-    } 
-    a ~ dnorm(1, 0.01) 
-    b ~ dnorm(0, 1) 
-    sigma_sq <- exp(log_sigma)^2 
-    log_sigma ~ dnorm(0, 1) 
-}")
-dat <- list(O = data.matrix(O), kk = 1, T = T)
-fit <- jags.fit(dat, c("a", "b", "sigma_sq"), model_ab)
-summary(fit)
-```
-
-r-K (logistic) parametrization (r=a, K=-a/b)
-
-```{r}
-model_rK <- custommodel("model { 
-    for (k in 1:kk) { 
-        x[1,k] <- log(O[1,k])
-        N[1,k] <- O[1,k] 
-        for (t in 2:T) { 
-            x[t,k] ~ dnorm(mu[t,k], 1 / sigma_sq) 
-            mu[t,k] <- r * (1 - N[t - 1,k] / K) + x[t - 1,k]
-            N[t,k] <- min(exp(x[t,k]), 10000)
-            O[t,k] ~ dpois(N[t,k])
-        } 
-    } 
-    r ~ dnorm(0, 0.1) 
-    K <- exp(log_K)
-    log_K ~ dnorm(0, 0.1) 
-    sigma_sq <- exp(log_sigma)^2 
-    log_sigma ~ dnorm(0, 1) 
-}")
-dat <- list(O = data.matrix(O), kk = 1, T = T)
-fit <- jags.fit(dat, c("r", "K", "sigma_sq"), model_rK)
-summary(fit)
-```
-
-## Compare predictive distributions
-
-a-b parametrization
-
-```{r}
 model_ab_ppi <- custommodel("model { 
     x[1] <- log(O[1])
     N[1] <- O[1] 
@@ -433,21 +555,5 @@ matlines(1:40, t(exp(qppi_ab_b)), col=2, lty=2)
 matlines(1:40, t(exp(qppi_rK_b)), col=4, lty=2)
 #matlines(30:40, rbind(O[c(30, 30, 30)], t(exp(qppi_ab_b[,31:40]))), col=4, lty=2)
 #matlines(30:40, rbind(O[c(30, 30, 30)], t(exp(qppi_rK_b[,31:40]))), col=2, lty=2)
-
-## Extinction metrics based on posterior
-f_below <-
-function(x, N.min=5)
-{
-    x <- exp(as.matrix(x))
-    apply(x, 2, function(z) sum(z < N.min) / length(z))
-}
-
-plot(1:40, f_below(ppi_ab_b, N.min=5), col=2, type = "l")
-lines(1:40, f_below(ppi_rK_b, N.min=5), col=4)
-
-plot(1:40, f_below(ppi_ab_b, N.min=1), col=2, type = "l")
-lines(1:40, f_below(ppi_rK_b, N.min=1), col=4)
-
-
 ```
 
