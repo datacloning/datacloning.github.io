@@ -1,20 +1,18 @@
 ---
-title: "Hierarchical models"
+title: "Linear mixed-effects models"
 author: "Peter Solymos and Subhash Lele"
 date: "July 16, 2016 &mdash; Madison, WI &mdash; NACCB Congress"
 layout: course
-output:
-  pdf_document:
-    toc: true
-    toc_depth: 2
-    number_sections: true
+output: pdf_document
 course:
   location: Madison
   year: 2016
   title: "Hierarchical Models Made Easy &mdash; July 16, 2016 &mdash; Madison, WI &mdash; NACCB Congress"
-  lecture: Intro
-  file: hierarchical-models
-  previous: Hierarchical-Models-Made-Easy_Intro
+  lecture: LMM
+  file: lmm
+  previous: abundance
+  next: glmm
+  pdf: lmm.pdf
 ---
 
 ## Continuous case with continuous measurement error (Neyman-Scott problem)
