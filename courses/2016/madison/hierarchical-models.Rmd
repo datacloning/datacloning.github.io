@@ -31,7 +31,7 @@ and to demonstrate the potential pitfalls and how to avoid them.
 ## Models
 
 * [Occupancy models with detection error](./occupancy.html)
-* [Abundance models with detection error](./n-mixture.html)
+* [Abundance models with detection error](./abundance.html)
 * [Linear mixed-effects models (LMM)](./lmm.html)
 * [Generalized linear mixed-effects models (GLMM)](./glmm.html)
 
