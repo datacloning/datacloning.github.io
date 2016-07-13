@@ -237,3 +237,82 @@ plot(fit)
 pairs(fit)
 ```
 
+## Poisson-Poisson mixture
+
+This modification can be suitable in cases when there is e.g.
+double counting of individuals, or false positives.
+
+```{r}
+set.seed(1234)
+n <- 200
+x <- rnorm(n)
+z <- rnorm(n)
+beta <- c(0.9, 0.5)
+theta <- c(0.8, -0.5)
+Z <- model.matrix(~z)
+X <- model.matrix(~x)
+p <- plogis(Z %*% theta)
+lambda <- exp(X %*% beta)
+N <- rpois(n = n, lambda = lambda)
+Y <- rpois(n = n, lambda = p * N)
+table(N = N, Y = Y)
+m <- glm(Y ~ x, family = poisson("log"))
+
+## N is of interest for e.g. prediction
+model1 <- custommodel("model {
+    for (i in 1:n) {
+        N[i] ~ dpois(lambda[i])
+        #Y[i] ~ dbin(p[i], N[i])
+        Y[i] ~ dpois(p[i] * N[i]) # this is the change
+        log(lambda[i]) <- inprod(X[i,], beta)
+        logit(p[i]) <- inprod(Z[i,], theta)
+    }
+    for (j in 1:px) {
+        beta[j] ~ dnorm(naive[j], 0.1)
+    }
+    for (j in 1:pz) {
+        theta[j] ~ dnorm(0, 0.01)
+    }
+}")
+## more efficient when N is not of interest
+model2 <- custommodel("model {
+    for (i in 1:n) {
+        Y[i] ~ dpois(p[i] * lambda[i])
+        log(lambda[i]) <- inprod(X[i,], beta)
+        logit(p[i]) <- inprod(Z[i,], theta)
+    }
+    for (j in 1:px) {
+        beta[j] ~ dnorm(naive[j], 0.1)
+    }
+    for (j in 1:pz) {
+        theta[j] ~ dnorm(0, 0.01)
+    }
+}")
+dat <- list(Y = Y, n = n, X = X, Z = Z, 
+    px = ncol(X), pz = ncol(Z), naive = coef(m))
+ini <- list(N = Y + 1)
+fit1 <- jags.fit(data = dat, params = c("beta", "theta"), 
+    n.update = 5000, model = model1, inits = ini)
+fit2 <- jags.fit(data = dat, params = c("beta", "theta"), 
+    n.update = 5000, model = model2)
+coef(fit1)
+coef(fit2)
+## DC
+ifun <- function(model, n.clones) {
+    dclone(list(N = Y + 1), n.clones)
+}
+dcfit1 <- dc.fit(data = dat, 
+    params = c("beta", "theta"), model = model1,
+    inits = ini, initsfun = ifun,
+    n.clones = c(1, 2, 4, 8), 
+#    n.update = 5000,
+    unchanged = c("px", "pz", "naive"), multiply = "n")
+dcfit2 <- dc.fit(data = dat, 
+    params = c("beta", "theta"), model = model2,
+    n.clones = c(1, 2, 4, 8), 
+#    n.update = 5000,
+    unchanged = c("px", "pz", "naive"), multiply = "n")
+coef(dcfit1)
+coef(dcfit2)
+```
+
