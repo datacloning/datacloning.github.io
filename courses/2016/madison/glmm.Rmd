@@ -20,11 +20,11 @@ course:
 
 ### The model
 
-$$Y_{ij} \sim Bernoulli(p_{ij})$$,
+$Y_{ij} \sim Bernoulli(p_{ij})$,
 $i=1, 2, \ldots, n$ clusters, 
 $j=1, 2, \ldots, m$ observetions within clusters,
-$$logit(p_{ij}) = \beta_{0} + \beta_{1} X_{ij} + \alpha_{i}$$,
-$$\alpha_{i} \sim Normal(0, \sigma^2)$$.
+$logit(p_{ij}) = \beta_{0} + \beta_{1} X_{ij} + \alpha_{i}$,
+$\alpha_{i} \sim Normal(0, \sigma^2)$.
 
 ### The problem
 
@@ -36,9 +36,7 @@ In these Neyman-Scott type problems, there are two types of asymptotics:
 Of course, one can have both clusters and cluster size going to infinity but that is quite simple, unrealistic.
 
 * The first asymptotics leads to MLE for $\sigma^2$ that is consistent.  
-* The second type of asymptotics does not lead to consistent MLE of $\sigma^2$. That was precisely the point in Kiefer and Wolfowitz[^KW].
-
-[^KW]: Kiefer, J. and Wolfowitz, J., 1956. Consistency of the maximum likelihood estimator in the presence of infinitely many incidental parameters. *Ann. Math. Statist.*, **27**, 887&ndash;906. [PDF from Project Euclid](http://projecteuclid.org/euclid.aoms/1177728066)
+* The second type of asymptotics does not lead to consistent MLE of $\sigma^2$. That was precisely the point in Kiefer and Wolfowitz ([PDF from Project Euclid](http://projecteuclid.org/euclid.aoms/1177728066)).
 
 The second type of asymptotics where observations within a cluster 
 increases but not the number of clusters, there are only fixed effects 
@@ -68,6 +66,7 @@ summary(Y)
 Cloning goes with `n`.
 
 ```{r}
+library(dclone)
 model <- custommodel("model {
     for (i in 1:n) {
         for (j in 1:m) {
@@ -117,6 +116,7 @@ dcfit2 <- dc.fit(data = dat,
     unchanged = c("n", "m", "X"), multiply = "K")
 ```
 
+
 ### Cloning replicates within clusters
 
 Cloning goes with `m`, matrices transposed.
@@ -144,7 +144,8 @@ dcfit3 <- dc.fit(data = dat,
     unchanged = "n", multiply = "m")
 ```
 
-### Compare the outcomes
+
+### Compare disgnostic results
 
 ```{r}
 dcdiag(dcfit1)
@@ -154,9 +155,9 @@ dcdiag(dcfit3)
 
 ## Poisson GLMM
 
-The model: $$ (Y_{i} \mid \lambda_i) \sim Poisson(\lambda_{i})$$, $i = 1, 2, \ldots, n$,
-$$log(\lambda_i) = \alpha_i + \mathbf{X}^{\top}_{i} \mathbf{\beta}$$, and
-$$\alpha_i \sim Normal(0, \sigma^2)$$.
+The model: $(Y_{i} \mid \lambda_i) \sim Poisson(\lambda_{i})$, $i = 1, 2, \ldots, n$,
+$log(\lambda_i) = \alpha_i + \mathbf{X}^{\top}_{i} \mathbf{\beta}$, and
+$\alpha_i \sim Normal(0, \sigma^2)$.
 
 ### Data generation
 
@@ -205,6 +206,7 @@ dcfit <- dc.fit(data = dat,
 dcdiag(dcfit)
 coef(dcfit)
 ```
+
 
 ### Prediction
 
