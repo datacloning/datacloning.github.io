@@ -40,6 +40,14 @@ Morning coffee, and afternoon iced tea and lemonade, plus light snack of chips a
 
 * [What to do before the course]({{ site.baseurl }}/courses/2016/madison/how-to-prepare.html)
 * [Introduction]({{ site.baseurl }}/courses/2016/madison/Hierarchical-Models-Made-Easy_Intro.html)
+* [Hierarchical models]({{ site.baseurl }}/courses/2016/madison/hierarchical-models.html):
+  - [Occupancy models]({{ site.baseurl }}/courses/2016/madison/occupancy.html)
+  - [Abundance models]({{ site.baseurl }}/courses/2016/madison/abundance.html)
+  - [Linear mixed-effects models]({{ site.baseurl }}/courses/2016/madison/lmm.html)
+  - [Generalized linear mixed-effects models]({{ site.baseurl }}/courses/2016/madison/glmm.html)
+* Models with dependence:
+  - [Temporal dependence]({{ site.baseurl }}/courses/2016/madison/pva.html)
+  - [Spatial dependence]({{ site.baseurl }}/courses/2016/madison/spatial.html)
 
 ### Contact the organizers
 
