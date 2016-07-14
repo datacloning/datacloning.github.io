@@ -14,11 +14,127 @@ course:
   pdf: spatial.pdf
 ---
 
-Spatial models
 
-* block diagonal clustered data (LMM w/ sigma, rho vs. inverse Wishart)
-* exponential decay on lattice (LMM w/ sigma, rho vs. inverse Wishart)
+## Kriging example 
 
-http://www.r-bloggers.com/spatial-autocorrelation-of-errors-in-jags/
-http://xavier-fim.net/packages/ggmcmc/
+Exponential decay is used ($e^{-\lambda D}$), 
+but it can be modified to half-Normal ($e^{-(\lambda D)^{2}}$).
+
+```{r}
+set.seed(2345)
+library(MASS)
+mu <- 5
+sigma_sq <- 1
+lambda <- 0.5 # try different values: 0, 0.1, 0.5, 1
+
+## set up an m x m square lattice
+m <- 10
+xy <- expand.grid(x=seq_len(m), y=seq_len(m))
+n <- nrow(xy)
+D <- as.matrix(dist(xy))
+
+Sigma <- sigma_sq * exp(-lambda*D)
+
+Y <- mvrnorm(1, rep(mu, n), Sigma)
+
+op <- par(mfrow = c(2, 2))
+image(seq_len(n), seq_len(n), D, main = "D", ylab="i", xlab="i")
+image(seq_len(n), seq_len(n), Sigma, main="Sigma", ylab="i", xlab="i")
+Distance <- seq(0, m * sqrt(2), by = 0.1)
+plot(Distance, exp(-lambda*Distance), type = "l")
+image(seq_len(m), seq_len(m), matrix(Y, m, m), main = "Y", ylab="y", xlab="x")
+par(op)
+```
+
+```{r}
+library(dclone)
+model <- custommodel("model {
+    for (i in 1:n) {
+        for (j in 1:n) {
+            Sigma[i,j] <- sigma_sq * exp(-lambda*D[i,j])
+        }
+        mu_vec[i] <- mu
+    }
+    Y[1:n] ~ dmnorm(mu_vec, invSigma)
+    invSigma <- inverse(Sigma)
+    log_sigma ~ dnorm(0, 0.001)
+    sigma_sq <- exp(log_sigma)^2
+    mu ~ dnorm(0, 0.1)
+    lambda ~ dgamma(1, 0.1)
+}")
+dat <- list(Y = Y, n = n, D = D)
+fit <- jags.fit(data = dat, params = c("mu", "sigma_sq","lambda"), 
+    model = model, n.iter = 1000)
+summary(fit)
+```
+
+Inverse Wishart prior, $\sigma^{2}$ and $\lambda$ is hard to recover:
+
+```{r}
+library(dclone)
+model <- custommodel("model {
+    for (i in 1:n) {
+        mu_vec[i] <- mu
+    }
+    Y[1:n] ~ dmnorm(mu_vec, invSigma)
+    invSigma[1:n,1:n] ~ dwish(R[1:n,1:n], n)
+    mu ~ dnorm(0, 0.1)
+}")
+dat <- list(Y = Y, n = n, R = diag(1, n, n))
+fit <- jags.fit(data = dat, params = c("mu"), 
+    model = model, n.iter = 1000)
+summary(fit)
+```
+
+
+
+Correlation ($\rho$) based parametrization
+
+```{r}
+set.seed(2345)
+library(MASS)
+mu <- 5
+sigma_sq <- 1
+rho <- 0.8
+
+## set up an m x m square lattice
+m <- 10
+xy <- expand.grid(x=seq_len(m), y=seq_len(m))
+n <- nrow(xy)
+D <- as.matrix(dist(xy))
+
+Sigma <- sigma_sq * rho^D
+
+Y <- mvrnorm(1, rep(mu, n), Sigma)
+
+op <- par(mfrow = c(2, 2))
+image(seq_len(n), seq_len(n), D, main = "D", ylab="i", xlab="i")
+image(seq_len(n), seq_len(n), Sigma, main="Sigma", ylab="i", xlab="i")
+Distance <- seq(0, m * sqrt(2), by = 0.1)
+plot(Distance, rho^Distance, type = "l")
+image(seq_len(m), seq_len(m), matrix(Y, m, m), main = "Y", ylab="y", xlab="x")
+par(op)
+```
+
+```{r}
+library(dclone)
+model <- custommodel("model {
+    for (i in 1:n) {
+        for (j in 1:n) {
+            Sigma[i,j] <- sigma_sq * rho^D[i,j]
+        }
+        mu_vec[i] <- mu
+    }
+    Y[1:n] ~ dmnorm(mu_vec, invSigma)
+    invSigma <- inverse(Sigma)
+    log_sigma ~ dnorm(0, 0.001)
+    sigma_sq <- exp(log_sigma)^2
+    mu ~ dnorm(0, 0.1)
+    rho ~ dunif(0, 0.999)
+}")
+dat <- list(Y = Y, n = n, D = D)
+fit <- jags.fit(data = dat, params = c("mu", "sigma_sq","rho"), 
+    model = model, n.iter = 1000)
+summary(fit)
+```
 
