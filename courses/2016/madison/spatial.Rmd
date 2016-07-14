@@ -15,3 +15,10 @@ course:
 ---
 
 Spatial models
+
+* block diagonal clustered data (LMM w/ sigma, rho vs. inverse Wishart)
+* exponential decay on lattice (LMM w/ sigma, rho vs. inverse Wishart)
+
+http://www.r-bloggers.com/spatial-autocorrelation-of-errors-in-jags/
+http://xavier-fim.net/packages/ggmcmc/
+
