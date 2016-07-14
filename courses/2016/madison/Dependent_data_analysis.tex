@@ -1,0 +1,152 @@
+\documentclass[10pt]{beamer}
+\hypersetup{pdfpagemode=FullScreen}
+\usepackage{setspace}
+ \linespread{1.2}
+% \usepackage{beamerthemesplit} // Activate for custom appearance
+
+\title{Analysis of dependent data}
+\subtitle {Population growth, extinction and viability analysis}
+\author{Subhash R. Lele}
+\institute {University of Alberta}
+\institute{Department of Mathematical Sciences\\University of Alberta\\Canada\\\textit{Email: slele@ualberta.ca}}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+%\section[Outline]{}
+%\frame{\tableofcontents}
+
+\begin{frame}
+\begin{center}
+\LARGE{Population growth models}
+\end{center}
+
+You are now quite familiar with the use of hierarchical models for independent data. We have looked at how hierarchical models arise because of sampling error but they can arise in many other situations as well. We will now show you how hierarchical models arise in another area of interest to the conservation biologists: Population Viability Analysis. 
+
+\end{frame}
+
+\begin{frame}
+This naturally leads to analysis of time series, spatial and spatio-temporal data. The main difference is theoretical in terms of how one writes the likelihood function. However, computational aspects are not substantially different than what we have learnt so far. We will also learn about how to deal with \alert {missing data in time series} and how to obtain \alert {predictions and prediction intervals.} 
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\LARGE {Modelling single species population growth}
+\end{center}
+
+\textbf {General model}: Future value $N_{t+1}$ depends on the current status $g(N_{t};\theta)$ only. This is a first order Markovian property. One can easily extend this to dependence of higher order by including the term involving $N_{t-1}$ etc.
+\begin{equation}
+N_{t+1}=f(N_{t};\theta)
+\end{equation}
+Many times, we model the growth in the population, rather than the population itself. Hence\\
+\begin{equation}
+log(N_{t+1})-log(N_{t})=g(N_{t};\theta)
+\end{equation}
+We will be using the growth models in the rest of this lecture. 
+\end{frame}
+
+\begin{frame}
+
+The two most commonly used models for population growth are:\\
+\vspace{1em}
+\textbf {Examples:}\\
+\vspace{1em}
+\textit {Ricker or Discrete time Logistic growth}: $g(N_{t};\theta)=a+bN_{t}$\\
+\vspace{1em}
+\textit {Gompertz growth}: $g(N_{t};\theta)=a+blog(N_{t})$\\
+\vspace{1em}
+These are strictly deterministic model. However, in practice, we have stochasticity in the growth rates due to environmental factors or demographic factors. 
+\end{frame}
+
+\begin{frame}
+We can incorporate environmental stochasticity in these models by using additive noise on the log-scale. The general structure of such models is:\\
+\vspace{1em}
+\begin{equation}
+log(N_{t+1})-log(N_{t})=g(N_{t};\theta) + \varepsilon_{t+1}
+\end{equation}
+\vspace{1em}
+\textbf {Examples:}\\
+\vspace{1em}
+\textit {Ricker or Discrete time Logistic growth}: $g(N_{t};\theta)=a+bN_{t}+ \varepsilon_{t+1}$\\
+\vspace{1em}
+\textit {Gompertz growth}: $g(N_{t};\theta)=a+blog(N_{t})+ \varepsilon_{t+1}$\\
+\vspace{1em}
+ where $\varepsilon_{t+1} \sim N(0,\sigma^2)$
+\end{frame}
+
+\begin{frame}
+Now we will see how to use JAGS and 'dclone' to fit this simple, stochastic, time series model, in either Bayesian or Frequentist paradigm.\\
+\vspace{1em}
+\pause
+\alert {Missing data}: In practice, we may have a few years where we did not or could not collect the data. If the data are missing completely at random (that is, we did not skip the survey because we knew the populations were too low etc.), then the above program can be easily modified as follows. 
+\end{frame}
+
+\begin{frame}
+
+\begin{center}
+\LARGE \textbf {Population Viability Analysis}
+\end{center}
+For conservation purposes, we may not want simply the parameter values but we may also want to predict how the population would behave in future. We may want to project the population sizes for the next few years and compute the prediction intervals, extinction probability or other population viability related metrics.\\
+\vspace{1em}
+\pause
+We can modify the above program to do the population projection very easily as follows.\\
+\vspace{1em}
+\pause
+Once you have the collection of the future trajectories, computing various metrics is a simple task. 
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\LARGE \textbf {Sampling variability}
+\end{center}
+Above discussion and illustrations assumed that we knew the population sizes without any error. But, in practice, these are usually estimated using some kind of sampling as we have seen earlier. If we do not take into account the variability of these \alert{estimate} population sizes, our statistical inferences are bound to be incorrect. This is similar to not taking into account detection error.\\
+\vspace{1em}
+\pause
+We can modify the model quite easily using the hierarchical modelling ideas. We will assume Poisson distribution for the sampling variability for illustration purpose but it could be anything else (with the constraint that the parameters are estimable).\\
+\end{frame}
+
+\begin{frame}
+\alert{\textbf {Observation model}}:  $\hat{N_{t}}\sim Poisson(N_{t})$ \\
+\pause
+\vspace{1em}
+\alert{\textbf {Process model}}:$ log(N_{t+1})-log(N_{t})=g(N_{t};\theta) + \varepsilon_{t+1} $\\
+\pause
+\vspace{1em}
+\alert{\textbf {Prior}}:  $\theta\sim\pi(\theta)$\\
+\end{frame}
+
+\begin{frame}
+We can easily modify the previous JAGS model to accommodate the sampling error as follows.\\
+\vspace{1em}
+\pause
+Modification to data cloning based MLE is similar to the previous lecture. As an added bonus, we also get diagnostics for estimability of the parameters.\\
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\LARGE \textbf {SUMMARY}
+\end{center}
+\begin{enumerate}
+\item Writing the JAGS model for dependent data structure is very similar to the independent data structure. 
+\item If you can write a JAGS model, you can do the Bayesian analysis quite easily. 
+\item If you can do the Bayesian analysis successfully, you can modify the JAGS model slightly and also can get the likelihood based analysis. 
+\item We are only showing you how to obtain the MLE and its standard error. However, one can also get Likelihood ratio based confidence intervals, Confidence intervals that are valid under smaller sample sizes and model selection using information criteria. You can also get prediction intervals for future projections. 
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\begin{enumerate}
+\item An important point to remember when fitting models is that just because one can get answers from these programs does not mean they are valid answers.\\
+\pause
+\item We have to make sure the parameters are estimable using the available data. This is a major issue that has been ignored in ecological analyses. 
+\pause
+\item We have to make sure that the MCMC algorithm has converged. This is never guaranteed but can be judged to some extent using various diagnostic procedures. 
+\pause
+\item Parameterization (form of the model) can have a major impact on the convergence of MCMC algorithm. Some parameterizations may lead to easy convergence while others may not. This can lead to some thorny scientific issues as we will discuss in the next lecture. 
+\pause
+\item We will now show you how to analyze spatially dependent data. This involves some difficult issues of how to specify the priors on the spatial dependence parameter. 
+\end{enumerate}
+\end{frame}
+\end{document}
