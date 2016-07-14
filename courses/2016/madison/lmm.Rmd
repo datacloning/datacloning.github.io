@@ -23,15 +23,15 @@ Some historical comments: Fisher and Pearson arguments about MOM and MLE; Fisher
 
 Animal breeding example (Linear mixed models, LMM): Consider the model underlying one way analysis of variance (ANOVA). 
 
-$$ Y_{ij} = \mu + \alpha_i + \varepsilon_{ij} $$, $i = 1, 2, \ldots, n$ and $j = 1, 2$, 
-$$ \varepsilon_{ij} \sim Normal(0, \sigma_{\varepsilon}^2)$$.
+$Y_{ij} = \mu + \alpha_i + \varepsilon_{ij}$, $i = 1, 2, \ldots, n$ and $j = 1, 2$, 
+$\varepsilon_{ij} \sim Normal(0, \sigma_{\varepsilon}^2)$.
 
 There are two offsprings per individual. We want to know something about the genetic potential of the individuals so that we can turn some into hamburgers and some can have fun as studs/dams. 
 
 ### Parameters
 
 These are the unknown quantities that we want to learn about from the data. In this model, the parameters are 
-($$ \mu, \alpha_1, \alpha_2, \ldots, \alpha_n, \sigma_{\varepsilon}^2$$):
+($\mu, \alpha_1, \alpha_2, \ldots, \alpha_n, \sigma_{\varepsilon}^2$):
 
 * number of parameters: $n + 2$,
 * number of observations: $2 n$.
@@ -46,14 +46,12 @@ $$\hat{\alpha}_{i} = \frac{1}{2} (Y_{i1} + Y_{i2})$$
 
 $$\hat{\sigma}_{\varepsilon}^2 = \frac{1}{2n} \sum_{i=1}^{n} \sum_{j=1}^{2} (Y_{ij} - \hat{\mu} - \hat{\alpha}_{i})^2$$
 
-One of the most important results from Neyman and Scott (1949) is that as the sample size increases, $$\hat{\sigma}_{\varepsilon}^2 \rightarrow \sigma_{\varepsilon}^2 / 2$$. It is almost obvious that we cannot estimate  consistently (although it is an unbiased estimator). 
+One of the most important results from Neyman and Scott (1949) is that as the sample size increases, $\hat{\sigma}_{\varepsilon}^2 \rightarrow \sigma_{\varepsilon}^2 / 2$. It is almost obvious that we cannot estimate  consistently (although it is an unbiased estimator). 
 
 
-> ### Moral of the story
->
-> Increasing the sample size does not guarantee good estimators. 
-> What is important is that the information in the sample about 
-> the parameter should converge to infinity.
+Increasing the sample size does not guarantee good estimators. 
+What is important is that the information in the sample about 
+the parameter should converge to infinity.
 
 In this model, the number of parameters is increasing at the same rate as the sample size (the information). Hence we have limited information about any particular parameter. We are spending the information profligately. This kind of situation is **not unusual in practice**. 
 
@@ -64,11 +62,9 @@ In this model, the number of parameters is increasing at the same rate as the sa
   Random effect for the area and the effect of the covariates in 
   the Poisson regression.
 
-> ### What can we do?
->
-> We need more information but more data are not going to give us more information. 
->
-> In mathematics the solution always exists: *assume*!
+What can we do?
+We need more information but more data are not going to give us more information. 
+In mathematics the solution always exists: *assume*!
 
 These assumptions should, in effect, reduce the number of parameters. Hopefully we can reduce them to the level that information increases sufficiently faster than the number of parameters. Usually we make assumptions so that the final number of parameters is unchanging with the sample size but this is not necessary. 
 
@@ -77,16 +73,9 @@ Smoothness assumptions:
 * regression assumption,
 * random effects assumption.
 
-<div class="panel panel-warning">
-<div class="panel-heading">
-<i class="fa fa-warning"></i> Warning 
-</div>
-<div class="panel-body">
-This has nothing to do with the Bayesian thinking. These are simply modeling assumptions. The effect of these assumptions (e.g. distribution of the latent variable) does not go away as we increase the sample size. On the other hand, as we have seen repeatedly, the effect of the prior (which is also an assumption) vanishes as the information in the data increases. 
-</div>
-</div>
+**WARNING** This has nothing to do with the Bayesian thinking. These are simply modeling assumptions. The effect of these assumptions (e.g. distribution of the latent variable) does not go away as we increase the sample size. On the other hand, as we have seen repeatedly, the effect of the prior (which is also an assumption) vanishes as the information in the data increases. 
 
-There is no such thing as "Bayesian model" or "Frequentist model". There are stochastic models; there are deterministic models; there are descriptive models. Some Bayesians claim that specification of the prior on the parameters is on the same level as specifying a stochastic model for the data. Hence they consider all hierarchical models as "Bayesian models". Some historical lesson might be useful here. 
+There is no such thing as "Bayesian model" or "Frequentist model". There are stochastic models; there are deterministic models; there are descriptive models. Some Bayesians claim that specification of the prior on the parameters is on the same level as specifying a stochastic model for the data. Hence they consider all hierarchical models as "Bayesian models".
 
 We do not agree with this. As we have pointed out, the effect of the modeling assumption does not vanish as we increase the sample size, whereas the effect of the prior does. 
 
@@ -119,6 +108,8 @@ dim(Y) <- c(n, m)
 summary(Y)
 ```
 
+Without a smoothing assumption:
+
 ```{r}
 library(dclone)
 model <- custommodel("model {
@@ -130,7 +121,7 @@ model <- custommodel("model {
     }
     log_sigma ~ dnorm(0, 0.001)
     sigma_sq <- exp(log_sigma)^2
-    mu ~ dnorm(0, 001)
+    mu ~ dnorm(0, 0.1)
 }")
 dat <- list(Y = Y, n = n, m = m)
 fit <- jags.fit(data = dat, params = c("mu", "sigma_sq","alpha"), 
@@ -141,6 +132,8 @@ pairs(fit[,c("mu","sigma_sq")])
 
 plot(fit[,c("alpha[1]","alpha[100]")])
 ```
+
+With smoothing assumption:
 
 ```{r}
 library(dclone)
@@ -153,7 +146,7 @@ model <- custommodel("model {
     }
     log_sigma ~ dnorm(0, 0.001)
     sigma_sq <- exp(log_sigma)^2
-    mu ~ dnorm(0, 001)
+    mu ~ dnorm(0, 0.1)
     log_tau ~ dnorm(0, 0.001)
     tau_sq <- exp(log_tau)^2
 }")
@@ -166,8 +159,12 @@ plot(fit[,c("mu","sigma_sq", "tau_sq")])
 pairs(fit[,c("mu","sigma_sq", "tau_sq")])
 
 plot(fit[,c("alpha[1]","alpha[100]")])
-plot(alpha[1:n], coef(fit)[grep("alpha", varnames(fit))])
+
+plot(alpha[1:n], coef(fit)[grep("alpha", varnames(fit))], col=2)
+abline(0,1)
 ```
+
+DC with the smoothing assumption:
 
 ```{r}
 model <- custommodel("model {
@@ -181,7 +178,7 @@ model <- custommodel("model {
     }
     log_sigma ~ dnorm(0, 0.001)
     sigma_sq <- exp(log_sigma)^2
-    mu ~ dnorm(0, 001)
+    mu ~ dnorm(0, 0.1)
     log_tau ~ dnorm(0, 0.001)
     tau_sq <- exp(log_tau)^2
     sum <- sigma_sq + tau_sq
@@ -222,7 +219,8 @@ g <- rep(1:n, m)
 Yvec <- as.numeric(Y)
 mod.lm <- lmer(Yvec ~ 1 + (1|g))
 summary(mod.lm)
-plot(alpha[1:n], ranef(mod.lm)$g[,1])
+plot(alpha[1:n], ranef(mod.lm)$g[,1], col = 2)
+abline(0, 1)
 ```
 
 * Run things with `m = 1`, check diagnostics, estimates
