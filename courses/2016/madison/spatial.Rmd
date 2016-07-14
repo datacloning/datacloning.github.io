@@ -1,0 +1,17 @@
+---
+title: "Analysing data with spatial dependence"
+author: "Peter Solymos and Subhash Lele"
+date: "July 16, 2016 &mdash; Madison, WI &mdash; NACCB Congress"
+layout: course
+output: pdf_document
+course:
+  location: Madison
+  year: 2016
+  title: "Hierarchical Models Made Easy &mdash; July 16, 2016 &mdash; Madison, WI &mdash; NACCB Congress"
+  lecture: Spatial
+  file: spatial
+  previous: pva
+  pdf: spatial.pdf
+---
+
+Spatial models
