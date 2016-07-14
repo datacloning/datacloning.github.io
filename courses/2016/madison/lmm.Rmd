@@ -97,7 +97,7 @@ Prior distributions are smoothness assumptions on the parameters and their effec
 ```{r}
 set.seed(1234)
 n <- 100
-m <- 2
+m <- 1
 mu <- 2.5
 sigma_sq <- 0.2^2
 eps <- rnorm(n * m, mean = 0, sd = sqrt(sigma_sq))
@@ -186,7 +186,7 @@ model <- custommodel("model {
 dat <- list(Y = dcdim(array(Y, c(n, m, 1))), n = n, 
     m = m, K = 1)
 str(dat)
-K <- c(1, 10, 25, 50)
+K <- c(1, 10, 25)
 dcfit1 <- dc.fit(data = dat, 
     params = c("mu", "sigma_sq", "tau_sq"), 
     model = model, n.iter = 1000,
@@ -210,17 +210,21 @@ plot(dctable(dcfit1))
 plot(dctable(dcfit2))
 coef(dcfit1)
 coef(dcfit2)
-c(sigma_sq, tau_sq, sigma_sq + tau_sq)
+c(mu=mu, sigma_sq=sigma_sq, tau_sq=tau_sq, sum=sigma_sq + tau_sq)
 ```
 
 ```{r}
-library(lme4)
-g <- rep(1:n, m)
-Yvec <- as.numeric(Y)
-mod.lm <- lmer(Yvec ~ 1 + (1|g))
-summary(mod.lm)
-plot(alpha[1:n], ranef(mod.lm)$g[,1], col = 2)
-abline(0, 1)
+## m=1 leads to error:
+## Error: number of levels of each grouping factor must be < number of observations
+if (m > 1) {
+    library(lme4)
+    g <- rep(1:n, m)
+    Yvec <- as.numeric(Y)
+    mod.lm <- lmer(Yvec ~ 1 + (1|g))
+    summary(mod.lm)
+    plot(alpha[1:n], ranef(mod.lm)$g[,1], col = 2)
+    abline(0, 1)
+}
 ```
 
 * Run things with `m = 1`, check diagnostics, estimates
