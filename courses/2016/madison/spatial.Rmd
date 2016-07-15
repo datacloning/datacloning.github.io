@@ -21,6 +21,19 @@ Exponential decay is used ($e^{-\lambda D}$).
 Try different values for $\lambda$ (0, 0.1, 0.5).
 Try modifying it to half-Normal ($e^{-(\lambda D)^{2}}$).
 
+The models is defined as:
+
+$$Y \sim MVN(\mathbf{\mu}, \mathbf{\Sigma})$$ 
+
+where $\mathbf{\mu}$ is the mean vector for 
+the Multivariate Normal (MVN) distribution,
+and $\mathbf{\Sigma}$ is the variance-covariance matrix
+with a spatial dependence structure.
+$\mathbf{\Sigma}$ is defined as 
+$\sigma^{2} exp(-\lambda \mathbf{D})$, where
+$\mathbf{D}$ is an $n$-by-$n$ spatial distance matrix
+(we use Euclidean distances).
+
 ```{r}
 set.seed(2345)
 library(MASS)
@@ -148,6 +161,9 @@ dcdiag(dcfit)
 Correlation ($\rho$) based parametrization.
 Try different values for $\rho$.
 
+Same model as above, but now $\mathbf{\Sigma}$ is defined as 
+$\sigma^{2} \rho^{\mathbf{D}})$.
+
 ```{r}
 set.seed(2345)
 library(MASS)
@@ -233,6 +249,16 @@ We assume that points within clusters are dependent
 but clusters are independent (i.e. far apart to assume independence).
 We assume each cluster has same number of points for simplicity,
 but number of points within cluster can vary.
+
+The model for any given cluster is defined as: 
+$(Y_{ij} \mid \lambda_i) \sim Poisson(\lambda_{i})$, $i = 1, 2, \ldots, n$,
+$j = 1, 2, \ldots, m$,
+$log(\lambda_i) = \alpha_i + \mu$, and
+$\mathbf{\alpha_i} \sim MVN(\mathbf{0}, \mathbf{\Sigma})$.
+
+$\mathbf{\Sigma}$ is the $m$-by-$m$ variance covariance matrix
+for cluster $i$. Diagonal elements are defined as $\sigma^{2}$,
+off-diagonal elements are defined as $\sigma^{2} \rho$.
 
 
 ```{r}
