@@ -17,15 +17,16 @@ course:
 
 ## Kriging example 
 
-Exponential decay is used ($e^{-\lambda D}$), 
-but it can be modified to half-Normal ($e^{-(\lambda D)^{2}}$).
+Exponential decay is used ($e^{-\lambda D}$). 
+Try different values for $\lambda$ (0, 0.1, 0.5).
+Try modifying it to half-Normal ($e^{-(\lambda D)^{2}}$).
 
 ```{r}
 set.seed(2345)
 library(MASS)
-mu <- 5
-sigma_sq <- 1
-lambda <- 0.5 # try different values: 0, 0.1, 0.5, 1
+mu <- 5 # global mean
+sigma_sq <- 1 # global variance
+lambda <- 0.5
 
 ## set up an m x m square lattice
 m <- 10
@@ -45,6 +46,8 @@ plot(Distance, exp(-lambda*Distance), type = "l")
 image(seq_len(m), seq_len(m), matrix(Y, m, m), main = "Y", ylab="y", xlab="x")
 par(op)
 ```
+
+Bayesian analysis:
 
 ```{r}
 library(dclone)
@@ -68,7 +71,40 @@ fit <- jags.fit(data = dat, params = c("mu", "sigma_sq","lambda"),
 summary(fit)
 ```
 
-Inverse Wishart prior, $\sigma^{2}$ and $\lambda$ is hard to recover:
+DC: replicating the whole experiment $K$ times (i.e. clones are independent,
+and identical in terms of within-clone dependence structure)
+
+```{r}
+library(dclone)
+model <- custommodel("model {
+    for (k in 1:K) {
+        for (i in 1:n) {
+            for (j in 1:n) {
+                Sigma[i,j,k] <- sigma_sq * exp(-lambda*D[i,j])
+            }
+            mu_vec[i,k] <- mu # mu_vec does not really require cloning
+        }
+        Y[1:n,k] ~ dmnorm(mu_vec[1:n,k], invSigma[1:n,1:n,k])
+        invSigma[1:n,1:n,k] <- inverse(Sigma[1:n,1:n,k])
+    }
+    log_sigma ~ dnorm(0, 0.001)
+    sigma_sq <- exp(log_sigma)^2
+    mu ~ dnorm(0, 0.1)
+    lambda ~ dgamma(1, 0.1)
+}")
+dat <- list(Y = dcdim(data.matrix(Y)), n = n, D = D, K=1)
+dcfit <- dc.fit(data = dat, params = c("mu", "sigma_sq","lambda"), 
+    model = model, n.iter = 1000,
+    n.clones=c(1,2,4,8),
+    multiply="K", unchanged=c("n", "D"))
+summary(dcfit)
+dcdiag(dcfit)
+```
+
+
+Inverse Wishart prior, $\sigma^{2}$ and $\lambda$ is hard to recover
+(it requires post processing the posterior estimates, i.e.
+monitor the whole `invSigma` matrix or its inverse):
 
 ```{r}
 library(dclone)
@@ -81,14 +117,36 @@ model <- custommodel("model {
     mu ~ dnorm(0, 0.1)
 }")
 dat <- list(Y = Y, n = n, R = diag(1, n, n))
-fit <- jags.fit(data = dat, params = c("mu"), 
+fit <- jags.fit(data = dat, params = "mu", 
     model = model, n.iter = 1000)
 summary(fit)
 ```
 
+DC for inverse Wishart parametrization:
 
+```{r}
+library(dclone)
+model <- custommodel("model {
+    for (i in 1:n) {
+        mu_vec[i] <- mu
+    }
+    for (k in 1:K) {
+        Y[1:n,k] ~ dmnorm(mu_vec[1:n], invSigma[1:n,1:n,k])
+        invSigma[1:n,1:n,k] ~ dwish(R[1:n,1:n], n)
+    }
+    mu ~ dnorm(0, 0.1)
+}")
+dat <- list(Y = dcdim(data.matrix(Y)), n = n, R = diag(1, n, n), K=1)
+dcfit <- dc.fit(data = dat, params = "mu", 
+    model = model, n.iter = 1000,
+    n.clones=c(1,2,4,8),
+    multiply="K", unchanged=c("n", "R"))
+summary(dcfit)
+dcdiag(dcfit)
+```
 
-Correlation ($\rho$) based parametrization
+Correlation ($\rho$) based parametrization.
+Try different values for $\rho$.
 
 ```{r}
 set.seed(2345)
@@ -116,6 +174,8 @@ image(seq_len(m), seq_len(m), matrix(Y, m, m), main = "Y", ylab="y", xlab="x")
 par(op)
 ```
 
+Bayesian analysis:
+
 ```{r}
 library(dclone)
 model <- custommodel("model {
@@ -138,3 +198,207 @@ fit <- jags.fit(data = dat, params = c("mu", "sigma_sq","rho"),
 summary(fit)
 ```
 
+DC:
+
+```{r}
+model <- custommodel("model {
+    for (k in 1:K) {
+        for (i in 1:n) {
+            for (j in 1:n) {
+                Sigma[i,j,k] <- sigma_sq * rho^D[i,j]
+            }
+            mu_vec[i,k] <- mu # mu_vec does not really require cloning
+        }
+        Y[1:n,k] ~ dmnorm(mu_vec[1:n,k], invSigma[1:n,1:n,k])
+        invSigma[1:n,1:n,k] <- inverse(Sigma[1:n,1:n,k])
+    }
+    log_sigma ~ dnorm(0, 0.001)
+    sigma_sq <- exp(log_sigma)^2
+    mu ~ dnorm(0, 0.1)
+    rho ~ dunif(0, 0.999)
+}")
+dat <- list(Y = dcdim(data.matrix(Y)), n = n, D = D, K=1)
+dcfit <- dc.fit(data = dat, params = c("mu", "sigma_sq","rho"), 
+    model = model, n.iter = 1000,
+    n.clones=c(1,2,4,8),
+    multiply="K", unchanged=c("n", "D"))
+summary(dcfit)
+dcdiag(dcfit)
+```
+
+## Cluster sampling design, Poisson-Lognormal GLMM
+
+We assume that points within clusters are dependent
+(i.e. close to each other to assume high dependence), 
+but clusters are independent (i.e. far apart to assume independence).
+We assume each cluster has same number of points for simplicity,
+but number of points within cluster can vary.
+
+
+```{r}
+set.seed(1234)
+library(MASS)
+## total sample size is n x m
+m <- 5 # number of points in a cluster
+n <- 25 # number of clusters
+mu <- 1.6 # global mean on log scale
+sigma_sq <- 1 # global variance
+rho <- 0.8
+
+## variance-covariance matrix for a single cluster
+Sigma1 <- sigma_sq * diag(1, m, m) + sigma_sq * rho * (1 - diag(1, m, m))
+## the full variance covariance matrix is 'block-diagonal'
+## which means it is filled with zeros across clusters
+alpha <- matrix(0, n, m)
+for (i in 1:n) {
+    alpha[i,] <- mvrnorm(1, rep(0, m), Sigma1)
+}
+Y <- rpois(n*m, exp(as.numeric(alpha) + mu))
+dim(Y) <- dim(alpha)
+Y
+boxplot(t(Y), xlab="Clusters", ylab="Y", col="tomato")
+points(1:n, rowMeans(Y), pch=4, col=4)
+```
+
+Bayesian analysis:
+
+```{r}
+library(dclone)
+model <- custommodel("model {
+    for (i in 1:n) {
+        for (j in 1:m) {
+            Y[i,j] ~ dpois(lambda[i,j])
+            lambda[i,j] <- exp(alpha[i,j] + mu)
+        }
+        alpha[i,1:m] ~ dmnorm(zeros, invSigma)
+    }
+    Sigma <- sigma_sq * R + sigma_sq * rho * (1 - R)
+    invSigma <- inverse(Sigma)
+    log_sigma ~ dnorm(0, 0.001)
+    sigma_sq <- exp(log_sigma)^2
+    mu ~ dnorm(0, 0.1)
+    rho ~ dunif(0, 0.999)
+}")
+dat <- list(Y = Y, n = n, m = m, R = diag(1, m, m),
+    zeros = rep(0, m))
+fit <- jags.fit(data = dat, params = c("mu", "sigma_sq","rho"), 
+    model = model, n.iter = 1000)
+summary(fit)
+```
+
+DC: cloning the whole dat set which means more independent clusters
+(i.e. not increased levels of replication within cluster)
+
+```{r}
+library(dclone)
+model <- custommodel("model {
+    for (k in 1:K) {
+        for (i in 1:n) {
+            for (j in 1:m) {
+                Y[i,j,k] ~ dpois(lambda[i,j,k])
+                lambda[i,j,k] <- exp(alpha[i,j,k] + mu)
+            }
+            alpha[i,1:m,k] ~ dmnorm(zeros, invSigma)
+        }
+    }
+    Sigma <- sigma_sq * R + sigma_sq * rho * (1 - R)
+    invSigma <- inverse(Sigma)
+    log_sigma ~ dnorm(0, 0.001)
+    sigma_sq <- exp(log_sigma)^2
+    mu ~ dnorm(0, 0.1)
+    rho ~ dunif(0, 0.999)
+}")
+dat <- list(Y = dcdim(array(Y, c(dim(Y), 1))), n = n, m = m, R = diag(1, m, m),
+    zeros = rep(0, m), K=1)
+dcfit <- dc.fit(data = dat, params = c("mu", "sigma_sq","rho"), 
+    model = model, n.iter = 1000,
+    n.clones=c(1,2,4,8),
+    unchanged = c("n", "m", "R", "zeros"), multiply="K")
+summary(dcfit)
+dcdiag(dcfit)
+```
+
+## Binomial GLMM for clustered data
+
+
+```{r}
+set.seed(1234)
+library(MASS)
+## total sample size is n x m
+m <- 5 # number of points in a cluster
+n <- 25 # number of clusters
+mu <- 0 # global mean on logit scale
+sigma_sq <- 1 # global variance
+rho <- 0.8
+
+## variance-covariance matrix for a single cluster
+Sigma1 <- sigma_sq * diag(1, m, m) + sigma_sq * rho * (1 - diag(1, m, m))
+## the full variance covariance matrix is 'block-diagonal'
+## which means it is filled with zeros across clusters
+alpha <- matrix(0, n, m)
+for (i in 1:n) {
+    alpha[i,] <- mvrnorm(1, rep(0, m), Sigma1)
+}
+Y <- rbinom(n*m, 1, plogis(as.numeric(alpha) + mu))
+dim(Y) <- dim(alpha)
+Y
+boxplot(t(Y), xlab="Clusters", ylab="Y", col="tomato")
+points(1:n, rowMeans(Y), pch=4, col=4)
+```
+
+Bayesian analysis:
+
+```{r}
+library(dclone)
+model <- custommodel("model {
+    for (i in 1:n) {
+        for (j in 1:m) {
+            Y[i,j] ~ dbern(p[i,j])
+            p[i,j] <- ilogit(alpha[i,j] + mu)
+        }
+        alpha[i,1:m] ~ dmnorm(zeros, invSigma)
+    }
+    Sigma <- sigma_sq * R + sigma_sq * rho * (1 - R)
+    invSigma <- inverse(Sigma)
+    log_sigma ~ dnorm(0, 0.001)
+    sigma_sq <- exp(log_sigma)^2
+    mu ~ dnorm(0, 0.1)
+    rho ~ dunif(0, 0.999)
+}")
+dat <- list(Y = Y, n = n, m = m, R = diag(1, m, m),
+    zeros = rep(0, m))
+fit <- jags.fit(data = dat, params = c("mu", "sigma_sq","rho"), 
+    model = model, n.iter = 1000)
+summary(fit)
+```
+
+DC:
+
+```{r}
+library(dclone)
+model <- custommodel("model {
+    for (k in 1:K) {
+        for (i in 1:n) {
+            for (j in 1:m) {
+                Y[i,j,k] ~ dbern(p[i,j,k])
+                p[i,j,k] <- ilogit(alpha[i,j,k] + mu)
+            }
+            alpha[i,1:m,k] ~ dmnorm(zeros, invSigma)
+        }
+    }
+    Sigma <- sigma_sq * R + sigma_sq * rho * (1 - R)
+    invSigma <- inverse(Sigma)
+    log_sigma ~ dnorm(0, 0.001)
+    sigma_sq <- exp(log_sigma)^2
+    mu ~ dnorm(0, 0.1)
+    rho ~ dunif(0, 0.999)
+}")
+dat <- list(Y = dcdim(array(Y, c(dim(Y), 1))), n = n, m = m, R = diag(1, m, m),
+    zeros = rep(0, m), K=1)
+dcfit <- dc.fit(data = dat, params = c("mu", "sigma_sq","rho"), 
+    model = model, n.iter = 1000,
+    n.clones=c(1,2,4,8),
+    unchanged = c("n", "m", "R", "zeros"), multiply="K")
+summary(dcfit)
+dcdiag(dcfit)
+```
