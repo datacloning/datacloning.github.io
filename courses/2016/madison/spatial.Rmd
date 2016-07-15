@@ -108,7 +108,7 @@ model <- custommodel("model {
 dat <- list(Y = dcdim(data.matrix(Y)), n = n, D = D, K=1)
 dcfit <- dc.fit(data = dat, params = c("mu", "sigma_sq","lambda"), 
     model = model, n.iter = 1000,
-    n.clones=c(1,2,4,8),
+    n.clones=c(1,2),
     multiply="K", unchanged=c("n", "D"))
 summary(dcfit)
 dcdiag(dcfit)
@@ -152,7 +152,7 @@ model <- custommodel("model {
 dat <- list(Y = dcdim(data.matrix(Y)), n = n, R = diag(1, n, n), K=1)
 dcfit <- dc.fit(data = dat, params = "mu", 
     model = model, n.iter = 1000,
-    n.clones=c(1,2,4,8),
+    n.clones=c(1,2),
     multiply="K", unchanged=c("n", "R"))
 summary(dcfit)
 dcdiag(dcfit)
@@ -236,7 +236,7 @@ model <- custommodel("model {
 dat <- list(Y = dcdim(data.matrix(Y)), n = n, D = D, K=1)
 dcfit <- dc.fit(data = dat, params = c("mu", "sigma_sq","rho"), 
     model = model, n.iter = 1000,
-    n.clones=c(1,2,4,8),
+    n.clones=c(1,2),
     multiply="K", unchanged=c("n", "D"))
 summary(dcfit)
 dcdiag(dcfit)
@@ -338,7 +338,7 @@ dat <- list(Y = dcdim(array(Y, c(dim(Y), 1))), n = n, m = m, R = diag(1, m, m),
     zeros = rep(0, m), K=1)
 dcfit <- dc.fit(data = dat, params = c("mu", "sigma_sq","rho"), 
     model = model, n.iter = 1000,
-    n.clones=c(1,2,4,8),
+    n.clones=c(1,2),
     unchanged = c("n", "m", "R", "zeros"), multiply="K")
 summary(dcfit)
 dcdiag(dcfit)
@@ -423,7 +423,7 @@ dat <- list(Y = dcdim(array(Y, c(dim(Y), 1))), n = n, m = m, R = diag(1, m, m),
     zeros = rep(0, m), K=1)
 dcfit <- dc.fit(data = dat, params = c("mu", "sigma_sq","rho"), 
     model = model, n.iter = 1000,
-    n.clones=c(1,2,4,8),
+    n.clones=c(1,2),
     unchanged = c("n", "m", "R", "zeros"), multiply="K")
 summary(dcfit)
 dcdiag(dcfit)
