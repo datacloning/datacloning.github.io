@@ -1,0 +1,246 @@
+\documentclass[10pt]{beamer}
+\hypersetup{pdfpagemode=FullScreen}
+\usepackage{setspace}
+ \linespread{1.2}
+% \usepackage{beamerthemesplit} // Activate for custom appearance
+
+\title{Philosophical issues with inferential paradigms}
+\subtitle {Choose your poison}
+\author{Subhash R. Lele}
+\institute {University of Alberta}
+\institute{Department of Mathematical Sciences\\University of Alberta\\Canada\\\textit{Email: slele@ualberta.ca}}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+%\section[Outline]{}
+%\frame{\tableofcontents}
+
+
+\begin{frame}
+\begin{center}
+\LARGE {Which experiment do we repeat? (Conditionality principle)}
+\end{center}
+
+Consider a simple experiment to determine the weight of an item such that it consists of two stages:
+\pause
+\begin{enumerate}
+\item Toss a fair coin and note the outcome whether 'head' or 'tail'.
+\pause
+\item If the outcome is 'head', then use a very accurate scale, i.e. $Y \sim N(\mu,0.01)$
+\pause
+\item If the outcome is 'tail', then use a very \alert{in}accurate scale, i.e. $Y \sim N(\mu,10)$
+\end{enumerate}
+\pause
+ The estimate of $\mu$ is the observed data $y$. What is the uncertainty associated with this number?
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\LARGE Unconditional and Conditional confidence intervals
+\end{center}
+
+We actually have two pieces of information: The observation $y$ and \emph{outcome of the coin}: head or tail.
+In my simulation, I got $w=1$ and $y=3.9712$\\
+\textbf {Conditional confidence interval}
+\begin{itemize}
+\item 
+Suppose we know that the outcome of the coin toss was 'head'. Then we know that the scale that we used was very accurate and hence $(y-1.96*0.1,y+1.96*0.1)=(3.78,4.17)$ is the sensible statement to make.
+\pause
+\item 
+Suppose we know that the outcome of the coin toss was 'tail'. Then we know that the scale that we used was very inaccurate and hence $y-1.96*3.16,y+1.96*3.16$ is the sensible statement to make.
+\end{itemize}
+\pause
+If we are lucky, we should accept our luck and give a short interval; if we are unlucky, we should give a long interval. 
+\end{frame}
+
+
+\begin{frame}
+\textbf {Unconditional confidence interval}
+If we follow the strict definition of confidence interval, we should actually compute these confidence intervals under the repetition of the full experiment: First the coin toss and then the measurement. If we do that, the confidence interval we get is approximately: $(-1.36,9.25)$.\\
+\begin{itemize}
+\pause
+\item Does this interval make sense to you?\\
+\pause
+\item To me, the conditional intervals make sense but if we follow the frequentist approach as per the definition, the unconditional confidence interval is the correct one (in fact, it is \alert {\textbf{optimal!})}\\
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+
+\item This phenomenon is not limited to artificial examples. 
+\pause
+\item In linear regression, the variance of the estimator of the regression coefficient depends on the configuration of the covariates. If the covariates are spread out, we get a good estimate of the slope; otherwise we get bad estimates. 
+\pause
+\item The standard calculations reflect this but are they 'kosher' according to the strict definition of the confidence interval? 
+\pause
+\item They are 'kosher' only if we condition on the covariate values. That is, we only repeat the experiment under the same covariate values. 
+\pause
+\item If the covariate values themselves are random (for example, in observational studies), we should be computing the unconditional confidence intervals, integrating over the variation in the covariate values too. 
+\pause
+\item Scientifically the unconditional confidence interval does not make sense and hence we do not use it. 
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\item The value of the coin toss gives us no information about the parameter of interest but tells us about the uncertainty.
+\pause
+\item The values of the covariates give us no information about the slope but tell us about the uncertainty associated with the parameter estimate.
+\pause
+\item Such quantities are called 'ancillary statistics'. 
+\pause
+\item Conditionality principle says that we should use inference conditional on such ancillary statistics or 'relevant subsets' of the sample space defined by them.
+\pause
+\item These are non-unique. That is a BIG problem with the frequentist approach. 
+\end{itemize}
+\alert {\textbf {The researcher has to decide which experiment is supposed to be repeated.}} 
+\end{frame}
+
+\begin{frame}
+
+\LARGE Other related problems
+
+\begin{itemize}
+\item Multiple comparisons
+\begin{itemize}
+\item Two anthropological surveys (same individuals in the survey): One collects information only about the character of interest (say, Height) and the other collects information on all the different characters (say, Height, Weight, Age ... )
+\item \textit{Should the confidence interval for Height be different for two surveys?}
+\end{itemize}
+\item Nuisance parameters
+\begin{itemize}
+\item \textit {How do we conduct inference about one of the parameters in the presence of other parameters?}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\pause
+\item The main problem with frequentist measure of uncertainty is that it is a \textbf{pre-data} measure whereas we would like to have a \textbf{post-data} measure of uncertainty. 
+\pause
+\item This is similar to saying that the GPS unit that I use to locate an animal is highly accurate. It tells us nothing about the accuracy of the \alert{individual} measurement that we have. In principle, it could be quite far apart (indeed with small probability).
+\pause
+\item \alert {\large Is it possible to give post-data uncertainty of the inferential statement?} 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\alert {\LARGE Issues with the Bayesian approach}
+\end{center}
+\begin{itemize}
+\item Specification of the prior distribution is the tricky part, especially when we multi-parameter situation with possible correlations between parameters.
+\pause
+\item Eliciting priors from the experts is extremely difficult. 
+\pause
+\item We do not even know which parameters are estimable and which ones are not estimable.
+\pause
+\item Prior distribution on non-identifiable parameters is impossible to elicit. 
+\pause
+\item Complete class theorem says that there \emph{\textbf {exists}} a prior that will lead to the best decision. \alert {But it neither tells us how to construct such a prior nor does it indicate how far our chosen prior is from such an ideal prior distribution. This is not very useful in practice.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\alert {\Large Do we need frequentist probability to evaluate Bayesians?}
+\end{center}
+\begin{itemize}
+\pause
+\item What does credible interval mean? How do we validate its correctness? The credible interval is to be interpreted as: "I believe the parameter belongs to ...". I have seldom seen a Bayesian paper saying 'I believe ...' when interpreting the credible intervals or Bayesian hypothesis testing. 
+\pause
+\item What does prediction interval mean? How do we validate its correctness? Are we thinking of replicating the experiment and checking how many times the interval contains the actual outcome? 
+\pause
+\item When we say we are willing to bet in a certain way, do we implicitly mean that we believe that we will win a certain proportion of times? Is this a back door entry to a frequentist thinking? 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+
+Stanford Encyclopedia of Philosophy
+\begin{quote}
+\textit{Ascertainability} This criterion requires that there be some method by which, in principle at least, we can ascertain values of probabilities. It merely expresses the fact that a concept of probability will be useless if it is impossible in principle to find out what the probabilities are...
+\end{quote}
+Is the Bayesian probability ascertainable without some aid from frequentist notion? 
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\item \textbf {Model diagnostics} is inherently a frequentist concept. In the Bayesian literature, distance of the data from the predictive distribution is used to study model adequacy. This can tell us something is wrong with the model but what it cannot tell us is whether it is the prior or the likelihood that is wrong.  
+\pause
+\item \textbf {Well calibrated Bayesian?} Some Bayesian philosophers want to have a procedure that is Bayesian in principle but also valid in the frequentist sense. They try to choose a prior that satisfies this condition. The question of which experiment should I repeat rears is ugly head again. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\alert{\LARGE Non informative or objective Bayesian approach}
+\end{center}
+Can we choose a prior that will \textit{'let the data speak'}?
+\begin{itemize}
+\item  There is no proper definition of a non-informative prior. Flat priors or priors with large variance are not non-informative. 
+\pause
+\item In practice, only independent component priors are chosen although clearly the parameters are bound to be related. This is just for the sake of convenience and does not reflect actual expert opinion.  
+\pause
+\item In the past, priors were chosen for mathematical convenience. Now they are chosen for computational convenience and convergence of the MCMC. They seldom reflect expert opinion. 
+\pause
+\item The results from the non-informative priors are NOT similar to the frequentist results. This is a complete myth and a number of examples (and, theoretical explanations) exist showing the falsity of this statement. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\item There are frequentist or likelihood based methods, e.g. meta-analysis, that can be used to combine past data or related data or expert opinion with the data at hand. One does not have to follow the Bayesian approach to achieve this goal. This is another myth spread by the Bayesian practitioners. 
+\pause
+\item The non-informative or objective Bayesian analysis is nothing but BINO (Bayesian In Name Only). 
+\end{itemize}
+\end{frame}
+
+%\begin{frame}
+%\begin{center}
+%\large {What is non-informative on one scale is highly informative on another scale}\\
+%\vspace{3mm}
+%\small {Occupancy estimation when there is detection error} 
+%\vspace{5mm}
+
+%\begin{tabular}{ccc} 
+
+%Parameters & Estimate & SE \\\hline
+
+%2.5 & 2.45 & 0.25\\
+%  & 3.0 & 0.2\\
+%\end{tabular}
+%\end{center}
+%\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\item Does it even make sense to talk about uncertainty about events/experiments that are not replicable? 
+\item When we say equivalent experiments, do we mean similar but not necessarily identical? Is it ever possible to repeat an experiment \emph{identically}? Can we even toss a coin exactly the same way? What do we mean by repeating an experiment?
+\item Example for combining past data with future data using the likelihoods vs prior-posterior paradigm (which one is better?)
+\item Example of combining 'related' data but not the exact same experiment using hierarchical modelling and likelihood (similar to expert opinion)
+\item Example of checking if the prior is 'good' by generating data from the predictive distribution and using that to see if it would have added any information.
+\item Why should Bayesians be worried about sensitivity to the priors? Are they bolstering weak data with priors?
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\LARGE SUMMARY
+\end{center}
+\begin{itemize}
+\item If you want to be a frequentist, you have to decide on which experiment you are (hypothetically) repeating.
+\item If you are a proper Bayesian, you have to choose a prior. You are answering the question: What is my belief having observed these data? \alert {Is this what we want in science?}
+\item An objective Bayesian is neither a Bayesian nor a frequentist. It suffers from the shortcomings of both approaches. Priors do not reflect expert opinion; posteriors have no frequentist meaning. 
+\item \alert {\textsc {Sophie's choice: Bayesian myths or frequentist follies?}}\\
+\vspace{5mm}
+ \tiny{(An impossibly difficult choice, especially when forced onto someone. The choice is between two unbearable options, and it is essentially a no-win situation)}
+\end{itemize}
+\end{frame}
+
+\end{document}
