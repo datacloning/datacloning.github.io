@@ -237,6 +237,9 @@ plot(fit)
 pairs(fit)
 ```
 
+!!!FIXME!!!
+DC: issues might arise with parent values, that is why we do CL (see zeros/ones trick in ENV paper)
+
 ## Poisson-Poisson mixture
 
 This modification can be suitable in cases when there is e.g.

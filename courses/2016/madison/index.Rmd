@@ -46,8 +46,9 @@ Morning coffee, and afternoon iced tea and lemonade, plus light snack of chips a
   - [Linear mixed-effects models]({{ site.baseurl }}/courses/2016/madison/lmm.html)
   - [Generalized linear mixed-effects models]({{ site.baseurl }}/courses/2016/madison/glmm.html)
 * Models with dependence:
-  - [Temporal dependence]({{ site.baseurl }}/courses/2016/madison/pva.html)
+  - [Temporal dependence]({{ site.baseurl }}/courses/2016/madison/pva.html) ([slides]({{ site.baseurl }}/courses/2016/madison/Dependent_data_analysis.pdf))
   - [Spatial dependence]({{ site.baseurl }}/courses/2016/madison/spatial.html)
+* Philosophical issues with inferential paradigms ([slides]({{ site.baseurl }}/courses/2016/madison/issues.pdf))
 
 ### Contact the organizers
 

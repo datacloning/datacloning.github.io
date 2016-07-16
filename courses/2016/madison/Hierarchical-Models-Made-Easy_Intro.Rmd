@@ -1112,4 +1112,6 @@ dcfit <- dc.fit(data = dat, params = "p", model = model,
     n.clones = c(1,2,4,8), multiply = "n")
 ```
 
+!!!FIXME!!!
+
 More in person. Safe travels and see you in Madison!
