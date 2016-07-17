@@ -94,7 +94,7 @@ Prior distributions are smoothness assumptions on the parameters and their effec
 
 #### Data generation
 
-```{r}
+```{r,dev='png'}
 set.seed(1234)
 n <- 100
 m <- 1
@@ -110,7 +110,7 @@ summary(Y)
 
 Without a smoothing assumption:
 
-```{r}
+```{r,dev='png'}
 library(dclone)
 model <- custommodel("model {
     for (i in 1:n) {
@@ -135,7 +135,7 @@ plot(fit[,c("alpha[1]","alpha[100]")])
 
 With smoothing assumption:
 
-```{r}
+```{r,dev='png'}
 library(dclone)
 model <- custommodel("model {
     for (i in 1:n) {
@@ -166,7 +166,7 @@ abline(0,1)
 
 DC with the smoothing assumption:
 
-```{r}
+```{r,dev='png'}
 model <- custommodel("model {
     for (k in 1:K) {
         for (i in 1:n) {
@@ -213,7 +213,7 @@ coef(dcfit2)
 c(mu=mu, sigma_sq=sigma_sq, tau_sq=tau_sq, sum=sigma_sq + tau_sq)
 ```
 
-```{r}
+```{r,dev='png'}
 ## m=1 leads to error:
 ## Error: number of levels of each grouping factor must be < number of observations
 if (m > 1) {
@@ -234,7 +234,7 @@ How do we predict $\alpha_i$ based on data cloning?
 `alpha` is now a vector of length `K`. We need
 a separate run for prediction:
 
-```{r}
+```{r,dev='png'}
 model <- custommodel("model {
     for (i in 1:n) {
         for (j in 1:m) {
