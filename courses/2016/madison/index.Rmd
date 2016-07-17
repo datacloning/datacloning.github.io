@@ -59,3 +59,23 @@ that came out after running the models.
 * [Péter Sólymos](http://peter.solymos.org)
 * [Subhash R. Lele](http://www.stat.ualberta.ca/~slele/)
 
+### Suggested reading
+
+Lele, S. R. and K. L. Allen, 2006.
+On using expert opinion in ecological analyses: a frequentist approach. 
+Environmetrics, 17:683--704. [[PDF](http://www.stat.ualberta.ca/~slele/publications/LeleAllen06.pdf)]
+
+Lele, S. R. 2015. 
+Is non-informative Bayesian analysis appropriate for wildlife management: 
+survival of San Joaquin Kit Fox and declines in amphibian populations.
+arXiv:1502.00483 [[PDF](http://arxiv.org/pdf/1502.00483v1.pdf)]
+
+Lele, S.R., B. Dennis and F. Lutscher, 2007. Data cloning: easy maximum likelihood estimation for complex ecological models using Bayesian Markov chain Monte Carlo methods. Ecology Letters 10:551--563. [[PDF](http://www.math.ualberta.ca/~slele/publications/Lele%20Dennis%20Lutscher%20data%20cloning%20Ecology%20Letters%2020071.pdf)]
+
+Solymos P., 2010. dclone: Data Cloning in R. The R Journal 2(2):29--37.
+[[PDF](http://journal.r-project.org/archive/2010-2/RJournal_2010-2_Solymos.pdf)]
+
+Solymos, P., Lele, S. R. and Bayne, E., 2012. 
+Conditional likelihood approach for analyzing single visit abundance survey data in the presence of zero inflation and detection error. 
+Environmetrics 23:197--205. [[PDF](https://drive.google.com/open?id=0B-q59n6LIwYPOTNqaWZnSlNYZWc)]
+
