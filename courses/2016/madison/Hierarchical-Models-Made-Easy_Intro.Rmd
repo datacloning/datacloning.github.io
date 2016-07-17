@@ -1094,24 +1094,4 @@ plot(dcdiag(dcfit))
 ```
 
 
-#### Modification
-
-If locations are treated as i.i.d., it is possible to
-replicate the vector, so that length
-becomes `n * K`.
-
-```{r}
-model <- custommodel("model {
-    for (i in 1:n) {
-        Y[i] ~ dbin(p, 1)
-    }
-    p ~ dunif(0.001, 0.999)
-}")
-dat <- list(Y = y, n = n)
-dcfit <- dc.fit(data = dat, params = "p", model = model,
-    n.clones = c(1,2,4,8), multiply = "n")
-```
-
-!!!FIXME!!!
-
 More in person. Safe travels and see you in Madison!

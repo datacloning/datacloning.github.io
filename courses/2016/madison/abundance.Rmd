@@ -237,8 +237,13 @@ plot(fit)
 pairs(fit)
 ```
 
-!!!FIXME!!!
-DC: issues might arise with parent values, that is why we do CL (see zeros/ones trick in ENV paper)
+
+Data cloning for zero inflated data: issues might arise with parent values, 
+that is why we do conditional likelihood estimation.
+It is also possible to use data vloning and JAGS for 
+conditional likelihood estimation as explained in
+Solymos et al. 2012 ([PDF](https://drive.google.com/open?id=0B-q59n6LIwYPOTNqaWZnSlNYZWc)).
+
 
 ## Poisson-Poisson mixture
 

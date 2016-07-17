@@ -61,7 +61,7 @@ n <- 100
 p <- 0.6
 phi <- 0.4
 y <- rbinom(n = n, size = 1, prob = phi)
-w <- rbinom(n = n, size = y, prob = p)
+w <- rbinom(n = n, size = y, prob = y * p)
 table(Y = y, W = w)
 ```
 
@@ -282,7 +282,7 @@ phi <- 0.4
 y <- rbinom(n = n, size = 1, prob = phi)
 w <- matrix(NA, n, T)
 for (t in 1:T)
-    w[,t] <- rbinom(n = n, size = y, prob = p)
+    w[,t] <- rbinom(n = n, size = y, prob = y * p)
 ```
 
 Given the data, plot the likelihood contours.
