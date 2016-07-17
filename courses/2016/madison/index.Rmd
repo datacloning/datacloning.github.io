@@ -38,6 +38,10 @@ Morning coffee, and afternoon iced tea and lemonade, plus light snack of chips a
 
 ### Course resources
 
+Each link leads to a page where it is possible to review the html
+version, or view/download the source (R markdown) and the final PDF
+that came out after running the models.
+
 * [What to do before the course]({{ site.baseurl }}/courses/2016/madison/how-to-prepare.html)
 * [Introduction]({{ site.baseurl }}/courses/2016/madison/Hierarchical-Models-Made-Easy_Intro.html) ([slides]({{ site.baseurl }}/courses/2016/madison/Fundamental_concepts.pdf))
 * [Hierarchical models]({{ site.baseurl }}/courses/2016/madison/hierarchical-models.html):

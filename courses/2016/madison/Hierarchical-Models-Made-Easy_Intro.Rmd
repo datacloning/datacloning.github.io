@@ -922,20 +922,18 @@ Use the dcapps package to play around with different priors
 for the Bernoulli model. First, try Beta prior:
 
 ```{r}
-n <- 5
 op <- par(mfrow = c(2,2))
-beta_prior(p = 0.3, n = n, a = 1, b = 1, scale = "prob")
-beta_prior(p = 0.3, n = n, a = 1, b = 1, scale = "logit")
-beta_prior(p = 0.3, n = n, a = 0.5, b = 0.5, scale = "prob")
-beta_prior(p = 0.3, n = n, a = 0.5, b = 0.5, scale = "logit")
+beta_prior(p = 0.3, n = 5, a = 1, b = 1, scale = "prob")
+beta_prior(p = 0.3, n = 5, a = 1, b = 1, scale = "logit")
+beta_prior(p = 0.3, n = 5, a = 0.5, b = 0.5, scale = "prob")
+beta_prior(p = 0.3, n = 5, a = 0.5, b = 0.5, scale = "logit")
 par(op)
 
-n <- 100
 op <- par(mfrow = c(2,2))
-beta_prior(p = 0.3, n = n, a = 1, b = 1, scale = "prob")
-beta_prior(p = 0.3, n = n, a = 1, b = 1, scale = "logit")
-beta_prior(p = 0.3, n = n, a = 0.5, b = 0.5, scale = "prob")
-beta_prior(p = 0.3, n = n, a = 0.5, b = 0.5, scale = "logit")
+beta_prior(p = 0.3, n = 100, a = 1, b = 1, scale = "prob")
+beta_prior(p = 0.3, n = 100, a = 1, b = 1, scale = "logit")
+beta_prior(p = 0.3, n = 100, a = 0.5, b = 0.5, scale = "prob")
+beta_prior(p = 0.3, n = 100, a = 0.5, b = 0.5, scale = "logit")
 par(op)
 ```
 
