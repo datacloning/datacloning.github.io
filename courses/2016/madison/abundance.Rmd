@@ -28,7 +28,7 @@ We can easily generalize this to model abundance surveys. The N-mixture model is
 * True abundance model:  $N_i \sim Poisson(\lambda)$ for locations $i=1,2, \ldots, n$. 
 * Observation model: $(Y_{i,t} \mid N_i) \sim Binomial(N_i, p)$ for visits $t=1,2, \ldots, T$.
 
-```{r}
+```{r,dev='png'}
 set.seed(1234)
 n <- 200
 T <- 1
@@ -42,7 +42,7 @@ for (t in 1:T) {
 table(N = N, Y = apply(Y, 1, max))
 ```
 
-```{r}
+```{r,dev='png'}
 library(dclone)
 library(rjags)
 model <- custommodel("model {
@@ -66,7 +66,7 @@ plot(fit)
 pairs(fit)
 ```
 
-```{r}
+```{r,dev='png'}
 ifun <- function(model, n.clones) {
     dclone(list(N = apply(Y, 1, max) + 1), n.clones)
 }
@@ -88,7 +88,7 @@ As before it is easy to include covariates in the models. There are various exte
 
 Single visit abundance model with covariates:
 
-```{r}
+```{r,dev='png'}
 set.seed(1234)
 n <- 200
 x <- rnorm(n)
@@ -111,7 +111,7 @@ md <- svabu(Y ~ x | z, zeroinfl = FALSE)
 coef(md)
 ```
 
-```{r}
+```{r,dev='png'}
 model <- custommodel("model {
     for (i in 1:n) {
         N[i] ~ dpois(lambda[i])
@@ -148,7 +148,7 @@ dcdiag(dcfit)
 
 ## Learning with DC
 
-```{r}
+```{r,dev='png'}
 model <- custommodel("model {
     for (i in 1:n) {
         N[i] ~ dpois(lambda[i])
@@ -194,7 +194,7 @@ when all the detection history is 0,
 and non-detections when some of the detection history is >0
 if $p$ is not too small.
 
-```{r}
+```{r,dev='png'}
 set.seed(1234)
 n <- 100
 T <- 2
@@ -210,7 +210,7 @@ for (t in 1:T) {
 table(N = N, Y = apply(Y, 1, max))
 ```
 
-```{r}
+```{r,dev='png'}
 library(dclone)
 model <- custommodel("model {
     for (i in 1:n) {
@@ -250,7 +250,7 @@ Solymos et al. 2012 ([PDF](https://drive.google.com/open?id=0B-q59n6LIwYPOTNqaWZ
 This modification can be suitable in cases when there is e.g.
 double counting of individuals, or false positives.
 
-```{r}
+```{r,dev='png'}
 set.seed(1234)
 n <- 200
 x <- rnorm(n)

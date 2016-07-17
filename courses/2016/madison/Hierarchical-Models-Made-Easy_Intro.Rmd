@@ -174,13 +174,13 @@ we will use during the short course.
 
 R is a great calculator:
 
-```{r}
+```{r,dev='png'}
 1 + 2
 ```
 
 Assign a value and print an object:
 
-```{r}
+```{r,dev='png'}
 print(x <- 2)
 (x = 2) # shorthand for print
 x == 2 # logical operator, not assignment
@@ -190,7 +190,7 @@ y # another way to print
 
 Logical operators:
 
-```{r}
+```{r,dev='png'}
 x == y # equal
 x != y # not eaqual
 x < y # smaller than
@@ -199,7 +199,7 @@ x >= y # greater than or equal
 
 Vectors and sequences:
 
-```{r}
+```{r,dev='png'}
 x <- c(1, 2, 3)
 x
 1:3
@@ -212,14 +212,14 @@ rep(1:2, each = 5)
 
 Vector operations, recycling:
 
-```{r}
+```{r,dev='png'}
 x + 0.5
 x * c(10, 11, 12, 13)
 ```
 
 Indexing vectors, ordering:
 
-```{r}
+```{r,dev='png'}
 x[1]
 x[c(1, 1, 1)] # a way of repeatig values
 x[1:2]
@@ -233,7 +233,7 @@ rev(x) # reverse
 
 Character vectors, `NA` values, and sorting:
 
-```{r}
+```{r,dev='png'}
 z <- c("b", "a", "c", NA)
 z[z == "a"]
 z[!is.na(z) & z == "a"]
@@ -246,7 +246,7 @@ sort(z, na.last=TRUE)
 
 Matrices and arrays:
 
-```{r}
+```{r,dev='png'}
 (m <- matrix(1:12, 4, 3))
 matrix(1:12, 4, 3, byrow=TRUE)
 
@@ -255,7 +255,7 @@ array(1:12, c(2, 2, 3))
 
 Attribues:
 
-```{r}
+```{r,dev='png'}
 dim(m)
 dim(m) <- NULL
 m
@@ -268,7 +268,7 @@ attributes(m)
 
 Matrix indices:
 
-```{r}
+```{r,dev='png'}
 m[1:2,]
 m[1,2]
 m[,2]
@@ -283,7 +283,7 @@ m[!(rownames(m) %in% c("a", "c", "e")),]
 
 Lists and indexing:
 
-```{r}
+```{r,dev='png'}
 l <- list(m = m, x = x, z = z)
 l
 l$ddd <- sqrt(l$x)
@@ -293,14 +293,14 @@ l[["ddd"]]
 
 Data frames:
 
-```{r}
+```{r,dev='png'}
 d <- data.frame(x = x, sqrt_x = sqrt(x))
 d
 ```
 
 Structure:
 
-```{r}
+```{r,dev='png'}
 str(x)
 str(z)
 str(m)
@@ -312,7 +312,7 @@ str(as.list(d))
 
 Summary:
 
-```{r}
+```{r,dev='png'}
 summary(x)
 summary(z)
 summary(m)
@@ -332,7 +332,7 @@ Random numbers can be generated from a distribution using the
 the abbreviated name of the distribution, for example
 `rnorm`.
 
-```{r}
+```{r,dev='png'}
 n <- 1000
 ## draw n random numbers from Normal(0, 1)
 hist(rnorm(n, mean = 0, sd = 1))
@@ -356,7 +356,7 @@ The coda R package defines MCMC list objects as:
 
 For example if we are monitoring 2 variables, a normally and a uniformly distributed one, the structure might look like this:
 
-```{r}
+```{r,dev='png'}
 mcmc <- replicate(3,
     structure(cbind(a = rnorm(n), b = runif(n)),
         mcpar = c(1, n, 1), class = "mcmc"),
@@ -368,7 +368,7 @@ str(mcmc)
 Some basic methods for such `mcmc.list` objects are
 defined in the `coda` and `dclone` packages:
 
-```{r}
+```{r,dev='png'}
 library(dclone)
 summary(mcmc)
 str(as.matrix(mcmc))
@@ -452,7 +452,7 @@ We take product because observations are assumed to be independent of each other
 To demonstrate this we simulate a single data set and
 vary the parameter value and get a function as represented below:
 
-```{r}
+```{r,dev='png'}
 ## random numbers from Binomial distribution
 ## Binomial with size=1 is a Bernoulli distribution
 ## p value set as 0.3
@@ -479,7 +479,7 @@ L <- sapply(pt, function(z) prod(dbinom(y1, size = 1, prob = z)))
 
 Now that we calculated the likelihood function, let us plot it:
 
-```{r}
+```{r,dev='png'}
 op <- par(las=1) # always horizontal axis, store old settings in op
 ## color palettes for nice figures
 flatly <- list(
@@ -509,7 +509,7 @@ likelihood function changes when we change the data
 that was simulated under the same parameter values.
 We keep everything else (e.g. sample size) the same.
 
-```{r}
+```{r,dev='png'}
 ## function f has a single argument, n: sample size
 f <- function(n) {
     y <- rbinom(n = n, size = 1, p = 0.5)
@@ -533,7 +533,7 @@ the likelihood becomes concentrated around the true value.
 This property of the maximum likelihood estimator is called
 *consistency*.
 
-```{r}
+```{r,dev='png'}
 ## try different sample sizes, data is fixed
 ## so samples can be nested
 nvals <- c(10, 100, 250, 500, 1000)
@@ -577,7 +577,7 @@ install_github("datacloning/dcapps")
 ### Commonly used statistical distributions
 
 Play with the parameter settings for these distributions:
-```{r}
+```{r,dev='png'}
 library(dcapps)
 op <- par(mfrow = c(2, 2))
 distr("Bernoulli", binom_p = 0.3)
@@ -599,7 +599,7 @@ par(op)
 Vary sample size (`n`) and random seed (`seed`) to see how that
 impacts the maximum likelihood estimator (MLE):
 
-```{r}
+```{r,dev='png'}
 op <- par(mfrow = c(2, 2))
 mle(p = 0.3, n = 10, seed = 0)
 mle(p = 0.3, n = 10, seed = 1234)
@@ -626,7 +626,7 @@ becomes a sum on the log scale. This is much easier to compute.
 That is why we ofteh find that programs define the negative
 log likelihood function as we do below.
 
-```{r}
+```{r,dev='png'}
 ## this functions simulates observations
 sim_fun <- function(n, p) {
     rbinom(n = n, size = 1, p = p)
@@ -647,7 +647,7 @@ the search for the minimum (or maximum) is continued with more intensity,
 i.e. until the difference in subsequent candidate estimates reaches a pre defines
 tolerance threshold (`tol` argument in `optimize`).
 
-```{r}
+```{r,dev='png'}
 n <- 100
 p <- 0.3
 y <- sim_fun(n, p)
@@ -667,7 +667,7 @@ data sets. A natural question to ask would be: How much would the answers vary i
 In the following program we pre-allocate a vector of length $B$, we simulate
 the data $B$ times and store the corresponding MLEs in the object `res`:
 
-```{r}
+```{r,dev='png'}
 B <- 1000
 res <- numeric(B)
 for (i in 1:B) {
@@ -680,7 +680,7 @@ Some summary statistics reveal interesting things: the $B$ estimates now
 have a *sampling distribution* that can be characterized by its
 mean and various percentiles:
 
-```{r}
+```{r,dev='png'}
 summary(res)
 quantile(res, c(0.025, 0.975))
 ```
@@ -693,7 +693,7 @@ estimate and the true parameter values.
 When the bias converges to 0 with increasing sample size,
 we say that an estimator is consistent:
 
-```{r}
+```{r,dev='png'}
 mean(res - p)
 ```
 
@@ -704,7 +704,7 @@ Precision is the corresponding feature of an estimate.
 The 2.5% and 97.5% percentiles of the sampling distribution correspond to the
 95% analytical confidence intervals around the true parameter value.
 
-```{r}
+```{r,dev='png'}
 level <- 0.95
 a <- (1 - level) / 2
 a <- c(a, 1 - a)
@@ -724,7 +724,7 @@ the analytical confidence intervals and the quantiles of the
 sampling distribution. The values overlap perfectly, that is why the red
 lines are not visible:
 
-```{r}
+```{r,dev='png'}
 hist(res, col = flatly$red, border = flatly$pre_border,
     xlim = c(0, 1), main = "Sampling distribution")
 rug(res+runif(B, -0.01, 0.01), col = flatly$info, lwd = 2)
@@ -745,7 +745,7 @@ because for this particular model we could calculate it analytically.
 This, however, might not be the case in all situation. One can estimate
 the asymptotic standard error and confidence interval of an estimate:
 
-```{r}
+```{r,dev='png'}
 ## our data
 y <- sim_fun(n, p)
 ## MLE
@@ -756,7 +756,7 @@ y <- sim_fun(n, p)
 
 We have the MLE. The MLE is kind of close to the true parameter value. So suppose we pretend as if the MLE is the true parameter value, we can get the sampling distribution and the confidence interval. This is the idea behind the parametric bootstrap confidence intervals.
 
-```{r}
+```{r,dev='png'}
 B <- 1000
 pbres <- numeric(B)
 for (i in 1:B) {
@@ -771,7 +771,7 @@ but instead of simulating data sets under our initial estimate,
 we mimic the experiment by resampling the original data set
 with replacement $B$ times:
 
-```{r}
+```{r,dev='png'}
 ## we use the same settings and data as for non-parametric bootstrap
 npbres <- numeric(B)
 for (i in 1:B) {
@@ -783,7 +783,7 @@ for (i in 1:B) {
 
 Let us compare the true CI with the estimated CIs:
 
-```{r}
+```{r,dev='png'}
 rbind(true = ci0, asy = ci1, pb = ci2, npb = ci3)
 ```
 
@@ -797,7 +797,7 @@ If the true value is contained between the confidence limits
 at least 95 percent of the cases, se say the coverage
 of the estimator is nominal. Here is the code:
 
-```{r}
+```{r,dev='png'}
 R <- 100
 ci_res <- list()
 for (j in 1:R) {
@@ -833,7 +833,7 @@ for (j in 1:R) {
 Calculating coverage for the 3 different methods of
 obtaining the 95% confidence intervals:
 
-```{r}
+```{r,dev='png'}
 ## a single run
 ci_res[[1]]
 ## compare with true p value
@@ -852,7 +852,7 @@ colMeans(coverage)
 
 Visualizing the results:
 
-```{r}
+```{r,dev='png'}
 op <- par(mfrow = c(3,1), mar = c(4, 4, 2, 1) + 0.1)
 
 plot(0, type = "n", xlim = c(1, R), ylim = c(0, 1),
@@ -921,7 +921,7 @@ $\pi(\theta)$ is the prior distribution.
 Use the dcapps package to play around with different priors
 for the Bernoulli model. First, try Beta prior:
 
-```{r}
+```{r,dev='png'}
 op <- par(mfrow = c(2,2))
 beta_prior(p = 0.3, n = 5, a = 1, b = 1, scale = "prob")
 beta_prior(p = 0.3, n = 5, a = 1, b = 1, scale = "logit")
@@ -961,7 +961,7 @@ Only Jeffrey's prior is not affected.
 
 There is also a function for `normal_prior` and a `bimodel_prior`
 
-```{r}
+```{r,dev='png'}
 n <- 5
 op <- par(mfrow = c(1,2))
 normal_prior(p = 0.3, n = n, mu = 0, var = 1, scale = "prob")
@@ -1018,7 +1018,7 @@ computation of the curvature of the likelihood function.
 Use the following app to see what happens when
 we clone the data instead of increasing sample size:
 
-```{r}
+```{r,dev='png'}
 op <- par(mfrow = c(2, 2))
 data_cloning(p = 0.3, n = 10, a = 2, b = 1, K = 1, seed = 0)
 data_cloning(p = 0.3, n = 10, a = 0.5, b = 0.5, K = 1, seed = 0)
@@ -1033,7 +1033,7 @@ MCMC = Markov chain Monte Carlo
 
 ### Conventional maximum likelihood estimation
 
-```{r}
+```{r,dev='png'}
 m <- glm(formula = y ~ 1, family=binomial("logit"))
 summary(m)
 coef(m)
@@ -1046,7 +1046,7 @@ confint(m)
 
 ### Bayesian model in JAGS
 
-```{r}
+```{r,dev='png'}
 library(dclone)
 library(rjags)
 model <- custommodel("model {
@@ -1070,7 +1070,7 @@ To make sure that both locations and clones are independent
 (i.i.d.), it is safest to include and extra dimension
 and the corresponding loop.
 
-```{r}
+```{r,dev='png'}
 model <- custommodel("model {
     for (k in 1:K) {
         for (i in 1:n) {
