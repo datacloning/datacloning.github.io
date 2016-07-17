@@ -54,6 +54,9 @@ that came out after running the models.
   - [Spatial dependence]({{ site.baseurl }}/courses/2016/madison/spatial.html)
 * Philosophical issues with inferential paradigms ([slides]({{ site.baseurl }}/courses/2016/madison/issues.pdf))
 
+All the code and PDF files can be downloaded as a single 
+[zip archive]({{ site.baseurl }}/courses/2016/madison/madison.zip).
+
 ### Contact the organizers
 
 * [Péter Sólymos](http://peter.solymos.org)
