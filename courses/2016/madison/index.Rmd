@@ -75,6 +75,10 @@ arXiv:1502.00483 [[PDF](http://arxiv.org/pdf/1502.00483v1.pdf)]
 
 Lele, S.R., B. Dennis and F. Lutscher, 2007. Data cloning: easy maximum likelihood estimation for complex ecological models using Bayesian Markov chain Monte Carlo methods. Ecology Letters 10:551--563. [[PDF](http://www.math.ualberta.ca/~slele/publications/Lele%20Dennis%20Lutscher%20data%20cloning%20Ecology%20Letters%2020071.pdf)]
 
+Lele S. R. and B. Dennis, 2009. 
+Bayesian method for hierarchical models: Are ecologists making a Faustian bargain? 
+Ecological Applications 19:581--584. [[PDF](http://www.stat.ualberta.ca/~slele/publications/Lele%20Dennis%2009.pdf)]
+
 Solymos P., 2010. dclone: Data Cloning in R. The R Journal 2(2):29--37.
 [[PDF](http://journal.r-project.org/archive/2010-2/RJournal_2010-2_Solymos.pdf)]
 
