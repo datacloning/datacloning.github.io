@@ -68,10 +68,10 @@ works with all major MCMC engines. See the <a href="{{ site.baseurl }}/install.h
         <div class="col-md-8 col-md-offset-2">
 
 <div class="well">
-<h3><a href="{{ site.baseurl }}/courses/2016/madison/">Hierarchical models for conservation biologists made easy</a></h3>
-<p><small>Posted on 2016&ndash;02&ndash;27</small></p>
-<p><strong>One-day short course at <a href="http://www.scbnacongress.org/">NACCB congress</a> in Madison, WI, on July 16th, with Peter Solymos and Subhash Lele</strong></p>
-<p>This course is aimed towards the conservation professionals who need to understand and feel comfortable with modern statistical and computational tools used to address conservation issues. Conservation science needs to be transparent and credible to be able to make an impact and translate information and knowledge into action.</p>
+<h3><a href="https://github.com/datacloning/workshop-2023-edmonton">CalgaryR & YEGRUG Meetup: Data Cloning - Hierarchical Models Made Easy</a></h3>
+<!-- <p><small>Posted on 2016&ndash;02&ndash;27</small></p> -->
+<p><strong>Half-day workshop in Edmonton, WI, on April 13, 2023, with Peter Solymos and Subhash Lele</strong></p>
+<p>Mixed models, also known as hierarchical models and multilevel models, is a useful class of models for applied sciences. The goal of this workshop is to give an introduction to the logic, theory, and implementation of these models to solve practical problems. The workshop will include a seminar style overview and hands on exercises including common model classes and examples that participants can extend for their own needs.</p>
 </div>
 
         </div>
