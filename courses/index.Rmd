@@ -9,7 +9,7 @@ No upcoming courses.
 
 ### Past courses
 
-* [April 13, 2023, Edmonton (+virtual), Alberta, Canada]([./2016/madison/](https://github.com/datacloning/workshop-2023-edmonton))
+* [April 13, 2023, Edmonton (+virtual), Alberta, Canada](https://github.com/datacloning/workshop-2023-edmonton)
 * [July 16 2016, Madison, Wisconsin, USA](./2016/madison/)
 * [Aug 1 2015, Montpellier, France](./2015/montpellier/)
 * 2009, Edmonton, AB Canada.
