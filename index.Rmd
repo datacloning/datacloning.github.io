@@ -7,12 +7,12 @@ layout: plain
         <div class="row">
             <div class="col-md-8 offset-md-2">
 
-<p>Frequentist statistical inference meets<br />
-Bayesian Markov-chain Monte Carlo (MCMC) methods.</p>
-<h1 class="title">Happy Cloding!</h1>
+<h2>Frequentist statistical inference meets<br />
+Bayesian Markov-chain Monte Carlo (MCMC) methods.</h2>
+<!-- <h1 class="title">Happy Cloding!</h1> -->
 <!-- <p><a class="btn btn-primary" href="{{ site.baseurl }}/dc.html">Learn more</a></p> -->
 <h3>
-<a href="https://twitter.com/datacloning"><i class="fa fa-twitter-square text-grey"></i></a>
+<!-- <a href="https://twitter.com/datacloning"><i class="fa fa-twitter-square text-grey"></i></a> -->
 <a href="https://github.com/datacloning/"><i class="fa fa-github-square text-grey"></i></a> 
 <a href="http://datacloning.org/feed.xml"><i class="fa fa-rss-square text-grey"></i></a>
 </h3>
