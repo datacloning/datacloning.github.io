@@ -69,16 +69,6 @@ Once R/RStudio and Stan/`RStan` are installed, run the following command in R/RS
 install.packages(c("dclone", "coda", "snow", "rlecuyer"))
 ```
 
-Because `RStan` is not available via [CRAN](http://cran.r-project.org),
-the data cloning related Stan functions in the `dcextras` R package
-can only be downloaded from [GitHub](https://github.com/datacloning/dcextras). Make sure to update the `devtools` package as
-described [here](https://github.com/hadley/devtools).
-
-```r
-library(devtools)
-install_github("datacloning/dcextras")
-```
-
 ## Development version of `dclone`
 
 To install development version of `dclone`, install

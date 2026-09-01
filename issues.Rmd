@@ -24,7 +24,6 @@ Submit an issue on GitHub:
 
 * dclone R package: submit an [issue](https://github.com/datacloning/dclone/issues), or a [pull request](https://github.com/datacloning/dclone/pulls).
 * dcmle R package: submit an [issue](https://github.com/datacloning/dcmle/issues), or a [pull request](https://github.com/datacloning/dcmle/pulls).
-* dcextras R package: submit an [issue](https://github.com/datacloning/dcextras/issues), or a [pull request](https://github.com/datacloning/dcextras/pulls).
 
 ## Issues with the website
 
