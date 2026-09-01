@@ -1,13 +1,13 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-8 col-md-offset-2">
+    <div class="col-md-8 offset-md-2">
       <footer>
       <hr>
       <p>
       <small>
         <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.      
       <br />
-      Powered by <a href="http://jekyllrb.com">Jekyll</a>, <a href="http://bootswatch.com/">Bootswatch</a>, and <a href="https://github.com/datacloning/datacloning.github.io">GitHub</a>.
+      Powered by <a href="http://jekyllrb.com">Jekyll</a>, <a href="https://getbootstrap.com/">Bootstrap</a>, and <a href="https://github.com/datacloning/datacloning.github.io">GitHub</a>.
       &mdash;
       Last updated on {{ site.time | date: "%Y-%m-%d" }} by <a href="http://peter.solymos.org">P&eacute;ter S&oacute;lymos</a>.
       </small></p>
@@ -16,8 +16,33 @@
   </div>
 </div>
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
-    $("table").addClass("table table-striped table-bordered table-hover table-condensed");
+    $("table").addClass("table table-striped table-bordered table-hover table-sm");
 </script>
-<script type="text/javascript" src="{{ site.baseurl }}/assets/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  (() => {
+    const toggle = document.querySelector(".theme-toggle");
+    const storedTheme = localStorage.getItem("theme");
+    const preferredTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+
+    function setTheme(theme) {
+      const isDark = theme === "dark";
+      document.documentElement.dataset.theme = theme;
+      toggle.setAttribute("aria-pressed", String(isDark));
+      toggle.setAttribute("aria-label", `Switch to ${isDark ? "light" : "dark"} mode`);
+      toggle.setAttribute("title", `Switch to ${isDark ? "light" : "dark"} mode`);
+      toggle.querySelector("i").className = `fa fa-${isDark ? "sun-o" : "moon-o"}`;
+    }
+
+    setTheme(storedTheme || preferredTheme);
+    toggle.addEventListener("click", () => {
+      const theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      localStorage.setItem("theme", theme);
+      setTheme(theme);
+    });
+  })();
+</script>

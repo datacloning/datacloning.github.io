@@ -5,7 +5,7 @@ layout: plain
 <div class="jumbotron">
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-8 offset-md-2">
 
 <p>Frequentist statistical inference meets<br />
 Bayesian Markov-chain Monte Carlo (MCMC) methods.</p>
@@ -65,7 +65,7 @@ works with all major MCMC engines. See the <a href="{{ site.baseurl }}/install.h
 
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-8 offset-md-2">
 
 <div class="well">
 <h3><a href="https://github.com/datacloning/workshop-2023-edmonton">CalgaryR & YEGRUG Meetup: Data Cloning - Hierarchical Models Made Easy</a></h3>
@@ -78,7 +78,7 @@ works with all major MCMC engines. See the <a href="{{ site.baseurl }}/install.h
     </div>
     {% if site.ads %}
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-8 offset-md-2">
         {% include _ads.html %}
         </div>
     </div>

@@ -8,7 +8,7 @@
 {% include _navigation.html %}
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-8 offset-md-2">
             {% if page.title %}
                 {% if page.subtitle %}
                     <a href="index.html"><h1 class="title">{{ page.title }}</h1></a>
@@ -52,7 +52,7 @@ s.setAttribute('data-timestamp', +new Date());
     </div>
     {% if site.ads %}
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-8 offset-md-2">
         {% include _ads.html %}
         </div>
     </div>

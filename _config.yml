@@ -16,8 +16,7 @@ kramdown:
   hard_wrap:      false
 markdown_ext: "markdown,mkdown,mkdn,mkd,md,Rmd"
 
-# Bootswatch theme
-bswtheme: flatly
+# Site styling is Bootstrap 5 + assets/site.css (flatly color theme, with dark mode)
 # fancy fonts on/off
 fancyfonts: true
 # navbar style: inverse, transparent

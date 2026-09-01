@@ -9,25 +9,25 @@
 <div class="container">
 {% if page.course %}
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-8 offset-md-2">
             <a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/"><h3><em>{{ page.course.title }}</em></h3></a>
 		</div>
 	</div>
     <div class="row">
-		<div class="col-md-8 col-md-offset-2">
+		<div class="col-md-8 offset-md-2">
             <ul class="breadcrumb">
-                <li><a href="{{ site.baseurl }}">Home</a></li>
-                <li><a href="{{ site.baseurl }}/courses/">Courses</a></li>
-                <li><a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/">{{ page.course.location }} {{ page.course.year }}</a></li>
-                <li class="active">{{ page.course.lecture }}</li>
+                <li class="breadcrumb-item"><a href="{{ site.baseurl }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ site.baseurl }}/courses/">Courses</a></li>
+                <li class="breadcrumb-item"><a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/">{{ page.course.location }} {{ page.course.year }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ page.course.lecture }}</li>
             </ul>
 		</div>
 	</div>
     <div class="row">
-    	<div class="col-md-8 col-md-offset-2">
+    	<div class="col-md-8 offset-md-2">
 
 			{% if page.course.file %}
-			<span class="pull-right">
+			<span class="float-end">
 			  <div class="btn-group">
                 {% if page.course.slides %}
 			    <a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.course.slides }}" class="btn btn-primary btn-sm"><i class="fa fa-laptop"></i> Slides</a>
@@ -37,16 +37,15 @@
     		    {% endif %}
 			    <a href="https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.course.file }}.Rmd" class="btn btn-primary btn-sm"><i class="fa fa-code"></i> Source</a>
     		    <div class="btn-group">
-      			  <a href="#" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+      			  <a href="#" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
 		          <i class="fa fa-download"></i> Download
-        		  <span class="caret"></span>
       			  </a>
       			  <ul class="dropdown-menu">
-        			<li><a href="{{ page.url }}" download><i class="fa fa-file-text-o"></i> html</a></li>
+        			<li><a class="dropdown-item" href="{{ page.url }}" download><i class="fa fa-file-text-o"></i> html</a></li>
         			{% if page.course.pdf %}
-        			<li><a href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.course.pdf }}" download><i class="fa fa-file-pdf-o"></i> pdf</a></li>
+        			<li><a class="dropdown-item" href="{{ site.baseurl }}/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.course.pdf }}" download><i class="fa fa-file-pdf-o"></i> pdf</a></li>
         			{% endif %}
-        			<li><a href="https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.course.file }}.Rmd" download><i class="fa fa-file-code-o"></i> Rmd</a></li>
+        			<li><a class="dropdown-item" href="https://raw.githubusercontent.com/datacloning/datacloning.github.io/master/courses/{{ page.course.year }}/{{ page.course.location | downcase }}/{{ page.course.file }}.Rmd" download><i class="fa fa-file-code-o"></i> Rmd</a></li>
        			  </ul>
     		    </div>
     		  </div>
@@ -56,7 +55,7 @@
             <h1 class="title">{{ page.title }}</h1>
 {% else %}
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-8 offset-md-2">
 {% endif %}
 <!-- content starts here %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
 
@@ -75,7 +74,7 @@
     </div>
     {% if site.ads %}
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-8 offset-md-2">
         {% include _ads.html %}
         </div>
     </div>
